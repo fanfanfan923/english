@@ -169,9 +169,13 @@
         <div class="flex items-center gap-3 text-xs md:text-sm text-[var(--text-sub)] font-mono self-start sm:self-auto flex-wrap">
           <span>📅 2026-09-23</span>
           <span class="text-[var(--border)]">|</span>
-          <span>词库: <b class="text-[var(--text-main)]" id="header-total-badge">12</b></span>
+          <span>词库: <b class="text-[var(--text-main)]" id="header-total-badge">13</b></span>
           <span class="text-[var(--border)]">|</span>
           <span class="text-[var(--score-green-text)] font-semibold" id="header-mastered-badge">已掌握: 0</span>
+          <span class="text-[var(--border)]">|</span>
+          <button onclick="forceSyncLatest()" class="text-[var(--accent)] hover:underline flex items-center gap-1 cursor-pointer font-sans active:opacity-75" title="点击立即强制同步云端最新词库">
+            <span>🔄</span><span>同步词库</span>
+          </button>
         </div>
       </div>
 
@@ -2482,18 +2486,52 @@
     initDailyQueue();
 
     // ==========================================
-    // 📱 PWA Service Worker 注册与 iOS 音频预热
+    // 📱 PWA Service Worker 注册与自动更新/强制同步机制
     // ==========================================
+    let isAutoRefreshing = false;
+
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js')
           .then((reg) => {
             console.log('[PWA] Service Worker 注册成功，Scope:', reg.scope);
+            // 每次打开网页主动触发一次向 GitHub 检查更新
+            reg.update().catch(() => {});
           })
           .catch((err) => {
             console.warn('[PWA] Service Worker 注册失败:', err);
           });
       });
+
+      // 当 Service Worker 更新激活后，自动刷新页面应用最新词库
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (!isAutoRefreshing) {
+          isAutoRefreshing = true;
+          window.location.reload();
+        }
+      });
+    }
+
+    // 手动一键强制同步最新云端词库 (清理本地缓存并拉取最新)
+    async function forceSyncLatest() {
+      const btn = event && event.currentTarget;
+      if (btn) btn.innerHTML = '<span>⏳</span><span>同步中...</span>';
+      try {
+        if ('serviceWorker' in navigator) {
+          const regs = await navigator.serviceWorker.getRegistrations();
+          for (let r of regs) {
+            await r.update().catch(() => {});
+          }
+        }
+        if ('caches' in window) {
+          const keys = await caches.keys();
+          await Promise.all(keys.map(k => caches.delete(k)));
+        }
+      } catch (err) {
+        console.warn('Sync error:', err);
+      }
+      // 强制绕过本地缓存刷新
+      window.location.href = window.location.pathname + '?t=' + Date.now();
     }
 
     // iOS Safari 首次触控唤醒音频引擎，确保后续朗读即点即播
