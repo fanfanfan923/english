@@ -169,7 +169,7 @@
         <div class="flex items-center gap-3 text-xs md:text-sm text-[var(--text-sub)] font-mono self-start sm:self-auto flex-wrap">
           <span>📅 2026-09-23</span>
           <span class="text-[var(--border)]">|</span>
-          <span>词库: <b class="text-[var(--text-main)]" id="header-total-badge">13</b></span>
+          <span>词库: <b class="text-[var(--text-main)]" id="header-total-badge">14</b></span>
           <span class="text-[var(--border)]">|</span>
           <span class="text-[var(--score-green-text)] font-semibold" id="header-mastered-badge">已掌握: 0</span>
           <span class="text-[var(--border)]">|</span>
@@ -2527,21 +2527,90 @@
     initDailyQueue();
 
     // ==========================================
-    // 📱 PWA Service Worker 注册与自动更新/强制同步机制
+    // 📱 PWA Service Worker 注册与全自动云端静默同步引擎
     // ==========================================
     let isAutoRefreshing = false;
+
+    // 优雅轻量顶部 Toast 提示条
+    function showAutoSyncToast(msg) {
+      let toast = document.getElementById('auto-sync-toast');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'auto-sync-toast';
+        toast.className = 'fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-[#1e4d38] text-white text-xs md:text-sm font-semibold px-4 py-2 rounded-full shadow-lg transition-all duration-300 pointer-events-none flex items-center gap-2 opacity-0 -translate-y-4';
+        document.body.appendChild(toast);
+      }
+      toast.innerHTML = `<span>✨</span><span>${msg}</span>`;
+      toast.classList.remove('opacity-0', '-translate-y-4');
+      toast.classList.add('opacity-100', 'translate-y-0');
+      setTimeout(() => {
+        toast.classList.remove('opacity-100', 'translate-y-0');
+        toast.classList.add('opacity-0', '-translate-y-4');
+      }, 2500);
+    }
+
+    // 全自动无感检测云端是否有新单词发布 (杀后台打开、多任务切回时触发)
+    let isCheckingSync = false;
+    async function silentCheckRemoteUpdates() {
+      if (isCheckingSync || !navigator.onLine) return;
+      isCheckingSync = true;
+      try {
+        // 带时间戳穿透一切本地缓存，直接向 GitHub Pages 嗅探最新 HTML
+        const res = await fetch('./index.html?t=' + Date.now(), { cache: 'no-store' });
+        if (!res.ok) return;
+        const html = await res.text();
+
+        // 统计云端最新词条数
+        const idMatches = html.match(/id:\s*(\d+)/g);
+        if (idMatches && idMatches.length > 0) {
+          const remoteCount = idMatches.length;
+          const currentCount = typeof vocabulary !== 'undefined' ? vocabulary.length : 0;
+
+          // 若云端词汇数量大于本地，执行全自动无感更新
+          if (remoteCount > currentCount) {
+            console.log(`[AutoSync] 发现云端新词: 本地 ${currentCount} 词 -> 云端 ${remoteCount} 词。正在自动同步...`);
+            
+            // 清空本地 Service Worker 缓存，保证下次冷启动即为最新
+            if ('caches' in window) {
+              const keys = await caches.keys();
+              await Promise.all(keys.map(k => caches.delete(k)));
+            }
+            if ('serviceWorker' in navigator) {
+              const regs = await navigator.serviceWorker.getRegistrations();
+              for (let r of regs) {
+                await r.update().catch(() => {});
+              }
+            }
+
+            showAutoSyncToast(`已自动同步 ${remoteCount - currentCount} 个新单词（现共 ${remoteCount} 词）`);
+            setTimeout(() => {
+              if (!isAutoRefreshing) {
+                isAutoRefreshing = true;
+                window.location.reload();
+              }
+            }, 600);
+          }
+        }
+      } catch (err) {
+        // 离线或网络波动静默处理，不弹报错
+      } finally {
+        isCheckingSync = false;
+      }
+    }
 
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js')
           .then((reg) => {
             console.log('[PWA] Service Worker 注册成功，Scope:', reg.scope);
-            // 每次打开网页主动触发一次向 GitHub 检查更新
             reg.update().catch(() => {});
           })
           .catch((err) => {
             console.warn('[PWA] Service Worker 注册失败:', err);
           });
+          
+        // 启动时延迟 800ms 静默嗅探一次云端更新
+        setTimeout(silentCheckRemoteUpdates, 800);
       });
 
       // 当 Service Worker 更新激活后，自动刷新页面应用最新词库
@@ -2553,7 +2622,22 @@
       });
     }
 
-    // 手动一键强制同步最新云端词库 (清理本地缓存并拉取最新)
+    // 📱 iOS 唤醒监听：应用从后台切回前台、手机解锁屏幕时，自动无感比对云端
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') {
+        silentCheckRemoteUpdates();
+      }
+    });
+    window.addEventListener('focus', () => {
+      silentCheckRemoteUpdates();
+    });
+    window.addEventListener('online', () => {
+      silentCheckRemoteUpdates();
+    });
+    // 每 60 秒定期静默检查一次
+    setInterval(silentCheckRemoteUpdates, 60000);
+
+    // 手动一键强制同步最新云端词库 (保留备用)
     async function forceSyncLatest() {
       const btn = event && event.currentTarget;
       if (btn) btn.innerHTML = '<span>⏳</span><span>同步中...</span>';
