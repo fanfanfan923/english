@@ -1509,6 +1509,47 @@
         },
         grammar: "及物短语：act on + 建议/诉求/情报（依照行事）；主语 (化学物质/外力) + act on + 身体器官（施加作用）。",
         memoryLogic: "基底隐喻：act（行动）+ on（踩在……基础上 / 施加在……表面）：踩在建议的基础上去干活（根据行动）；力量压在身体组织上（起作用）。"
+      },
+      {
+        id: 13,
+        date: "2026-09-23",
+        term: "bring out",
+        category: "phrasal",
+        catName: "动词短语",
+        hint: "bring (带来) + out (向外)：把内藏潜能“激发出来”；把新产品“带到世面上”！",
+        coreMeaning: "使显现、激发出（内在潜能、优良品质或细微特质）；推出、出版上市（新产品、图书或研究成果）。",
+        articleUsage: {
+          note: "六级/考研阅读真题高频语境：优秀教育者或协作机制对个人潜能的深度激发。",
+          quote: "A truly effective mentor knows how to bring out the best in every student.",
+          translation: "一位真正优秀的导师懂得如何激发出每位学生最好的一面。"
+        },
+        usageTitle: "三大核心高频考法",
+        mainUsages: [
+          { num: "①", title: "激发出（内在品质/潜能/风味）", desc: "使潜藏的优点、才华显现出来；或使食物的风味更鲜明（bring out the flavor）" },
+          { num: "②", title: "推出、出版（新书/新产品/唱片）", desc: "生产、发表并推向公众市场（= release / publish / launch）" },
+          { num: "③", title: "阐明、使（问题/真相）暴露明确", desc: "通过调查或讨论使隐藏的分歧或事实清楚呈现（bring out the truth / facts）" }
+        ],
+        collocations: [
+          "bring out the best / worst in sb (激发某人最好/最坏的一面)",
+          "bring out a new edition / product (推出新版本/新产品)",
+          "bring out the full flavor (激发出浓郁风味)",
+          "bring out the underlying contradiction (揭示深层矛盾)"
+        ],
+        examples: [
+          { type: "快速记忆", en: "Crisp spices can bring out the rich flavor of the dish.", cn: "新鲜的香料能够充分衬托出这道菜的浓郁风味。" },
+          { type: "六级迁移", en: "Constructive feedback in peer reviews often brings out critical nuances that authors overlook.", cn: "同行评议中的建设性反馈往往能揭示出作者所忽略的关键细微差异。" }
+        ],
+        distinction: {
+          title: "bring out vs. bring about vs. carry out",
+          desc: "bring out 侧重“引出内藏特质/推向市场”；bring about 侧重“导致、引发某种结果或变革”（= cause）；carry out 侧重“落实、执行一项计划或实验”。",
+          structures: [
+            { label: "① bring out (激发出/推出)", text: "bring out one's potential / a new product" },
+            { label: "② bring about (导致/引起)", text: "bring about profound economic changes" },
+            { label: "③ carry out (贯彻/执行)", text: "carry out an empirical investigation" }
+          ]
+        },
+        grammar: "可分及物短语：bring out the truth 或 bring the truth out；代词作宾语必须居中：bring it out。",
+        memoryLogic: "基底隐喻：bring（带来）+ out（由内向外出来）：把深藏在地底的矿藏、内心的潜力“引出来”（激发）；把藏在工坊里的新发明“拿出来见人”（推出发行）。"
       }
     ];
 
@@ -1623,6 +1664,23 @@
 
       const headerMastered = document.getElementById("header-mastered-badge");
       if (headerMastered) headerMastered.innerText = `已掌握: ${masteredCount}`;
+
+      const headerTotal = document.getElementById("header-total-badge");
+      if (headerTotal) headerTotal.innerText = vocabulary.length;
+
+      // 动态更新分类筛选标签上的词汇数量
+      const catCountMap = { all: vocabulary.length, phrasal: 0, academic: 0, prep: 0, grammar: 0 };
+      vocabulary.forEach(v => {
+        if (catCountMap[v.category] !== undefined) catCountMap[v.category]++;
+      });
+      document.querySelectorAll(".cat-pill").forEach(p => {
+        const cat = p.getAttribute("data-cat");
+        if (cat === "all") p.innerText = `全部 (${catCountMap.all})`;
+        else if (cat === "phrasal") p.innerText = `动词短语 (${catCountMap.phrasal})`;
+        else if (cat === "academic") p.innerText = `学术核心词 (${catCountMap.academic})`;
+        else if (cat === "prep") p.innerText = `介词逻辑 (${catCountMap.prep})`;
+        else if (cat === "grammar") p.innerText = `核心语法 (${catCountMap.grammar})`;
+      });
     }
 
     function renderEbCard() {
