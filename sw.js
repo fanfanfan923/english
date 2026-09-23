@@ -1,5 +1,5 @@
 // Service Worker for 英语高阶词义网络与复习工作台
-const CACHE_NAME = 'english-hub-cache-v4';
+const CACHE_NAME = 'english-hub-cache-v1790141376';
 
 const STATIC_ASSETS = [
   './',
@@ -12,11 +12,10 @@ const STATIC_ASSETS = [
   'https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js'
 ];
 
-// 1. 安装阶段：预缓存应用核心 Shell 与资源
+// 1. 安装阶段：立即跳过等待，接管旧版 SW
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      // 容错预缓存：即便部分资源失败也尽量保证核心文件入缓存
       return Promise.allSettled(
         STATIC_ASSETS.map((asset) =>
           cache.add(asset).catch((err) => {
@@ -28,7 +27,7 @@ self.addEventListener('install', (event) => {
   );
 });
 
-// 2. 激活阶段：清理旧版本缓存并立即接管所有客户端
+// 2. 激活阶段：清理一切旧版本缓存并立即接管全部客户端
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keys) => {
@@ -44,47 +43,65 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// 3. 请求拦截阶段：Cache First 兼顾 Stale-While-Revalidate 与离线降级
+// 3. 请求拦截阶段：HTML 网络优先 (保证最新词库秒级同步) + 静态资源缓存优先 + 离线兜底
 self.addEventListener('fetch', (event) => {
   const req = event.request;
   
-  // 只拦截 GET 请求
   if (req.method !== 'GET') return;
 
-  // 忽略不受支持的 schema (如 chrome-extension:// 等)
   const url = new URL(req.url);
   if (!url.protocol.startsWith('http')) return;
 
-  event.respondWith(
-    caches.match(req).then((cachedResponse) => {
-      // 网络请求与动态缓存更新 Promise
-      const fetchPromise = fetch(req)
+  // 1) 带有版本/更新查询参数的请求（如 ?t=... / ?v=...），直接走网络，绝不缓存
+  if (url.search) {
+    event.respondWith(fetch(req));
+    return;
+  }
+
+  // 2) HTML 主页面导航请求：Network-First (网络优先)
+  // 联网状态下永远拉取 GitHub 最新版本并静默刷新缓存；断网离线时无缝回退本地缓存
+  const isHtmlNavigation = req.mode === 'navigate' ||
+    (req.headers.get('accept') && req.headers.get('accept').includes('text/html')) ||
+    url.pathname.endsWith('index.html') ||
+    url.pathname.endsWith('/') ||
+    url.pathname.endsWith('/english');
+
+  if (isHtmlNavigation) {
+    event.respondWith(
+      fetch(req)
         .then((networkResponse) => {
-          // 确保响应有效 (允许 opaque 响应 如跨域 CDN)
-          if (networkResponse && (networkResponse.status === 200 || networkResponse.type === 'opaque')) {
-            const responseToCache = networkResponse.clone();
-            caches.open(CACHE_NAME).then((cache) => {
-              cache.put(req, responseToCache);
-            });
+          if (networkResponse && networkResponse.status === 200) {
+            const copy = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(req, copy));
           }
           return networkResponse;
         })
-        .catch((err) => {
-          // 离线模式：如果网络失败且无缓存，若是页面导航则兜底返回 index.html
-          if (req.mode === 'navigate') {
-            return caches.match('./index.html') || caches.match('./');
-          }
-          throw err;
-        });
+        .catch(() => {
+          // 断网/地铁离线兜底
+          return caches.match(req).then((cached) => {
+            return cached || caches.match('./index.html') || caches.match('./');
+          });
+        })
+    );
+    return;
+  }
 
-      // 如果有缓存，立即返回缓存 (秒开)，并在后台更新 (Stale-While-Revalidate)
+  // 3) 静态资源 (CSS / 图标 / CDN 脚本)：Cache-First (秒开体验) + 后台静默更新
+  event.respondWith(
+    caches.match(req).then((cachedResponse) => {
+      const fetchPromise = fetch(req)
+        .then((networkResponse) => {
+          if (networkResponse && (networkResponse.status === 200 || networkResponse.type === 'opaque')) {
+            const copy = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(req, copy));
+          }
+          return networkResponse;
+        })
+        .catch(() => {});
+
       if (cachedResponse) {
-        // 后台静默更新
-        fetchPromise.catch(() => {});
         return cachedResponse;
       }
-
-      // 没有缓存时等待网络请求
       return fetchPromise;
     })
   );
