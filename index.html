@@ -1,0 +1,2450 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>英语高阶词义网络与复习工作台</title>
+
+  <!-- PWA & iOS Safari 原生化配置 -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="英语复习">
+  <meta name="application-name" content="英语复习">
+  <meta name="theme-color" content="#2d6a4f">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="mobile-web-app-capable" content="yes">
+
+  <!-- Web App Manifest -->
+  <link rel="manifest" href="manifest.json">
+
+  <!-- Apple Touch Icons for iPhone / iPad -->
+  <link rel="apple-touch-icon" href="icons/icon-180.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="icons/icon-152.png">
+  <link rel="apple-touch-icon" sizes="167x167" href="icons/icon-167.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+  <link rel="icon" type="image/svg+xml" href="icons/icon.svg">
+
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    /* iOS Safe Area 安全区域变量定义 */
+    :root {
+      --sat: env(safe-area-inset-top, 0px);
+      --sab: env(safe-area-inset-bottom, 0px);
+      --sal: env(safe-area-inset-left, 0px);
+      --sar: env(safe-area-inset-right, 0px);
+
+      /* 专一纯净的豆沙柔绿护眼学术调色系统 */
+      --bg: #f2f5f2;
+      --card: #ffffff;
+      --card-sub: #fbfdfb;
+      --card-hover: #f7faf7;
+      --text-main: #14281a;
+      --text-body: #283c2d;
+      --text-sub: #4b624f;
+      --text-muted: #728874;
+      --border: #dbe4db;
+      --border-sub: #e6ede6;
+      --border-hover: #b4c7b4;
+      --accent: #2d6a4f;
+      --accent-hover: #1e4d38;
+      --accent-soft: #eaf3ed;
+      --badge-bg: #e2ede3;
+      --badge-text: #2c4832;
+      
+      /* 自测评分色彩 */
+      --score-red-bg: #faefee;
+      --score-red-text: #9a3b2e;
+      --score-red-border: #f2d2ce;
+      --score-yellow-bg: #fbf6e8;
+      --score-yellow-text: #87621a;
+      --score-yellow-border: #fae4b5;
+      --score-green-bg: #ebf5ee;
+      --score-green-text: #215e30;
+      --score-green-border: #c7e3cd;
+    }
+
+    html, body {
+      width: 100%;
+      overflow-x: hidden;
+      -webkit-tap-highlight-color: transparent;
+      -webkit-touch-callout: none;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-body);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.55;
+      /* 严格避开 iPhone 刘海/灵动岛与底部小黑条 (Home Indicator) */
+      padding-top: max(1rem, calc(var(--sat) + 0.5rem));
+      padding-bottom: max(1.75rem, calc(var(--sab) + 1.25rem));
+      padding-left: max(1rem, calc(var(--sal) + 0.5rem));
+      padding-right: max(1rem, calc(var(--sar) + 0.5rem));
+    }
+
+    .theme-card {
+      background-color: var(--card);
+      border: 1px solid var(--border);
+      transition: all 0.18s ease;
+    }
+
+    .btn-tab-active {
+      background-color: var(--card) !important;
+      color: var(--accent) !important;
+      font-weight: 700 !important;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+
+    .btn-tab {
+      white-space: nowrap;
+      transition: all 0.15s ease;
+    }
+
+    /* 移动端触摸反馈与消除误触 */
+    button, .btn-tab, .cat-pill, details summary {
+      touch-action: manipulation;
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    button:active, .btn-tab:active {
+      transform: scale(0.98);
+      opacity: 0.92;
+    }
+
+    /* 优化折叠面板箭头 */
+    details summary::-webkit-details-marker {
+      display: none;
+    }
+
+    /* 统一 Card Layout 规范 (严格双列等高网格与内部模块对齐) */
+    .card-layout {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    .card-body {
+      flex: 1 1 auto;
+      display: flex;
+      flex-direction: column;
+    }
+    .card-footer {
+      margin-top: auto;
+    }
+
+    /* 打印优化 */
+    @media print {
+      body { background-color: #fff; color: #000; padding: 0; }
+      header, nav, button, .no-print { display: none !important; }
+      .theme-card { border: 1px solid #ccc; box-shadow: none; break-inside: avoid; }
+    }
+  </style>
+</head>
+<body class="min-h-screen">
+
+  <div class="max-w-5xl mx-auto space-y-4 md:space-y-5">
+
+    <!-- ========================================== -->
+    <!-- 【层级 3】紧凑 Header (内容保留，上下空间紧致) -->
+    <!-- ========================================== -->
+    <header class="border-b border-[var(--border)] pb-3">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+        <div>
+          <div class="flex items-center gap-2 flex-wrap">
+            <h1 class="text-lg md:text-xl font-bold text-[var(--text-main)] tracking-tight">
+              英语高阶词义网络与复习工作台
+            </h1>
+            <span class="text-xs font-mono font-semibold text-[var(--accent)] bg-[var(--accent-soft)] px-2 py-0.5 rounded border border-[#d2e5d5]">
+              六级/考研阅读
+            </span>
+          </div>
+          <p class="text-xs md:text-sm text-[var(--text-sub)] mt-0.5">
+            温和护眼 • 结构化词网 • 艾宾浩斯主动回忆抗遗忘闭环
+          </p>
+        </div>
+
+        <!-- 极简内联状态 -->
+        <div class="flex items-center gap-3 text-xs md:text-sm text-[var(--text-sub)] font-mono self-start sm:self-auto flex-wrap">
+          <span>📅 2026-09-23</span>
+          <span class="text-[var(--border)]">|</span>
+          <span>词库: <b class="text-[var(--text-main)]" id="header-total-badge">12</b></span>
+          <span class="text-[var(--border)]">|</span>
+          <span class="text-[var(--score-green-text)] font-semibold" id="header-mastered-badge">已掌握: 0</span>
+        </div>
+      </div>
+
+      <!-- Segmented Navigation (文字稍大更清晰，桌面端自适应平铺，无横向滚动) -->
+      <nav class="mt-2.5 grid grid-cols-2 sm:grid-cols-5 gap-1.5 p-1 bg-[#e1ece2] rounded-xl border border-[var(--border)] text-xs md:text-sm">
+        <button id="tab-ebbinghaus-btn" onclick="switchTab('ebbinghaus')" class="btn-tab px-3 py-2 rounded-lg font-bold transition btn-tab-active text-center cursor-pointer">
+          ⏳ 今日复习
+        </button>
+        <button id="tab-quiz-btn" onclick="switchTab('quiz')" class="btn-tab px-3 py-2 rounded-lg text-[var(--text-sub)] hover:text-[var(--text-main)] transition text-center cursor-pointer">
+          🃏 翻转自测
+        </button>
+        <button id="tab-list-btn" onclick="switchTab('list')" class="btn-tab px-3 py-2 rounded-lg text-[var(--text-sub)] hover:text-[var(--text-main)] transition text-center cursor-pointer">
+          📋 词网全景
+        </button>
+        <button id="tab-diff-btn" onclick="switchTab('diff')" class="btn-tab px-3 py-2 rounded-lg text-[var(--text-sub)] hover:text-[var(--text-main)] transition text-center cursor-pointer">
+          ⚖️ 考点地图
+        </button>
+        <button id="tab-stats-btn" onclick="switchTab('stats')" class="btn-tab px-3 py-2 rounded-lg text-[var(--text-sub)] hover:text-[var(--text-main)] transition text-center col-span-2 sm:col-span-1 cursor-pointer">
+          📊 学习看板
+        </button>
+      </nav>
+    </header>
+
+
+    <!-- ========================================== -->
+    <!-- 视图 1：今日复习 (首页核心任务：绝对视觉中心) -->
+    <!-- ========================================== -->
+    <main id="view-ebbinghaus" class="space-y-4 md:space-y-5">
+      
+      <!-- 【层级 2】今日复习进度区 (适中高度，清晰易读，不压缩过度) -->
+      <section class="max-w-[880px] mx-auto px-1">
+        <div class="flex items-center justify-between text-xs md:text-sm">
+          <div class="flex items-baseline gap-2.5 flex-wrap">
+            <span class="font-bold text-[var(--text-main)] text-sm md:text-base">今日复习队列</span>
+            <span class="text-[var(--text-muted)] text-xs">目标 10 词</span>
+            <span class="font-mono text-[var(--accent)] font-bold bg-[var(--accent-soft)] px-2.5 py-0.5 rounded text-xs md:text-sm border border-[#d2e5d5]" id="stat-reviewed-count">
+              0 / 10 已完成
+            </span>
+            <span class="font-mono text-[var(--score-green-text)] font-bold bg-[#e7f4eb] px-2.5 py-0.5 rounded text-xs md:text-sm border border-[var(--score-green-border)]" id="stat-mastery-rate">
+              熟练度 0%
+            </span>
+          </div>
+          <button onclick="resetDailyReview()" class="text-xs text-[var(--text-muted)] hover:text-[var(--text-main)] underline transition cursor-pointer">
+            重置今天
+          </button>
+        </div>
+
+        <!-- 适度厚度的优雅进度条 -->
+        <div class="w-full bg-[#dce6dc] h-2 rounded-full overflow-hidden mt-2 mb-1.5">
+          <div id="progress-bar" class="h-full w-0 transition-all duration-300 rounded-full" style="background-color: var(--accent);"></div>
+        </div>
+
+        <div class="flex items-center justify-between text-xs text-[var(--text-muted)]">
+          <span class="font-medium">科学复习节律：Day 0 → Day 1 → Day 3 → Day 7 → Day 15 → Day 30</span>
+          <span class="font-mono font-semibold" id="stat-queue-status">待测: 10 词</span>
+        </div>
+      </section>
+
+
+      <!-- 【层级 1】当前复习核心卡片 (放大约25%，宽度880px，成为整个屏幕绝对主角) -->
+      <section class="max-w-[880px] mx-auto">
+        
+        <!-- 卡片顶部状态行 (字号与间距舒展) -->
+        <div class="flex items-center justify-between text-xs md:text-sm text-[var(--text-sub)] px-1 mb-2">
+          <div class="flex items-center gap-2">
+            <span id="eb-current-card-idx" class="font-bold text-[var(--accent)] font-mono text-sm md:text-base">正在复习 1 / 10</span>
+            <span class="text-[var(--border)]">·</span>
+            <span id="eb-card-stage" class="text-[var(--text-sub)] font-medium">Day 0 初始阶段</span>
+          </div>
+          <div>
+            <span id="eb-card-cat" class="px-2.5 py-0.5 rounded text-xs font-semibold bg-[#e4ede5] text-[var(--accent)] border border-[var(--border-sub)]">核心语法</span>
+          </div>
+        </div>
+
+        <!-- 主学习卡片主体 (宽度放大、上下Padding加大、大号字、质感沉稳) -->
+        <div id="eb-card-box" class="theme-card rounded-2xl p-6 md:p-9 shadow-sm border border-[var(--border)] bg-[var(--card)] transition-all min-h-[340px] flex flex-col justify-center">
+          
+          <!-- 正面：纯净主动回忆界面 (超大英文核心词，清晰引导，醒目CTA) -->
+          <div id="eb-card-front" class="space-y-6 my-auto">
+            
+            <div class="flex items-baseline justify-between gap-3 pt-1">
+              <div class="flex items-center gap-3 flex-wrap">
+                <!-- 超大核心英文词 -->
+                <h2 id="eb-card-term" class="text-3xl sm:text-4xl md:text-5xl font-black font-mono tracking-tight text-[var(--text-main)] leading-tight">
+                  take on
+                </h2>
+                <button onclick="speakCurrent(event)" class="text-sm md:text-base text-[var(--text-muted)] hover:text-[var(--accent)] transition p-1.5 rounded-lg hover:bg-[var(--accent-soft)] cursor-pointer" title="朗读发音">
+                  🔊 朗读
+                </button>
+              </div>
+            </div>
+
+            <!-- 核心启发引导 (适度加大字号，行高更舒适) -->
+            <div class="text-sm md:text-base text-[var(--text-sub)] leading-relaxed bg-[#f6f9f6] p-4 rounded-xl border border-[var(--border-sub)]" id="eb-card-hint">
+              💡 核心引导：在六级阅读中有 4 种典型考法，请在脑海中先回想它接不同宾语时的含义...
+            </div>
+
+            <!-- 核心交互 CTA 按钮 (高度与视觉重量适度提升，形成第一行动力) -->
+            <div class="pt-2 flex flex-col items-center gap-2.5">
+              <button onclick="toggleEbAnswer()" class="w-full py-3.5 md:py-4 px-6 rounded-xl font-bold text-base md:text-lg transition-all duration-150 flex items-center justify-center gap-2.5 text-white bg-[var(--accent)] hover:bg-[var(--accent-hover)] shadow-sm active:scale-[0.99] cursor-pointer">
+                <span>🤔 我已主动回忆，点击查看解析</span>
+                <span class="text-xs md:text-sm opacity-80 font-mono">(Space) ▾</span>
+              </button>
+              <span class="text-xs text-[var(--text-muted)]">先在大脑中回忆释义与用法，再展开验证，学习效率大幅提升</span>
+            </div>
+
+          </div>
+
+          <!-- 反面：深度知识结构 (分层展现，核心默认展开，深入解析折叠) -->
+          <div id="eb-card-back" class="hidden space-y-4 my-auto">
+            
+            <div class="flex items-center justify-between border-b border-[var(--border)] pb-3">
+              <div class="flex items-center gap-2.5">
+                <h3 id="eb-back-term" class="text-2xl md:text-3xl font-bold font-mono text-[var(--text-main)]">take on</h3>
+                <button onclick="speakCurrent(event)" class="text-xs md:text-sm text-[var(--accent)] hover:underline inline-flex items-center gap-0.5 cursor-pointer">
+                  🔊 发音
+                </button>
+              </div>
+              <button onclick="toggleEbAnswer()" class="text-xs md:text-sm text-[var(--text-muted)] hover:text-[var(--text-main)] underline cursor-pointer">
+                收起卡片 ▴
+              </button>
+            </div>
+
+            <!-- 1. 核心含义 (默认展示，字号提升) -->
+            <div id="eb-back-core" class="text-sm md:text-base text-[var(--text-body)] font-medium bg-[#f4f7f4] p-3.5 rounded-xl border border-[var(--border-sub)] leading-relaxed"></div>
+
+            <!-- 2. 本文真题原句 (默认展示) -->
+            <div id="eb-back-quote" class="p-3.5 rounded-xl bg-[var(--card)] border-l-3 border-[var(--accent)] space-y-1.5 border border-[var(--border-sub)]"></div>
+
+            <!-- 3. 主要考法 / 搭配 (默认展示) -->
+            <div id="eb-back-meanings" class="space-y-1.5 text-xs md:text-sm text-[var(--text-body)]"></div>
+
+            <!-- 4. 常见搭配 (默认展示) -->
+            <div id="eb-back-collocations" class="pt-2.5 border-t border-[var(--border-sub)] space-y-1.5 text-xs md:text-sm"></div>
+
+            <!-- 5~8 深入解析 (默认折叠，点击展开) -->
+            <details class="group pt-2.5 border-t border-[var(--border-sub)]">
+              <summary class="flex items-center justify-between text-xs md:text-sm font-bold text-[var(--accent)] cursor-pointer select-none hover:text-[var(--accent-hover)] transition list-none py-1.5">
+                <span class="flex items-center gap-1.5">
+                  <span>📖 展开深入解析（例句 / 易混辨析 / 语法）</span>
+                </span>
+                <span class="text-xs text-[var(--text-muted)] group-open:rotate-180 transition-transform duration-200">
+                  ▼
+                </span>
+              </summary>
+              
+              <div class="mt-3 space-y-3">
+                <!-- 精选例句 -->
+                <div id="eb-back-examples" class="space-y-2"></div>
+                <!-- 易混辨析 -->
+                <div id="eb-back-distinction"></div>
+                <!-- 语法要点 -->
+                <div id="eb-back-grammar"></div>
+                <!-- 记忆逻辑 -->
+                <div id="eb-back-logic" class="text-xs md:text-sm text-[var(--text-sub)] italic pl-1 leading-snug"></div>
+              </div>
+            </details>
+
+            <!-- 底部三级自测评分按钮 (更大更易点) -->
+            <div class="pt-4 border-t border-[var(--border)] space-y-2.5">
+              <div class="text-center text-xs md:text-sm text-[var(--text-sub)]">
+                评估刚才的主动回忆效果，决定下一次复习间隔：
+              </div>
+
+              <div class="grid grid-cols-3 gap-3">
+                <button onclick="handleReviewScore(1)" class="flex flex-col items-center justify-center p-3 rounded-xl border transition active:scale-98 cursor-pointer shadow-2xs" style="background-color: var(--score-red-bg); color: var(--score-red-text); border-color: var(--score-red-border);">
+                  <span class="text-sm md:text-base font-bold whitespace-nowrap">🔴 没想出 (1)</span>
+                  <span class="text-xs opacity-80 mt-0.5 whitespace-nowrap">今天重新自测</span>
+                </button>
+
+                <button onclick="handleReviewScore(2)" class="flex flex-col items-center justify-center p-3 rounded-xl border transition active:scale-98 cursor-pointer shadow-2xs" style="background-color: var(--score-yellow-bg); color: var(--score-yellow-text); border-color: var(--score-yellow-border);">
+                  <span class="text-sm md:text-base font-bold whitespace-nowrap">🟡 较模糊 (2)</span>
+                  <span class="text-xs opacity-80 mt-0.5 whitespace-nowrap">明天巩固 (Day 1)</span>
+                </button>
+
+                <button onclick="handleReviewScore(3)" class="flex flex-col items-center justify-center p-3 rounded-xl border transition active:scale-98 cursor-pointer shadow-2xs" style="background-color: var(--score-green-bg); color: var(--score-green-text); border-color: var(--score-green-border);">
+                  <span class="text-sm md:text-base font-bold whitespace-nowrap">🟢 已掌握 (3)</span>
+                  <span class="text-xs opacity-80 mt-0.5 whitespace-nowrap">推进下阶段 (+3天)</span>
+                </button>
+              </div>
+
+              <div class="flex items-center justify-between text-xs text-[var(--text-muted)] pt-1">
+                <span>快捷键: [空格] 展开/折叠 | [数字 1/2/3] 评分</span>
+                <button onclick="skipCard()" class="text-[var(--text-sub)] hover:text-[var(--text-main)] underline whitespace-nowrap cursor-pointer">
+                  跳过当前词 →
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+    </main>
+
+
+    <!-- ========================================== -->
+    <!-- 视图 2：自由翻转自测 (全量词库随时抽测) -->
+    <!-- ========================================== -->
+    <main id="view-quiz" class="hidden">
+      <div class="theme-card rounded-2xl p-6 md:p-8 max-w-[880px] mx-auto text-center space-y-5 shadow-sm bg-[var(--card)]">
+        
+        <div class="flex items-center justify-between text-xs md:text-sm text-[var(--text-sub)]">
+          <span id="quiz-progress" class="font-mono font-bold text-[var(--accent)] text-sm">卡片 1 / 12</span>
+          <span id="quiz-cat-badge" class="px-2.5 py-0.5 rounded text-xs font-semibold bg-[#e4ede5] text-[var(--accent)]">分类</span>
+        </div>
+
+        <div id="flashcard" onclick="flipCard()" class="min-h-[280px] flex flex-col items-center justify-center p-6 md:p-8 rounded-xl border border-[var(--border)] hover:border-[var(--accent)] cursor-pointer transition select-none bg-[var(--card-sub)]">
+          
+          <div id="card-front" class="space-y-3">
+            <div class="flex items-center justify-center gap-2">
+              <span class="text-xs md:text-sm text-[var(--text-muted)]">点击卡片翻转答案 👆</span>
+              <button onclick="speakQuizCurrent(event)" class="text-[var(--text-muted)] hover:text-[var(--accent)] transition p-1 text-sm" title="发音朗读">
+                🔊 朗读
+              </button>
+            </div>
+            <h2 id="card-term" class="text-3xl sm:text-4xl md:text-5xl font-black font-mono text-[var(--text-main)] tracking-tight">take on</h2>
+            <p id="card-hint" class="text-xs md:text-sm text-[var(--text-sub)] max-w-md mx-auto">提示：核心词义与真题语境</p>
+          </div>
+
+          <div id="card-back" class="hidden text-left space-y-3.5 w-full">
+            <div class="flex items-center justify-between border-b border-[var(--border)] pb-2">
+              <span class="text-sm font-bold text-[var(--text-main)]">知识结构解析</span>
+              <span class="text-xs text-[var(--text-muted)]">再次点击折叠</span>
+            </div>
+            <div id="card-core" class="text-xs md:text-sm text-[var(--accent)] font-medium bg-[#f4f7f4] p-3 rounded-lg border border-[var(--border-sub)]"></div>
+            <div id="card-quote" class="p-2.5 rounded-lg bg-[var(--card)] border-l-2 border-[var(--accent)] border border-[var(--border-sub)] text-xs md:text-sm space-y-0.5"></div>
+            <div class="space-y-1.5 text-xs md:text-sm text-[var(--text-body)]" id="card-meanings"></div>
+            <div class="space-y-1.5 text-xs md:text-sm text-[var(--text-sub)] border-t border-[var(--border-sub)] pt-2.5" id="card-example"></div>
+          </div>
+
+        </div>
+
+        <div class="flex items-center justify-center gap-3 pt-1">
+          <button onclick="prevCard()" class="btn-tab px-4 py-2 text-xs md:text-sm font-medium rounded-lg border border-[var(--border)] bg-[var(--card)] hover:bg-[var(--accent-soft)] text-[var(--text-body)] transition cursor-pointer">
+            ← 上一个
+          </button>
+          <button onclick="flipCard()" class="btn-tab px-6 py-2.5 text-xs md:text-sm font-bold rounded-lg text-white transition shadow-xs cursor-pointer" style="background-color: var(--accent);">
+            🔄 翻转卡片 (Space)
+          </button>
+          <button onclick="nextCard()" class="btn-tab px-4 py-2 text-xs md:text-sm font-medium rounded-lg border border-[var(--border)] bg-[var(--card)] hover:bg-[var(--accent-soft)] text-[var(--text-body)] transition cursor-pointer">
+            下一个 →
+          </button>
+        </div>
+
+        <div class="text-xs text-[var(--text-muted)]">
+          提示：按键盘 <kbd class="px-1.5 py-0.5 rounded border border-[var(--border)] bg-[#e8efe8] font-mono">空格键</kbd> 翻转，<kbd class="px-1.5 py-0.5 rounded border border-[var(--border)] bg-[#e8efe8] font-mono">←</kbd> 和 <kbd class="px-1.5 py-0.5 rounded border border-[var(--border)] bg-[#e8efe8] font-mono">→</kbd> 方向键切换。
+        </div>
+
+      </div>
+    </main>
+
+
+    <!-- ========================================== -->
+    <!-- 视图 3：词网全景清单 (统一双列行等高网格与内部模块严格对齐) -->
+    <!-- ========================================== -->
+    <main id="view-list" class="hidden space-y-4">
+      
+      <!-- 搜索与分类过滤栏 -->
+      <div class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+        <div class="relative flex-1">
+          <svg class="absolute left-3.5 top-3 w-4 h-4 text-[var(--text-muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+          </svg>
+          <input 
+            id="search-input" 
+            oninput="handleSearch()" 
+            type="text" 
+            placeholder="搜索英文词汇、中文核心含义、高频搭配、例句（如: whom, 出于, 呈现, validate）..."
+            class="w-full bg-[var(--card)] border border-[var(--border)] rounded-xl pl-10 pr-3.5 py-2 text-xs md:text-sm text-[var(--text-main)] placeholder-[var(--text-muted)] focus:outline-none focus:border-[var(--accent)] shadow-2xs"
+          >
+        </div>
+
+        <div class="flex items-center gap-1.5 overflow-x-auto pb-0.5 md:pb-0" id="category-pills">
+          <button onclick="filterCategory('all')" class="cat-pill whitespace-nowrap px-3 py-1.5 rounded-lg text-xs md:text-sm font-semibold" style="background-color: var(--accent); color: #ffffff;" data-cat="all">全部 (12)</button>
+          <button onclick="filterCategory('phrasal')" class="cat-pill whitespace-nowrap px-3 py-1.5 rounded-lg text-xs md:text-sm font-medium border border-[var(--border)] bg-[var(--card)] text-[var(--text-sub)] hover:text-[var(--text-main)]" data-cat="phrasal">动词短语 (3)</button>
+          <button onclick="filterCategory('academic')" class="cat-pill whitespace-nowrap px-3 py-1.5 rounded-lg text-xs md:text-sm font-medium border border-[var(--border)] bg-[var(--card)] text-[var(--text-sub)] hover:text-[var(--text-main)]" data-cat="academic">学术核心词 (4)</button>
+          <button onclick="filterCategory('prep')" class="cat-pill whitespace-nowrap px-3 py-1.5 rounded-lg text-xs md:text-sm font-medium border border-[var(--border)] bg-[var(--card)] text-[var(--text-sub)] hover:text-[var(--text-main)]" data-cat="prep">介词逻辑 (3)</button>
+          <button onclick="filterCategory('grammar')" class="cat-pill whitespace-nowrap px-3 py-1.5 rounded-lg text-xs md:text-sm font-medium border border-[var(--border)] bg-[var(--card)] text-[var(--text-sub)] hover:text-[var(--text-main)]" data-cat="grammar">核心语法 (2)</button>
+        </div>
+      </div>
+
+      <!-- 统一网格容器：桌面端严格 2 列行等高，移动端自然 1 列 -->
+      <div id="vocabulary-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4.5 items-stretch w-full">
+        <!-- 动态注入每张对齐卡片 -->
+      </div>
+
+      <div id="no-results" class="hidden text-center py-12 theme-card rounded-2xl bg-[var(--card)]">
+        <p class="text-[var(--text-muted)] text-sm">没有找到匹配词条，换个关键词搜搜看吧~</p>
+      </div>
+    </main>
+
+
+    <!-- ========================================== -->
+    <!-- 视图 4：考点地图 / 易混辨析 (6 组高频对比 · 严格双列自然等高网格) -->
+    <!-- ========================================== -->
+    <main id="view-diff" class="hidden space-y-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4.5 items-stretch">
+        
+        <!-- 考点 1：whom vs. who -->
+        <div class="theme-card rounded-2xl p-5 md:p-6 bg-[var(--card)] border border-[var(--border)] shadow-xs card-layout">
+          <!-- 头部标题与分类 -->
+          <div class="flex items-center justify-between border-b border-[var(--border-sub)] pb-2 mb-3">
+            <h3 class="font-bold text-sm md:text-base text-[var(--text-main)] font-mono">whom vs. who</h3>
+            <span class="text-xs font-semibold text-[var(--accent)] bg-[var(--accent-soft)] px-2.5 py-0.5 rounded border border-[#d2e5d5]">语法与书面语规范</span>
+          </div>
+
+          <!-- 正文主体 (card-body 弹性伸展) -->
+          <div class="card-body space-y-2.5 mb-3">
+            <!-- 轻量知识关系指引 -->
+            <div class="bg-[var(--card-sub)] px-3 py-1.5 rounded-lg border border-[var(--border-sub)] text-xs text-[var(--text-sub)] flex items-center gap-1.5 flex-wrap font-mono">
+              <span class="font-bold text-[var(--accent)]">介词前置</span> <span>➔ whom (正式书面)</span>
+              <span class="text-[var(--text-muted)] opacity-50">·</span>
+              <span class="font-bold text-[var(--text-main)]">介词在后</span> <span>➔ who (日常交流)</span>
+              <span class="text-[var(--text-muted)] opacity-50">·</span>
+              <span class="font-bold text-[var(--text-muted)]">省略代词</span> <span>➔ 极简口语</span>
+            </div>
+
+            <!-- 一句话核心区别 -->
+            <div class="bg-[#f4f7f4] border-l-3 border-[var(--accent)] p-2.5 rounded-r-lg text-xs md:text-sm text-[var(--text-body)] leading-relaxed">
+              正式书面语中，介词前置时通常使用 <b>whom</b>；介词留在句末时，现代日常英语常用 <b>who</b>，口语中亦可直接省略关系代词。
+            </div>
+
+            <!-- 三层直接对照示例 (纵向紧凑排布) -->
+            <div class="space-y-2 text-xs md:text-sm font-mono">
+              <div class="p-2.5 rounded-xl border border-[var(--score-green-border)] bg-[var(--score-green-bg)] space-y-1">
+                <div class="text-xs font-bold text-[var(--score-green-text)] font-sans flex items-center justify-between">
+                  <span>① 正式书面语（介词前置）</span>
+                  <span class="text-[10px] font-mono text-[var(--score-green-text)]">六级/学术阅读标准</span>
+                </div>
+                <div class="text-[var(--text-main)] font-bold flex items-center justify-between">
+                  <span>the person to whom I spoke</span>
+                  <button onclick="speakText('the person to whom I spoke')" class="text-xs text-[var(--text-muted)] hover:text-[var(--accent)] cursor-pointer">🔊</button>
+                </div>
+                <div class="text-[var(--text-sub)] text-xs font-sans">↳ 译文：与我交谈的那个人（动词搭配 speak to sb ➔ to whom）</div>
+              </div>
+
+              <div class="p-2.5 rounded-xl border border-[var(--border-sub)] bg-[var(--card-sub)] space-y-1">
+                <div class="text-xs font-bold text-[var(--text-sub)] font-sans flex items-center justify-between">
+                  <span>② 现代日常英语（介词留在句末）</span>
+                  <span class="text-[10px] text-[var(--text-muted)]">日常口语高频</span>
+                </div>
+                <div class="text-[var(--text-body)] flex items-center justify-between">
+                  <span>the person who I spoke to</span>
+                  <button onclick="speakText('the person who I spoke to')" class="text-xs text-[var(--text-muted)] hover:text-[var(--accent)] cursor-pointer">🔊</button>
+                </div>
+                <div class="text-[var(--text-muted)] text-xs font-sans">↳ 译文：跟我说话的那个人</div>
+              </div>
+
+              <div class="p-2.5 rounded-xl border border-[var(--border-sub)] bg-[var(--card-sub)] space-y-1">
+                <div class="text-xs font-bold text-[var(--text-muted)] font-sans flex items-center justify-between">
+                  <span>③ 极简口语（省略关系代词）</span>
+                  <span class="text-[10px] text-[var(--text-muted)]">最简洁地道</span>
+                </div>
+                <div class="text-[var(--text-body)] flex items-center justify-between">
+                  <span>the person I spoke to</span>
+                  <button onclick="speakText('the person I spoke to')" class="text-xs text-[var(--text-muted)] hover:text-[var(--accent)] cursor-pointer">🔊</button>
+                </div>
+                <div class="text-[var(--text-muted)] text-xs font-sans">↳ 译文：我说话的那个人</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 折叠详细用法与做题秘诀 (card-footer mt-auto 严格贴底) -->
+          <details class="card-footer group mt-auto pt-2.5 border-t border-[var(--border-sub)]">
+            <summary class="flex items-center justify-between text-xs font-bold text-[var(--accent)] cursor-pointer select-none hover:text-[var(--accent-hover)] transition list-none py-1">
+              <span>📖 展开详细辨析与搭配规律</span>
+              <span class="text-xs text-[var(--text-muted)] group-open:rotate-180 transition-transform duration-200">▼</span>
+            </summary>
+            <div class="mt-2.5 space-y-2 text-xs text-[var(--text-sub)] bg-[var(--card-sub)] p-3 rounded-xl border border-[var(--border-sub)]">
+              <div><b>💡 介词选择本质：</b>介词绝非随意添加，完全取决于从句中动词的原生固定搭配：</div>
+              <div class="pl-2 space-y-1 font-mono text-[var(--text-main)]">
+                <div>• collaborate with sb ➔ the partner <b>with whom</b> we collaborate</div>
+                <div>• depend on sb ➔ the mentor <b>on whom</b> he depends</div>
+                <div>• receive from sb ➔ the donor <b>from whom</b> we received support</div>
+              </div>
+              <div class="text-[var(--text-muted)] text-[11px] pt-1.5 border-t border-[var(--border-sub)]">
+                ⚠️ 做题避坑：做阅读长难句或填空时，先定位从句谓语动词缺什么介词，再倒推选用对应介词。
+              </div>
+            </div>
+          </details>
+        </div>
+
+        <!-- 考点 2：entail vs. require vs. involve -->
+        <div class="theme-card rounded-2xl p-5 md:p-6 bg-[var(--card)] border border-[var(--border)] shadow-xs card-layout">
+          <!-- 头部标题与分类 -->
+          <div class="flex items-center justify-between border-b border-[var(--border-sub)] pb-2 mb-3">
+            <h3 class="font-bold text-sm md:text-base text-[var(--text-main)] font-mono">entail vs. require vs. involve</h3>
+            <span class="text-xs font-semibold text-[var(--accent)] bg-[var(--accent-soft)] px-2.5 py-0.5 rounded border border-[#d2e5d5]">逻辑必然性对比</span>
+          </div>
+
+          <!-- 正文主体 (card-body 弹性伸展) -->
+          <div class="card-body space-y-2.5 mb-3">
+            <!-- 轻量知识关系指引 -->
+            <div class="bg-[var(--card-sub)] px-3 py-1.5 rounded-lg border border-[var(--border-sub)] text-xs text-[var(--text-sub)] flex items-center gap-1.5 flex-wrap font-mono">
+              <span class="font-bold text-[var(--accent)]">require</span> <span>➔ 外部硬性准入</span>
+              <span class="text-[var(--text-muted)] opacity-50">·</span>
+              <span class="font-bold text-[var(--score-green-text)]">entail</span> <span>➔ 内在必然代价</span>
+              <span class="text-[var(--text-muted)] opacity-50">·</span>
+              <span class="font-bold text-[var(--text-muted)]">involve</span> <span>➔ 中性泛指涉及</span>
+            </div>
+
+            <!-- 一句话核心区别 -->
+            <div class="bg-[#f4f7f4] border-l-3 border-[var(--accent)] p-2.5 rounded-r-lg text-xs md:text-sm text-[var(--text-body)] leading-relaxed">
+              <b>require</b> 强调外部设定的硬性门槛；<b>entail</b> 强调内在必然绑定、不可分割的代价或结果；<b>involve</b> 中性表示“包含、涉及”，无必然绑定感。
+            </div>
+
+            <!-- 典型例句对比 -->
+            <div class="space-y-2 text-xs md:text-sm">
+              <div class="p-2.5 rounded-xl border border-[var(--border-sub)] bg-[var(--card-sub)] space-y-1">
+                <div><span class="font-bold text-[var(--accent)]">require</span>：外部设立的硬性条件、准入门槛</div>
+                <div class="text-[var(--text-sub)] font-mono text-xs flex items-center justify-between">
+                  <span>• *The position requires three years of relevant experience.*</span>
+                  <button onclick="speakText('The position requires three years of relevant experience.')" class="text-xs text-[var(--text-muted)] hover:text-[var(--accent)] cursor-pointer">🔊</button>
+                </div>
+                <div class="text-[var(--text-muted)] pl-2 text-xs">↳ 翻译：该岗位硬性要求三年相关工作经验。</div>
+              </div>
+
+              <div class="p-2.5 rounded-xl border border-[var(--score-green-border)] bg-[var(--score-green-bg)] space-y-1">
+                <div><span class="font-bold text-[var(--score-green-text)]">entail</span>：事物内在**不可分割、必然伴随**的代价或结果</div>
+                <div class="font-mono text-[var(--text-main)] text-xs flex items-center justify-between">
+                  <span>• *Winning the championship entails immense sacrifice and discipline.*</span>
+                  <button onclick="speakText('Winning the championship entails immense sacrifice and discipline.')" class="text-xs text-[var(--text-muted)] hover:text-[var(--accent)] cursor-pointer">🔊</button>
+                </div>
+                <div class="text-[var(--text-sub)] pl-2 text-xs">↳ 翻译：赢得冠军必然伴随着巨大的牺牲与严苛的自律。</div>
+              </div>
+
+              <div class="p-2.5 rounded-xl border border-[var(--border-sub)] bg-[var(--card-sub)] text-xs text-[var(--text-sub)]">
+                <span class="font-bold text-[#556858]">involve</span>：中性泛指“包含、涉及”（*The project involves three international teams.* ↳ 项目涉及三个国际团队）。
+              </div>
+            </div>
+          </div>
+
+          <!-- 折叠详细用法 (card-footer mt-auto 严格贴底) -->
+          <details class="card-footer group mt-auto pt-2.5 border-t border-[var(--border-sub)]">
+            <summary class="flex items-center justify-between text-xs font-bold text-[var(--accent)] cursor-pointer select-none hover:text-[var(--accent-hover)] transition list-none py-1">
+              <span>📖 展开语法搭配与题眼辨析</span>
+              <span class="text-xs text-[var(--text-muted)] group-open:rotate-180 transition-transform duration-200">▼</span>
+            </summary>
+            <div class="mt-2.5 space-y-2 text-xs text-[var(--text-sub)] bg-[var(--card-sub)] p-3 rounded-xl border border-[var(--border-sub)]">
+              <div><b>📐 语法搭配：</b><code>entail + n.</code> 或 <code>entail doing sth</code>（*Investment entails taking risks.* 投资必然意味着承担风险）。</div>
+              <div class="text-[var(--text-muted)] text-[11px] pt-1.5 border-t border-[var(--border-sub)]">
+                🎯 六级题眼辨析：外部规章、政策门槛用 <b>require</b>；某种职责、历史变革自带的内在代价用 <b>entail</b>。
+              </div>
+            </div>
+          </details>
+        </div>
+
+        <!-- 考点 3：validate vs. verify -->
+        <div class="theme-card rounded-2xl p-5 md:p-6 bg-[var(--card)] border border-[var(--border)] shadow-xs card-layout">
+          <!-- 头部标题与分类 -->
+          <div class="flex items-center justify-between border-b border-[var(--border-sub)] pb-2 mb-3">
+            <h3 class="font-bold text-sm md:text-base text-[var(--text-main)] font-mono">validate vs. verify</h3>
+            <span class="text-xs font-semibold text-[var(--accent)] bg-[var(--accent-soft)] px-2.5 py-0.5 rounded border border-[#d2e5d5]">实证真伪与效力认可</span>
+          </div>
+
+          <!-- 正文主体 (card-body 弹性伸展) -->
+          <div class="card-body space-y-2.5 mb-3">
+            <!-- 轻量知识关系指引 -->
+            <div class="bg-[var(--card-sub)] px-3 py-1.5 rounded-lg border border-[var(--border-sub)] text-xs text-[var(--text-sub)] flex items-center gap-1.5 flex-wrap font-mono">
+              <span class="font-bold text-[var(--accent)]">verify</span> <span>➔ 客观事实核验 (Is it true?)</span>
+              <span class="text-[var(--text-muted)] opacity-50">·</span>
+              <span class="font-bold text-[var(--score-green-text)]">validate</span> <span>➔ 有效性确认与合理认可 (Is it valid?)</span>
+            </div>
+
+            <!-- 一句话核心区别 -->
+            <div class="bg-[#f4f7f4] border-l-3 border-[var(--accent)] p-2.5 rounded-r-lg text-xs md:text-sm text-[var(--text-body)] leading-relaxed">
+              <b>verify</b> 侧重“核实客观事实真伪”（是否属实）；<b>validate</b> 侧重“确认合法有效、论证站得住脚”或现代心理学中的“认可情绪/观点的合理性”。
+            </div>
+
+            <!-- 典型例句对比 -->
+            <div class="space-y-2 text-xs md:text-sm">
+              <div class="p-2.5 rounded-xl border border-[var(--border-sub)] bg-[var(--card-sub)] space-y-1">
+                <div><span class="font-bold text-[var(--accent)]">verify</span>：核验客观真伪与事实依据（True / False）</div>
+                <div class="text-[var(--text-sub)] font-mono text-xs flex items-center justify-between">
+                  <span>• *Please verify your credentials before logging in.*</span>
+                  <button onclick="speakText('Please verify your credentials before logging in.')" class="text-xs text-[var(--text-muted)] hover:text-[var(--accent)] cursor-pointer">🔊</button>
+                </div>
+                <div class="text-[var(--text-muted)] pl-2 text-xs">↳ 翻译：登录前请先核验您的身份凭证。</div>
+              </div>
+
+              <div class="p-2.5 rounded-xl border border-[var(--score-green-border)] bg-[var(--score-green-bg)] space-y-1">
+                <div><span class="font-bold text-[var(--score-green-text)]">validate</span>：证明成立、具备效力或认可合理性（Valid / Invalid）</div>
+                <div class="font-mono text-[var(--text-main)] text-xs flex items-center justify-between">
+                  <span>• *Subsequent trials validated the initial hypothesis.*</span>
+                  <button onclick="speakText('Subsequent trials validated the initial hypothesis.')" class="text-xs text-[var(--text-muted)] hover:text-[var(--accent)] cursor-pointer">🔊</button>
+                </div>
+                <div class="text-[var(--text-sub)] pl-2 text-xs">↳ 翻译：随后的试验验证了最初的假说（证明其理论成立）。</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 折叠详细用法 (card-footer mt-auto 严格贴底) -->
+          <details class="card-footer group mt-auto pt-2.5 border-t border-[var(--border-sub)]">
+            <summary class="flex items-center justify-between text-xs font-bold text-[var(--accent)] cursor-pointer select-none hover:text-[var(--accent-hover)] transition list-none py-1">
+              <span>📖 展开 validate 三大考点场景</span>
+              <span class="text-xs text-[var(--text-muted)] group-open:rotate-180 transition-transform duration-200">▼</span>
+            </summary>
+            <div class="mt-2.5 space-y-1.5 text-xs text-[var(--text-sub)] bg-[var(--card-sub)] p-3 rounded-xl border border-[var(--border-sub)]">
+              <div><b>1. 科学实证：</b><i>validate a theory / findings</i>（证实理论站得住脚）</div>
+              <div><b>2. 法规效力：</b><i>validate a ticket / contract</i>（验票、使合同具有法律效力）</div>
+              <div><b>3. 心理共情：</b><i>validate someone's feelings</i>（认可对方的感受合理，而非无理取闹）</div>
+              <div class="text-[var(--text-muted)] text-[11px] pt-1.5 border-t border-[var(--border-sub)]">
+                🧠 核心口诀：verify 查真伪（是否为真）；validate 评效力与价值（是否有效/合理）。
+              </div>
+            </div>
+          </details>
+        </div>
+
+        <!-- 考点 4：autonomy vs. independence -->
+        <div class="theme-card rounded-2xl p-5 md:p-6 bg-[var(--card)] border border-[var(--border)] shadow-xs card-layout">
+          <!-- 头部标题与分类 -->
+          <div class="flex items-center justify-between border-b border-[var(--border-sub)] pb-2 mb-3">
+            <h3 class="font-bold text-sm md:text-base text-[var(--text-main)] font-mono">autonomy vs. independence</h3>
+            <span class="text-xs font-semibold text-[var(--accent)] bg-[var(--accent-soft)] px-2.5 py-0.5 rounded border border-[#d2e5d5]">主权与生存状态</span>
+          </div>
+
+          <!-- 正文主体 (card-body 弹性伸展) -->
+          <div class="card-body space-y-2.5 mb-3">
+            <!-- 轻量知识关系指引 -->
+            <div class="bg-[var(--card-sub)] px-3 py-1.5 rounded-lg border border-[var(--border-sub)] text-xs text-[var(--text-sub)] flex items-center gap-1.5 flex-wrap font-mono">
+              <span class="font-bold text-[var(--accent)]">independence</span> <span>➔ 客观生存不依赖</span>
+              <span class="text-[var(--text-muted)] opacity-50">·</span>
+              <span class="font-bold text-[var(--score-green-text)]">autonomy</span> <span>➔ 自主决断与自我治理</span>
+            </div>
+
+            <!-- 一句话核心区别 -->
+            <div class="bg-[#f4f7f4] border-l-3 border-[var(--accent)] p-2.5 rounded-r-lg text-xs md:text-sm text-[var(--text-body)] leading-relaxed">
+              <b>independence</b> 是“客观不依附”，强调经济或生活上不依靠外界供养；<b>autonomy</b> 是“主观自主权”，即使身处某一体系中，仍享有自我决断与自治的权利。
+            </div>
+
+            <!-- 典型例句对比 -->
+            <div class="space-y-2 text-xs md:text-sm">
+              <div class="p-2.5 rounded-xl border border-[var(--border-sub)] bg-[var(--card-sub)] space-y-1">
+                <div><span class="font-bold text-[var(--accent)]">independence</span>：独立、不依赖外界供养（客观生存状态）</div>
+                <div class="text-[var(--text-sub)] font-mono text-xs flex items-center justify-between">
+                  <span>• *Financial independence allows for self-reliant choices.*</span>
+                  <button onclick="speakText('Financial independence allows for self-reliant choices.')" class="text-xs text-[var(--text-muted)] hover:text-[var(--accent)] cursor-pointer">🔊</button>
+                </div>
+                <div class="text-[var(--text-muted)] pl-2 text-xs">↳ 翻译：经济独立能让人做出自食其力的生活抉择。</div>
+              </div>
+
+              <div class="p-2.5 rounded-xl border border-[var(--score-green-border)] bg-[var(--score-green-bg)] space-y-1">
+                <div><span class="font-bold text-[var(--score-green-text)]">autonomy</span>：决策与自治权（身处集体中亦可保留自主决断权力）</div>
+                <div class="font-mono text-[var(--text-main)] text-xs flex items-center justify-between">
+                  <span>• *Physicians must maintain clinical autonomy in decision-making.*</span>
+                  <button onclick="speakText('Physicians must maintain clinical autonomy in decision-making.')" class="text-xs text-[var(--text-muted)] hover:text-[var(--accent)] cursor-pointer">🔊</button>
+                </div>
+                <div class="text-[var(--text-sub)] pl-2 text-xs">↳ 翻译：医生在临床决策中必须保持专业自主权。</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 折叠详细用法 (card-footer mt-auto 严格贴底) -->
+          <details class="card-footer group mt-auto pt-2.5 border-t border-[var(--border-sub)]">
+            <summary class="flex items-center justify-between text-xs font-bold text-[var(--accent)] cursor-pointer select-none hover:text-[var(--accent-hover)] transition list-none py-1">
+              <span>📖 展开语境对照与词根逻辑</span>
+              <span class="text-xs text-[var(--text-muted)] group-open:rotate-180 transition-transform duration-200">▼</span>
+            </summary>
+            <div class="mt-2.5 space-y-1.5 text-xs text-[var(--text-sub)] bg-[var(--card-sub)] p-3 rounded-xl border border-[var(--border-sub)]">
+              <div><b>词源心智模型：</b><code>auto-</code> (自己) + <code>-nomos</code> (法度) ➔ 制定自己的法则、自己做主。</div>
+              <div><b>典型语境对比：</b>一个国家脱离殖民宣示 <b>independence</b>；一个学术机构享有 <b>academic autonomy</b>（学术自治权）。</div>
+              <div class="text-[var(--text-muted)] text-[11px] pt-1.5 border-t border-[var(--border-sub)]">
+                🔗 高频学术搭配：<i>grant autonomy to...</i>（赋予……更大自主权）, <i>individual autonomy</i>（个人自主性）。
+              </div>
+            </div>
+          </details>
+        </div>
+
+        <!-- 考点 5：take on vs. take up -->
+        <div class="theme-card rounded-2xl p-5 md:p-6 bg-[var(--card)] border border-[var(--border)] shadow-xs card-layout">
+          <!-- 头部标题与分类 -->
+          <div class="flex items-center justify-between border-b border-[var(--border-sub)] pb-2 mb-3">
+            <h3 class="font-bold text-sm md:text-base text-[var(--text-main)] font-mono">take on vs. take up</h3>
+            <span class="text-xs font-semibold text-[var(--accent)] bg-[var(--accent-soft)] px-2.5 py-0.5 rounded border border-[#d2e5d5]">短语动词核心辨析</span>
+          </div>
+
+          <!-- 正文主体 (card-body 弹性伸展) -->
+          <div class="card-body space-y-2.5 mb-3">
+            <!-- 轻量知识关系指引 -->
+            <div class="bg-[var(--card-sub)] px-3 py-1.5 rounded-lg border border-[var(--border-sub)] text-xs text-[var(--text-sub)] flex items-center gap-1.5 flex-wrap font-mono">
+              <span class="font-bold text-[var(--score-green-text)]">take on</span> <span>➔ 呈现 / 承担 / 招聘 / 迎战</span>
+              <span class="text-[var(--text-muted)] opacity-50">·</span>
+              <span class="font-bold text-[var(--accent)]">take up</span> <span>➔ 从事 / 占据 / 接受 / 探讨</span>
+            </div>
+
+            <!-- 一句话核心区别 -->
+            <div class="bg-[#f4f7f4] border-l-3 border-[var(--accent)] p-2.5 rounded-r-lg text-xs md:text-sm text-[var(--text-body)] leading-relaxed">
+              <b>take on</b> 核心动作是“迎向并接纳”（呈现新面貌、挑起重担、纳新、应战）；<b>take up</b> 核心动作是“拿起来、占住”（开启新爱好、填满时空、接受职位）。
+            </div>
+
+            <!-- 典型例句对比 -->
+            <div class="space-y-2 text-xs md:text-sm">
+              <div class="p-2.5 rounded-xl border border-[var(--score-green-border)] bg-[var(--score-green-bg)] space-y-1">
+                <div><span class="font-bold text-[var(--score-green-text)]">take on</span>：呈现（特质）、承担（重任）、招聘、迎战</div>
+                <div class="font-mono text-[var(--text-main)] text-xs flex items-center justify-between">
+                  <span>• *The debate has taken on an increasingly complex character.*</span>
+                  <button onclick="speakText('The debate has taken on an increasingly complex character.')" class="text-xs text-[var(--text-muted)] hover:text-[var(--accent)] cursor-pointer">🔊</button>
+                </div>
+                <div class="text-[var(--text-sub)] pl-2 text-xs">↳ 翻译：辩论呈现出日益复杂的特征（六级阅读真题用法）。</div>
+              </div>
+
+              <div class="p-2.5 rounded-xl border border-[var(--border-sub)] bg-[var(--card-sub)] space-y-1">
+                <div><span class="font-bold text-[var(--accent)]">take up</span>：开始从事（新事物）、占据（时空）、接受提议</div>
+                <div class="text-[var(--text-sub)] font-mono text-xs flex items-center justify-between">
+                  <span>• *She decided to take up photography in her spare time.*</span>
+                  <button onclick="speakText('She decided to take up photography in her spare time.')" class="text-xs text-[var(--text-muted)] hover:text-[var(--accent)] cursor-pointer">🔊</button>
+                </div>
+                <div class="text-[var(--text-muted)] pl-2 text-xs">↳ 翻译：她决定在业余时间开始学习摄影。</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 折叠详细用法 (card-footer mt-auto 严格贴底) -->
+          <details class="card-footer group mt-auto pt-2.5 border-t border-[var(--border-sub)]">
+            <summary class="flex items-center justify-between text-xs font-bold text-[var(--accent)] cursor-pointer select-none hover:text-[var(--accent-hover)] transition list-none py-1">
+              <span>📖 展开两大短语高频义项全景</span>
+              <span class="text-xs text-[var(--text-muted)] group-open:rotate-180 transition-transform duration-200">▼</span>
+            </summary>
+            <div class="mt-2.5 space-y-2 text-xs text-[var(--text-sub)] bg-[var(--card-sub)] p-3 rounded-xl border border-[var(--border-sub)]">
+              <div>
+                <b class="text-[var(--text-main)]">📌 take on 四大高频用法：</b>
+                <div class="pl-2 space-y-0.5 mt-0.5">
+                  <div>1. 呈现面貌：<i>take on a different appearance / meaning</i></div>
+                  <div>2. 承担职责：<i>take on extra responsibility / challenges</i></div>
+                  <div>3. 雇用招聘：<i>The company is taking on 50 new workers.</i></div>
+                  <div>4. 较量迎战：<i>The team will take on the defending champions.</i></div>
+                </div>
+              </div>
+              <div class="pt-1.5 border-t border-[var(--border-sub)]">
+                <b class="text-[var(--text-main)]">📌 take up 四大高频用法：</b>
+                <div class="pl-2 space-y-0.5 mt-0.5">
+                  <div>1. 开始从事：<i>take up gardening / a new sport</i></div>
+                  <div>2. 占据时空：<i>The paperwork takes up too much office time.</i></div>
+                  <div>3. 接受职位：<i>take up an offer / a teaching post</i></div>
+                  <div>4. 着手探讨：<i>Let us take up this proposal at next session.</i></div>
+                </div>
+              </div>
+            </div>
+          </details>
+        </div>
+
+        <!-- 考点 6：underlying vs. surface -->
+        <div class="theme-card rounded-2xl p-5 md:p-6 bg-[var(--card)] border border-[var(--border)] shadow-xs card-layout">
+          <!-- 头部标题与分类 -->
+          <div class="flex items-center justify-between border-b border-[var(--border-sub)] pb-2 mb-3">
+            <h3 class="font-bold text-sm md:text-base text-[var(--text-main)] font-mono">underlying vs. surface</h3>
+            <span class="text-xs font-semibold text-[var(--accent)] bg-[var(--accent-soft)] px-2.5 py-0.5 rounded border border-[#d2e5d5]">表里层级与因果深度</span>
+          </div>
+
+          <!-- 正文主体 (card-body 弹性伸展) -->
+          <div class="card-body space-y-2.5 mb-3">
+            <!-- 轻量知识关系指引 -->
+            <div class="bg-[var(--card-sub)] px-3 py-1.5 rounded-lg border border-[var(--border-sub)] text-xs text-[var(--text-sub)] flex items-center gap-1.5 flex-wrap font-mono">
+              <span class="font-bold text-[var(--score-green-text)]">underlying</span> <span>➔ 深层机制与本质根本</span>
+              <span class="text-[var(--text-muted)] opacity-50">·</span>
+              <span class="font-bold text-[#556858]">surface</span> <span>➔ 浅表表象与外在症状</span>
+            </div>
+
+            <!-- 一句话核心区别 -->
+            <div class="bg-[#f4f7f4] border-l-3 border-[var(--accent)] p-2.5 rounded-r-lg text-xs md:text-sm text-[var(--text-body)] leading-relaxed">
+              <b>surface</b> 是浮于水面、转瞬即逝的表象或浅层症状；<b>underlying</b> 是深埋在表面之下、支撑并驱动全局的根本原因与潜在机制。
+            </div>
+
+            <!-- 典型例句对比 -->
+            <div class="space-y-2 text-xs md:text-sm">
+              <div class="p-2.5 rounded-xl border border-[var(--score-green-border)] bg-[var(--score-green-bg)] space-y-1">
+                <div><span class="font-bold text-[var(--score-green-text)]">underlying</span>：深埋地下的根本动因与底层机制</div>
+                <div class="font-mono text-[var(--text-main)] text-xs flex items-center justify-between">
+                  <span>• *Researchers investigate the underlying causes of inflation.*</span>
+                  <button onclick="speakText('Researchers investigate the underlying causes of inflation.')" class="text-xs text-[var(--text-muted)] hover:text-[var(--accent)] cursor-pointer">🔊</button>
+                </div>
+                <div class="text-[var(--text-sub)] pl-2 text-xs">↳ 翻译：研究人员正在探究通货膨胀背后的深层根本原因。</div>
+              </div>
+
+              <div class="p-2.5 rounded-xl border border-[var(--border-sub)] bg-[var(--card-sub)] space-y-1">
+                <div><span class="font-bold text-[#556858]">surface</span>：表层、浅表症状（往往掩盖本质问题）</div>
+                <div class="text-[var(--text-sub)] font-mono text-xs flex items-center justify-between">
+                  <span>• *Treating only surface symptoms cannot resolve the crisis.*</span>
+                  <button onclick="speakText('Treating only surface symptoms cannot resolve the crisis.')" class="text-xs text-[var(--text-muted)] hover:text-[var(--accent)] cursor-pointer">🔊</button>
+                </div>
+                <div class="text-[var(--text-muted)] pl-2 text-xs">↳ 翻译：仅针对浅表症状进行治疗无法从根本上化解危机。</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 折叠详细用法 (card-footer mt-auto 严格贴底) -->
+          <details class="card-footer group mt-auto pt-2.5 border-t border-[var(--border-sub)]">
+            <summary class="flex items-center justify-between text-xs font-bold text-[var(--accent)] cursor-pointer select-none hover:text-[var(--accent-hover)] transition list-none py-1">
+              <span>📖 展开学术阅读搭配与题眼避坑</span>
+              <span class="text-xs text-[var(--text-muted)] group-open:rotate-180 transition-transform duration-200">▼</span>
+            </summary>
+            <div class="mt-2.5 space-y-1.5 text-xs text-[var(--text-sub)] bg-[var(--card-sub)] p-3 rounded-xl border border-[var(--border-sub)]">
+              <div><b>六级高频学术搭配：</b></div>
+              <div class="pl-2 space-y-0.5">
+                <div>• <i>underlying causes / factors</i>（根本原因 / 深层诱因）</div>
+                <div>• <i>underlying assumptions</i>（未言明的潜在前提假设）</div>
+                <div>• <i>underlying mechanism / principles</i>（底层运作机理）</div>
+              </div>
+              <div class="text-[var(--text-muted)] text-[11px] pt-1.5 border-t border-[var(--border-sub)]">
+                🎯 阅读题眼技巧：文章首段提出的 surface 现象往往是引子，作者最终论证重心必然落在 underlying 机制上。
+              </div>
+            </div>
+          </details>
+        </div>
+
+      </div>
+    </main>
+
+
+    <!-- ========================================== -->
+    <!-- 视图 5：学习看板 (学习过程管理与抗遗忘追踪) -->
+    <!-- ========================================== -->
+    <main id="view-stats" class="hidden max-w-[880px] mx-auto space-y-5">
+      
+      <!-- 【第一层】今日复习核心行动 (首屏第一视觉焦点：明确“今日该做什么”) -->
+      <section class="theme-card rounded-2xl p-5 md:p-6 bg-[var(--card)] shadow-xs border border-[var(--border)] space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[var(--border-sub)]">
+          <div class="space-y-1.5">
+            <div class="flex items-center gap-2">
+              <span class="inline-block w-2.5 h-2.5 rounded-full bg-[var(--accent)] animate-pulse"></span>
+              <span class="text-xs font-bold uppercase tracking-wider text-[var(--accent)]">今日待办行动 · Today's Action</span>
+            </div>
+            <div class="text-xl md:text-2xl font-bold text-[var(--text-main)]" id="stats-action-title">
+              今日待复习：<span class="font-mono text-[var(--accent)] text-2xl md:text-3xl font-black" id="stats-today-pending-num">10</span> 词
+            </div>
+            <div class="text-xs md:text-sm text-[var(--text-sub)] flex items-center gap-2 flex-wrap" id="stats-action-desc">
+              <span>今日自测打卡：<b class="font-mono text-[var(--text-main)]" id="stats-today-progress-text">0 / 10 词完成</b></span>
+              <span class="text-[var(--text-muted)] opacity-60">|</span>
+              <span class="text-[var(--text-muted)]">基于艾宾浩斯抗遗忘节律智能排程</span>
+            </div>
+          </div>
+          <div>
+            <button onclick="switchTab('ebbinghaus')" id="stats-start-btn" class="btn-tab w-full sm:w-auto px-6 py-3.5 rounded-xl font-bold text-base text-white transition-all shadow-xs flex items-center justify-center gap-2 hover:opacity-95 active:scale-[0.99] cursor-pointer" style="background-color: var(--accent);">
+              <span>开始今日复习</span>
+              <span class="font-mono text-sm">→</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 3 个真正具备学习意义的核心指标 -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-1">
+          <div class="bg-[var(--card-sub)] rounded-xl p-4 border border-[var(--border-sub)] space-y-1">
+            <div class="text-xs text-[var(--text-muted)] font-medium">总词汇量</div>
+            <div class="flex items-baseline gap-1.5">
+              <span class="text-2xl md:text-3xl font-black font-mono text-[var(--text-main)]" id="stats-total-num">12</span>
+              <span class="text-xs text-[var(--text-sub)]">词</span>
+            </div>
+            <div class="text-xs text-[var(--text-muted)]">已建立系统化词义网络</div>
+          </div>
+
+          <div class="bg-[var(--card-sub)] rounded-xl p-4 border border-[var(--border-sub)] space-y-1">
+            <div class="text-xs text-[var(--text-muted)] font-medium">今日待复习</div>
+            <div class="flex items-baseline gap-1.5">
+              <span class="text-2xl md:text-3xl font-black font-mono text-[var(--accent)]" id="stats-today-pending-card">10</span>
+              <span class="text-xs text-[var(--text-sub)]">词待测</span>
+            </div>
+            <div class="text-xs text-[var(--text-muted)]" id="stats-today-pending-sub">每日精选 10 词强化记忆</div>
+          </div>
+
+          <div class="bg-[var(--card-sub)] rounded-xl p-4 border border-[var(--border-sub)] space-y-1">
+            <div class="text-xs text-[var(--text-muted)] font-medium">已进入巩固阶段</div>
+            <div class="flex items-baseline gap-1.5">
+              <span class="text-2xl md:text-3xl font-black font-mono text-[var(--score-green-text)]" id="stats-consolidated-num">0</span>
+              <span class="text-xs text-[var(--text-sub)] font-mono">/ 12 词</span>
+            </div>
+            <div class="text-xs text-[var(--text-muted)]">脱离 Day 0 初始未测状态</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 【第二层】艾宾浩斯阶段进度 (时间轴式排布，紧凑清晰，拒绝 Excel 厚条) -->
+      <section class="theme-card rounded-2xl p-5 md:p-6 bg-[var(--card)] space-y-4 border border-[var(--border)] shadow-xs">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2 border-b border-[var(--border-sub)]">
+          <div>
+            <h3 class="font-bold text-sm md:text-base text-[var(--text-main)] flex items-center gap-2">
+              <span>⏳ 艾宾浩斯复习阶段进阶 (Spaced Repetition Pipeline)</span>
+            </h3>
+            <p class="text-xs text-[var(--text-muted)] mt-0.5">
+              间隔重复进阶：Day 0 初始 → Day 1 初识 → Day 3 深度 → Day 7 熟练 → Day 15 长效 → Day 30 终身掌握
+            </p>
+          </div>
+          <!-- 紧凑时间轴微览 -->
+          <div class="hidden sm:flex items-center text-xs font-mono text-[var(--text-sub)] bg-[var(--card-sub)] px-3 py-1.5 rounded-lg border border-[var(--border-sub)]">
+            <span class="font-semibold text-[var(--accent)]">Day 0</span>
+            <span class="mx-1 text-[var(--text-muted)]">→</span>
+            <span>Day 1</span>
+            <span class="mx-1 text-[var(--text-muted)]">→</span>
+            <span>Day 3</span>
+            <span class="mx-1 text-[var(--text-muted)]">→</span>
+            <span>Day 7</span>
+            <span class="mx-1 text-[var(--text-muted)]">→</span>
+            <span>Day 15</span>
+            <span class="mx-1 text-[var(--text-muted)]">→</span>
+            <span class="text-[var(--score-green-text)] font-semibold">Day 30</span>
+          </div>
+        </div>
+
+        <!-- 紧凑阶段列表 -->
+        <div class="space-y-2 text-xs md:text-sm" id="stage-distribution-container">
+          <!-- 动态渲染 6 个精巧紧凑的阶段条目 -->
+        </div>
+      </section>
+
+      <!-- 【第三层】知识网络概览 + 真实学习统计 (双栏紧凑对齐，充实有意义) -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        
+        <!-- 知识网络 -->
+        <section class="theme-card rounded-2xl p-5 bg-[var(--card)] space-y-3.5 border border-[var(--border)] shadow-xs flex flex-col justify-between">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <h3 class="font-bold text-sm md:text-base text-[var(--text-main)] flex items-center gap-2">
+                <span>🧠 结构化知识网络</span>
+              </h3>
+              <span class="text-xs font-mono bg-[var(--accent-soft)] text-[var(--accent)] font-bold px-2 py-0.5 rounded border border-[#d2e5d5]">
+                12 核心节点
+              </span>
+            </div>
+            <p class="text-xs text-[var(--text-muted)] leading-relaxed">
+              基于六级/学术真题提炼，告别孤立背单词，形成语法与语境关联网：
+            </p>
+
+            <!-- 分类节点统计胶囊 -->
+            <div class="grid grid-cols-2 gap-2 pt-1" id="stats-network-categories">
+              <!-- 动态填充 -->
+            </div>
+          </div>
+
+          <div class="pt-2">
+            <button onclick="switchTab('list')" class="w-full py-2.5 px-3 text-xs md:text-sm font-semibold rounded-xl border border-[var(--border)] bg-[var(--card)] hover:bg-[var(--accent-soft)] text-[var(--accent)] transition cursor-pointer flex items-center justify-center gap-1.5 shadow-xs">
+              <span>查看全景词网 →</span>
+            </button>
+          </div>
+        </section>
+
+        <!-- 真实学习统计 -->
+        <section class="theme-card rounded-2xl p-5 bg-[var(--card)] space-y-3.5 border border-[var(--border)] shadow-xs flex flex-col justify-between">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <h3 class="font-bold text-sm md:text-base text-[var(--text-main)] flex items-center gap-2">
+                <span>📈 真实学习统计</span>
+              </h3>
+              <span class="text-xs text-[var(--text-muted)]">真实自测数据驱动</span>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2.5 pt-1">
+              <div class="bg-[var(--card-sub)] p-3 rounded-xl border border-[var(--border-sub)] space-y-0.5">
+                <div class="text-xs text-[var(--text-muted)]">累计自测打卡</div>
+                <div class="text-lg md:text-xl font-black font-mono text-[var(--text-main)]" id="stats-total-reviews">0 次</div>
+                <div class="text-xs text-[var(--text-muted)]">主动回忆测试</div>
+              </div>
+
+              <div class="bg-[var(--card-sub)] p-3 rounded-xl border border-[var(--border-sub)] space-y-0.5">
+                <div class="text-xs text-[var(--text-muted)]">已巩固词数</div>
+                <div class="text-lg md:text-xl font-black font-mono text-[var(--score-green-text)]" id="stats-consolidated-words">0 词</div>
+                <div class="text-xs text-[var(--text-muted)]">达到阶段 1 以上</div>
+              </div>
+
+              <div class="bg-[var(--card-sub)] p-3 rounded-xl border border-[var(--border-sub)] space-y-0.5">
+                <div class="text-xs text-[var(--text-muted)]">当前最高阶段</div>
+                <div class="text-sm md:text-base font-bold text-[var(--accent)] truncate" id="stats-highest-stage">Day 0 初始</div>
+                <div class="text-xs text-[var(--text-muted)]">最深掌握层级</div>
+              </div>
+
+              <div class="bg-[var(--card-sub)] p-3 rounded-xl border border-[var(--border-sub)] space-y-0.5">
+                <div class="text-xs text-[var(--text-muted)]">记忆留存效率</div>
+                <div class="text-base md:text-lg font-bold font-mono text-[var(--text-main)]" id="stats-retention-rate">尚未测量</div>
+                <div class="text-xs text-[var(--text-muted)]" id="stats-retention-sub">首轮自测后计算</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-2 text-xs text-[var(--text-muted)] flex items-center justify-between">
+            <span>💡 提示：每次自测时选择评分，系统将真实计算抗遗忘曲线</span>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- 【第四层】数据管理与安全 (极简轻量底栏，降低视觉权重) -->
+      <footer class="pt-3 pb-1 border-t border-[var(--border)] flex flex-col sm:flex-row items-center justify-between text-xs text-[var(--text-muted)] gap-2">
+        <div class="flex items-center gap-1.5">
+          <span>🛡️ 数据管理：</span>
+          <span>复习打卡数据均存储于本地浏览器</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <button onclick="exportBackupData()" class="hover:text-[var(--accent)] hover:underline transition cursor-pointer flex items-center gap-1">
+            📥 导出备份 (.json)
+          </button>
+          <span class="opacity-40">|</span>
+          <label class="hover:text-[var(--accent)] hover:underline transition cursor-pointer flex items-center gap-1">
+            📤 恢复进度
+            <input type="file" id="import-file" onchange="importBackupData(event)" class="hidden" accept=".json">
+          </label>
+        </div>
+      </footer>
+
+    </main>
+
+  </div>
+
+  <script>
+    // ==========================================
+    // 词汇数据库（8大知识结构体系，精选实用例句与直接对照）
+    // ==========================================
+    const vocabulary = [
+      {
+        id: 1,
+        date: "2026-09-23",
+        term: "介词 + whom",
+        category: "grammar",
+        catName: "核心语法",
+        hint: "whom 本质是 who 的宾格。先找到从句动词的原生搭配，再决定前面的介词！",
+        coreMeaning: "whom 本质上是 who 的宾格形式，在定语从句中指代与人相关的间接动作对象；具体的语义关系完全由前面的介词决定（介词源自从句中动词的原生搭配）。",
+        articleUsage: {
+          note: "正式书面语结构：介词置于关系代词前，修饰先行词 the person。",
+          quote: "the person to whom I spoke",
+          translation: "我交谈的那个人（原形动词搭配 speak to sb → to whom）"
+        },
+        usageTitle: "常见介词搭配",
+        mainUsages: [
+          { num: "•", title: "with whom", desc: "和谁（伴随与协作：work / collaborate with sb）" },
+          { num: "•", title: "to whom", desc: "对谁/向谁（言语与指向：speak / write / submit to sb）" },
+          { num: "•", title: "from whom", desc: "从谁那里（来源与出处：receive / learn / borrow from sb）" },
+          { num: "•", title: "about / on whom", desc: "关于谁 / 依赖谁（talk about sb / depend on sb）" }
+        ],
+        collocations: [
+          "the person with whom I collaborate",
+          "the official to whom we submitted the petition",
+          "mentors from whom we gained insight",
+          "colleagues on whom we depend"
+        ],
+        examples: [
+          { type: "快速记忆", en: "She is the professor to whom I sent the application.", cn: "她是我寄送申请信的那位教授。" },
+          { type: "六级迁移", en: "They are valued partners with whom we collaborate on long-term clinical research.", cn: "他们是我们合作开展长期临床研究的重要伙伴。" }
+        ],
+        distinction: {
+          title: "whom vs. who",
+          desc: "正式书面语中，介词前置时通常使用 whom；介词留在句末时，现代日常英语常用 who，也可以直接省略关系代词。",
+          structures: [
+            { label: "① 正式书面语 (介词前置)", text: "the person to whom I spoke" },
+            { label: "② 现代日常英语 (介词在后)", text: "the person who I spoke to" },
+            { label: "③ 极简表达 (省略关系代词)", text: "the person I spoke to" }
+          ]
+        },
+        grammar: "先行词 (人) + [介词 + whom] + 完整从句。介词的选择严格取决于从句动词的原生搭配：speak to → to whom; depend on → on whom; collaborate with → with whom。",
+        memoryLogic: "做题实操秘诀：先找到从句动词原生搭配，再确定介词。例如：speak to sb → to whom；depend on sb → on whom；learn from sb → from whom。"
+      },
+      {
+        id: 2,
+        date: "2026-09-23",
+        term: "take on",
+        category: "phrasal",
+        catName: "动词短语",
+        hint: "在六级阅读中有 4 种典型考法，请在脑海中先回想它接不同宾语（特征/职责/员工/挑战）时的含义。",
+        coreMeaning: "将外部事物“接纳到自身”或“加载在自己身上”，演化出“呈现新特质”、“承担职责”与“迎战对手”。",
+        articleUsage: {
+          note: "抽象语境：指事物在特定环境下“展现/呈现出”某种全新特征或面貌。",
+          quote: "Solidarity takes on a complex and multifaceted character.",
+          translation: "团结呈现出复杂而多面的特征。"
+        },
+        usageTitle: "主要高频考法",
+        mainUsages: [
+          { num: "①", title: "呈现、具有", desc: "展现出某种特征、面貌、形式或象征意义（六级阅读最高频）" },
+          { num: "②", title: "承担、接下", desc: "接受艰巨的工作任务、角色职责或重大挑战" },
+          { num: "③", title: "招聘、雇用", desc: "吸纳新员工或劳动力进入组织" },
+          { num: "④", title: "迎战、较量", desc: "接受挑战，与强大对手或严峻逆境正面竞争" }
+        ],
+        collocations: [
+          "take on a new character / meaning / appearance",
+          "take on heavy responsibilities / a leadership role",
+          "take on additional staff",
+          "take on a formidable challenge / opponent"
+        ],
+        examples: [
+          { type: "快速记忆", en: "He is ready to take on new responsibilities.", cn: "他已准备好承担新的职责。" },
+          { type: "六级迁移", en: "In times of economic crisis, the debate takes on an unprecedented urgency.", cn: "在经济危机时期，这场辩论呈现出前所未有的紧迫性。" }
+        ],
+        distinction: {
+          title: "take on vs. take up",
+          desc: "take on 强调“承担任务、呈现特质、雇用人员或迎战强手”；take up 强调“开始从事某种爱好/职业”或“占据时间与空间”（如 take up photography / take up room）。"
+        },
+        grammar: "及物短语：take on + 抽象名词 (character/meaning) 或 take on + 宾语名词 (responsibility/staff/opponent)。",
+        memoryLogic: "take（拿）+ on（放在自己身上）：把外观穿在身上 → 呈现；把担子挑在肩上 → 承担；把新员工招入阵营 → 雇佣；把对手引到跟前 → 迎战。"
+      },
+      {
+        id: 3,
+        date: "2026-09-23",
+        term: "out of",
+        category: "prep",
+        catName: "介词逻辑",
+        hint: "从空间走出到心理动机与匮乏状态，回想 out of 在阅读中最常考的 4 个关键义项。",
+        coreMeaning: "源自“从……内部向外脱离”的空间意象，引申为“行为的内心动机驱动”与“资源彻底耗尽的匮乏状态”。",
+        articleUsage: {
+          note: "心理动机：行为完全发自内心的某种道义或情感信念驱动。",
+          quote: "act out of solidarity",
+          translation: "出于团结而采取行动（out of + 动机名词）"
+        },
+        usageTitle: "主要高频考法",
+        mainUsages: [
+          { num: "①", title: "出于某种动机/情感", desc: "内心动力驱使做某事（六级阅读高频题眼：出于好奇/尊重/同情）" },
+          { num: "②", title: "匮乏、耗尽不再有", desc: "彻底用完或脱离某种拥有状态（be out of stock/money）" },
+          { num: "③", title: "脱离不良处境", desc: "从困境或危险中摆脱出来（get out of trouble）" },
+          { num: "④", title: "逃避做某事", desc: "通过借口避开责任或杂务（get out of doing sth）" }
+        ],
+        collocations: [
+          "out of curiosity / sympathy / fear / respect",
+          "be out of stock / time / money / work",
+          "get out of danger / trouble",
+          "talk one's way out of doing chores"
+        ],
+        examples: [
+          { type: "快速记忆", en: "She asked the question purely out of curiosity.", cn: "她问那个问题纯粹是出于好奇。" },
+          { type: "六级迁移", en: "Rural healthcare clinics quickly ran out of essential medicines during the winter.", cn: "偏远乡村诊所在冬季很快耗尽了基本药品。" }
+        ],
+        distinction: {
+          title: "out of vs. from (表原因时)",
+          desc: "out of 专接抽象心理与动机名词（强调动机从心底向外涌出，如 act out of compassion）；from 多表外在客观来源或身体生理原因（如 suffer from exhaustion）。"
+        },
+        grammar: "动词 + out of + 抽象名词（作状语修饰动词原因）；be + out of + 名词（作表语表示处于匮乏状态）。",
+        memoryLogic: "容器隐喻：情感从心中溢出 → 动机（出于……）；东西全拿出来了没剩存货 → 耗尽（out of stock）；从陷阱中走出来了 → 摆脱困境。"
+      },
+      {
+        id: 4,
+        date: "2026-09-23",
+        term: "go against",
+        category: "phrasal",
+        catName: "动词短语",
+        hint: "核心思维模型是“方向与基准相反”，思考它在面对规章原则与面对证据判决时的两种译法。",
+        coreMeaning: "朝向与既定准则、规律或主观期望相反的方向运动，引申为“相抵触、违背”或“局势对某方不利”。",
+        articleUsage: {
+          note: "价值理念相冲突：制度安排与自由主义的核心观念背道而驰。",
+          quote: "It goes against the liberal idea...",
+          translation: "它与自由主义理念相违背/相抵触。"
+        },
+        usageTitle: "主要高频考法",
+        mainUsages: [
+          { num: "①", title: "违背、触犯", desc: "与既定的法律、准则、公德、传统相违背" },
+          { num: "②", title: "对……不利", desc: "裁判、裁决、客观证据使某人处于不利地位" },
+          { num: "③", title: "与天性/本能相悖", desc: "违反客观自然规律或个人直觉习惯" }
+        ],
+        collocations: [
+          "go against the rules / principles / law",
+          "go against one's conscience / wishes",
+          "The evidence / ruling goes against him.",
+          "go against the grain (习语: 违背常理/逆着性子)"
+        ],
+        examples: [
+          { type: "快速记忆", en: "Cheating deliberately goes against school rules.", cn: "故意作弊违背了校规。" },
+          { type: "六级迁移", en: "The latest empirical findings go against conventional economic assumptions.", cn: "最新的实证研究结果与传统经济学假设背道而驰。" }
+        ],
+        distinction: {
+          title: "go against vs. contradict vs. oppose",
+          desc: "go against 重在“行动方向与基准相撞”（违背规律或不利）；contradict 重在“陈述事实前后自相矛盾”；oppose 强调“人主观上采取态度进行反对和抵制”。"
+        },
+        grammar: "主语 (行为/政策/证据) + go against + 宾语 (原则/常理/某人)。",
+        memoryLogic: "go（走）+ against（逆向冲）：就像在强风中逆风前行，因此衍生出“违背道德原则”和“客观形势逆向压迫（对某人不利）”。"
+      },
+      {
+        id: 5,
+        date: "2026-09-23",
+        term: "in the light of",
+        category: "prep",
+        catName: "介词逻辑",
+        hint: "常用于句首作为逻辑衔接，牢记单复数避坑点与六级阅读近义替换。",
+        coreMeaning: "在某种新事实、新证据或客观现实的光照之下重新审视，引申为“鉴于、考虑到、根据……”。",
+        articleUsage: {
+          note: "逻辑引导词：根据文章前文剖析的新洞察，得出后续的判断结论。",
+          quote: "In the light of this, they regard...",
+          translation: "鉴于这一点，他们认为……"
+        },
+        usageTitle: "主要高频考法",
+        mainUsages: [
+          { num: "①", title: "鉴于、考虑到", desc: "引出调整原有决策、假设或方案的客观现实前提（常位于句首）" },
+          { num: "②", title: "根据、依照", desc: "在某特定学术视角或过往经验的参照下展开阐释" }
+        ],
+        collocations: [
+          "in the light of new evidence / recent discoveries",
+          "in the light of the current economic reality",
+          "reconsider the policy in the light of experience"
+        ],
+        examples: [
+          { type: "快速记忆", en: "In the light of new evidence, we modified our plan.", cn: "鉴于新的证据，我们调整了计划。" },
+          { type: "六级迁移", en: "In the light of demographic shifts, policymakers must restructure the pension system.", cn: "鉴于人口结构的变化，决策者必须重构养老金体系。" }
+        ],
+        distinction: {
+          title: "单复数避坑 & 近义替换",
+          desc: "⚠️ 重点避坑：light 必须为单数，绝不可误写成 in the lights of！近义学术替换包括 in view of、given、considering、taking into account。"
+        },
+        grammar: "通常位于句首或句中作原因/背景状语：In the light of + 名词/代词, 主句...（美式英语中亦可省写为 in light of）。",
+        memoryLogic: "光线隐喻：“把事物放在光线底下照一照”。在事实光芒照耀下，事物条理分明，据此做出合理判断。"
+      },
+      {
+        id: 6,
+        date: "2026-09-23",
+        term: "entail",
+        category: "academic",
+        catName: "学术核心词",
+        hint: "六级高难学术动词，为什么它与 require 和 involve 截然不同？后面通常接什么动词形式？",
+        coreMeaning: "指某事物在本质逻辑上“必然捆绑伴随”某种结果、代价或要求（不可剥离的必然属性）。",
+        articleUsage: {
+          note: "学术阐释：某种职业身份或社会契约必然意味着承担相互的义务。",
+          quote: "This job entails a lot of responsibility.",
+          translation: "这份工作必然意味着要承担重大的责任。"
+        },
+        usageTitle: "主要高频考法",
+        mainUsages: [
+          { num: "①", title: "必然伴随、使必然发生", desc: "某选择内在不可避免要付出的代价或衍生结果（六级阅读高频）" },
+          { num: "②", title: "涉及、具体包含", desc: "阐述某项复杂工程或任务涵盖的具体工作内容" }
+        ],
+        collocations: [
+          "entail considerable risk / expense",
+          "entail doing sth (必然意味着做某事)",
+          "What exactly does the proposal entail?"
+        ],
+        examples: [
+          { type: "快速记忆", en: "The decision entails considerable financial risk.", cn: "这个决定必然伴随相当大的经济风险。" },
+          { type: "六级迁移", en: "Transitioning to renewable energy entails reshaping existing industrial infrastructure.", cn: "向可再生能源转型必然意味着要重塑现有的工业基础设施。" }
+        ],
+        distinction: {
+          title: "entail vs. require vs. involve",
+          desc: "require 是外部设定的硬性门槛（The law requires a permit）；entail 是内在不可分割的必然代价（Freedom entails responsibility）；involve 是中性泛指“包含/涉及”。"
+        },
+        grammar: "及物动词：entail + 名词；entail + doing sth（后接动名词，不可接不定式 to do）。",
+        memoryLogic: "尾巴隐喻：好比动物身后的尾巴，只要你选了前面的事物，后面的代价就像尾巴一样必然甩不掉。"
+      },
+      {
+        id: 7,
+        date: "2026-09-23",
+        term: "autonomy",
+        category: "academic",
+        catName: "学术核心词",
+        hint: "词根 auto- 与 -nom 是什么意思？它与单纯的经济独立 (independence) 有何质的区别？",
+        coreMeaning: "自我立法与自主决策的能力，即根据自我意志主导生活或机构事务，不受外界专断摆布的权利。",
+        articleUsage: {
+          note: "社会伦理探讨：在群体协作与社会分工中，如何捍卫个体的自主决断权。",
+          quote: "preserve individuality and autonomy",
+          translation: "维护独立个性与个体自主权。"
+        },
+        usageTitle: "主要高频考法",
+        mainUsages: [
+          { num: "①", title: "个体自主权/自主性", desc: "心理学、社会学与医学伦理中核心词：个人自我决定的自由" },
+          { num: "②", title: "机构/学术自治", desc: "大学、专业协会或地区在行政管理上的独立自治地位" }
+        ],
+        collocations: [
+          "individual / personal autonomy",
+          "grant sb greater autonomy",
+          "academic autonomy (学术自治)",
+          "autonomous driving (衍生形容词: 自动驾驶)"
+        ],
+        examples: [
+          { type: "快速记忆", en: "Teachers need autonomy in their classrooms.", cn: "教师在课堂上需要教学自主权。" },
+          { type: "六级迁移", en: "Fostering patient autonomy is fundamental to modern biomedical ethics.", cn: "培育患者的自主决定权是现代生物医学伦理的基石。" }
+        ],
+        distinction: {
+          title: "autonomy vs. independence",
+          desc: "independence（独立）侧重客观生存不依附他人（如经济独立）；autonomy（自主）侧重“决策与规则的掌控权”。即便身处组织协作中，只要能自己拍板决策，依然拥有 autonomy。"
+        },
+        grammar: "不可数名词。衍生形容词 autonomous（自主的、自治的，如 autonomous systems）。",
+        memoryLogic: "词根溯源：auto-（自我）+ -nom（法规、法则，源于希腊语 nomos）。“自己给自己立法规”，引申为自我主宰、自律与自主决策。"
+      },
+      {
+        id: 8,
+        date: "2026-09-23",
+        term: "underlying",
+        category: "academic",
+        catName: "学术核心词",
+        hint: "阅读题干高频词。它与 surface（表面）构成强烈对照，多用来修饰哪些名词？",
+        coreMeaning: "卧于表面之下支撑整套系统运转的基石要素，引申为“根本的、潜在的、底层的”。",
+        articleUsage: {
+          note: "深层剖析：不要只看表面争执，而要审视制度底层所依托的基本假设。",
+          quote: "We need to understand the underlying causes.",
+          translation: "我们需要理解背后的深层根本原因。"
+        },
+        usageTitle: "主要高频考法",
+        mainUsages: [
+          { num: "①", title: "根本的、潜在的", desc: "事态恶化、经济周期或复杂现象背后的终极驱动因（六级阅读题眼）" },
+          { num: "②", title: "底层假设/基本原理", desc: "理论推演或研究框架所依赖的未言明前提" },
+          { num: "③", title: "基础性的（医学）", desc: "人体原有的慢性基础病" }
+        ],
+        collocations: [
+          "underlying causes / factors / reasons",
+          "underlying assumptions / principles",
+          "underlying health condition (基础疾病)",
+          "the underlying logic of the market"
+        ],
+        examples: [
+          { type: "快速记忆", en: "Stress was the underlying cause of his fatigue.", cn: "压力是他疲惫的深层根源。" },
+          { type: "六级迁移", en: "The author critiques the underlying assumptions governing market deregulation.", cn: "作者批判了主导市场去监管化的底层潜在假设。" }
+        ],
+        distinction: {
+          title: "underlying vs. surface",
+          desc: "阅读典型对照对：surface 是浅表、转瞬即逝的表象（如 surface symptoms 表面症状）；underlying 是深埋地下、决定本质的根源（如 underlying mechanism 底层机制）。"
+        },
+        grammar: "主要用作前置定语修饰名词（underlying + n.）。动词原型为 underlie（以……为基石/构成……的基础）。",
+        memoryLogic: "地基隐喻：under（在……之下）+ lying（平躺着）。地基埋在泥土下看不见，但整座大厦都压在上面。表面再喧嚣，底下的根本原因才是关键。"
+      },
+      {
+        id: 9,
+        date: "2026-09-23",
+        term: "validate",
+        category: "academic",
+        catName: "学术核心词",
+        hint: "从实证科学、手续验票到现代心理共情，它与 verify（核实真伪）的核心分界线在哪里？",
+        coreMeaning: "使某事物在实证数据、法律程序或心理情感上“被证实有效、获得正当性与认同”。",
+        articleUsage: {
+          note: "现代人际与心理语境：共情并认可弱势群体在抗争中的情绪与诉求具备正当性。",
+          quote: "You don't have to agree with someone to validate their feelings.",
+          translation: "你不必赞同某人的所有观点，也可以认可他们的感受是合情合理的。"
+        },
+        usageTitle: "主要高频考法",
+        mainUsages: [
+          { num: "①", title: "证实……的有效性", desc: "通过严谨科学实验或实证数据证明假说/理论成立" },
+          { num: "②", title: "认可……的正当合理", desc: "承认他人的情绪、努力或主观体验是合情合理的（现代阅读热点）" },
+          { num: "③", title: "使具备法律效力/验票", desc: "履行法定认证手续或打卡使凭证生效" }
+        ],
+        collocations: [
+          "validate a hypothesis / clinical results",
+          "validate someone's feelings / emotions / pain",
+          "validate a passport / parking ticket / contract"
+        ],
+        examples: [
+          { type: "快速记忆", en: "The clinical experiments validated his original hypothesis.", cn: "临床实验证实了他最初的假说。" },
+          { type: "六级迁移", en: "Effective therapeutic dialogue begins with validating the patient's emotional distress.", cn: "有效的心理咨询对话始于认可患者的情感痛苦是合情合理的。" }
+        ],
+        distinction: {
+          title: "validate vs. verify",
+          desc: "verify 强调核验客观事实真伪（Is it true? 如查验身份证、核实真假）；validate 强调确认法律效力、学术有效性或价值合理性（Is it valid/legitimate? 理论是否成立、感受是否被尊重）。"
+        },
+        grammar: "及物动词：validate + 抽象名词 (theory/feelings/claims)；衍生名词 validation，形容词 valid（有效且站得住脚的）。",
+        memoryLogic: "词根 val- 意为“有力量、有价值”（如 value, evaluate）。validate 就是“赋予其价值与效力”，让其在逻辑或社会评价中站稳脚跟。"
+      },
+      {
+        id: 10,
+        date: "2026-09-23",
+        term: "division of labor",
+        category: "prep",
+        catName: "固定搭配",
+        hint: "源自亚当·斯密经典经济学理论，指代什么生产协作与社会组织模式？",
+        coreMeaning: "劳动分工与职能专门化，即把复杂生产流程拆解为各细分环节、由不同专业人员协作完成的组织模式。",
+        articleUsage: {
+          note: "社会学与政治经济学语境：阐述文明进步与相互依存赖以维系的制度基石。",
+          quote: "reflected in the social division of labor",
+          translation: "在社会劳动分工中得到充分体现。"
+        },
+        usageTitle: "主要高频考法",
+        mainUsages: [
+          { num: "①", title: "（经济/社会学）劳动分工", desc: "源自亚当·斯密专业化提高生产率的经典社科理论" },
+          { num: "②", title: "团队/家庭职责划分", desc: "在微观协作组织中明确各自的工作分工与分界" }
+        ],
+        collocations: [
+          "international division of labor (国际分工)",
+          "gender division of labor (性别分工)",
+          "fair division of household labor (家务分工)",
+          "division of responsibilities (职责划分)"
+        ],
+        examples: [
+          { type: "快速记忆", en: "A clear division of labor keeps the team efficient.", cn: "明确的分工能让团队保持高效。" },
+          { type: "六级迁移", en: "The international division of labor allows economies to specialize according to comparative advantage.", cn: "国际分工使各国经济能够依据比较优势开展专业化生产。" }
+        ],
+        distinction: {
+          title: "division of labor vs. distribution of wealth",
+          desc: "division of labor 指“生产环节中如何分工协作”（组织生产端）；distribution of wealth 指“创造的财富如何在社会各群体间分配”（利益分配端）。"
+        },
+        grammar: "名词短语。美式拼写为 division of labor，英式拼写为 division of labour。常作介词宾语或主谓语。",
+        memoryLogic: "协作加乘：divide（切分）+ labor（劳动）。把复杂流程切分成专人负责的工序，形成几何倍数的协作产出。"
+      },
+      {
+        id: 11,
+        date: "2026-09-23",
+        term: "be evident in",
+        category: "grammar",
+        catName: "学术搭配",
+        hint: "学术论文中用于引出佐证现象的高频搭配，它的近义词替换阶梯有哪些？",
+        coreMeaning: "在某具体事物、行为或数据中“清晰而显而易见地外化显露出来”。",
+        articleUsage: {
+          note: "学术例证逻辑：用可观测的具体组织形态来印证上文提出的抽象原则。",
+          quote: "This is evident in how we have organized ourselves...",
+          translation: "这一点在我们组织自身的模式中可以明显看出来。"
+        },
+        usageTitle: "主要高频考法",
+        mainUsages: [
+          { num: "①", title: "在……中明显显现/体现", desc: "学术论述中用于引出佐证论点的客观证据或可观察现象" }
+        ],
+        collocations: [
+          "be clearly / readily evident in ...",
+          "be evident in the survey results / empirical data",
+          "The improvement is evident in his academic performance."
+        ],
+        examples: [
+          { type: "快速记忆", en: "His progress is evident in his test scores.", cn: "他的进步在他的测验成绩中显而易见。" },
+          { type: "六级迁移", en: "The profound impact of global warming is increasingly evident in extreme weather patterns.", cn: "全球变暖的深远影响在极端天气模式中正变得愈发显著。" }
+        ],
+        distinction: {
+          title: "近义学术替换阶梯",
+          desc: "be evident in（显而易见地体现）；be apparent in（清晰显现）；be manifest in（庄严显著地彰显，学术色彩最浓）；be reflected in（客观折射反映）。"
+        },
+        grammar: "系表搭配：主语 (抽象规律/影响/态度) + be evident in + 宾语 (数据/作品/行为)。evident 作为表语形容词，介词固定搭配 in。",
+        memoryLogic: "词根 vid- / vis-（看，如 evident, invisible）。前缀 e-（向外）+ vid（看）= “从里面透出来让大家一眼就能看清”。"
+      },
+      {
+        id: 12,
+        date: "2026-09-23",
+        term: "act on",
+        category: "phrasal",
+        catName: "动词短语",
+        hint: "双向考法：接“建议/呼声”与接“神经系统/身体器官”时分别是什么意思？",
+        coreMeaning: "以某种信息或指令为基石“付诸执行采取行动”，或力量直接“施加并作用于”目标客体。",
+        articleUsage: {
+          note: "响应号召：不仅停留在倾听层面，更根据弱势群体的呼声采取切实的救助举措。",
+          quote: "listens to and acts on the cries of the most vulnerable",
+          translation: "倾听最弱势群体的呼声，并据此切实采取行动。"
+        },
+        usageTitle: "主要高频考法",
+        mainUsages: [
+          { num: "①", title: "根据……采取行动、遵照执行", desc: "依据他人建议、情报、指令或呼吁展开实际行动（六级阅读最核心考点）" },
+          { num: "②", title: "对……产生生理/物理作用", desc: "药物、化学物质、酒精对人体器官或神经中枢施加物理影响" },
+          { num: "③", title: "凭……冲动行事", desc: "act on impulse（心理学常考短语）" }
+        ],
+        collocations: [
+          "act on advice / instructions / reliable information",
+          "act on a tip-off (根据线报破案)",
+          "act on impulse (凭一时冲动行事)",
+          "The compound acts on the central nervous system."
+        ],
+        examples: [
+          { type: "快速记忆", en: "The committee acted on his recommendation.", cn: "委员会根据他的建议采取了行动。" },
+          { type: "六级迁移", en: "Regulatory agencies must promptly act on credible warnings of financial fraud.", cn: "监管机构必须对金融欺诈的可靠预警迅速采取行动。" }
+        ],
+        distinction: {
+          title: "act on vs. react to",
+          desc: "act on 强调“以信息为依据主动推进落实”（有目的的行动）；react to 强调“受外部刺激后的本能心理或生理应激反应”（被动的条件反射）。"
+        },
+        grammar: "及物短语：act on + 建议/诉求/情报（依照行事）；主语 (化学物质/外力) + act on + 身体器官（施加作用）。",
+        memoryLogic: "基底隐喻：act（行动）+ on（踩在……基础上 / 施加在……表面）：踩在建议的基础上去干活（根据行动）；力量压在身体组织上（起作用）。"
+      }
+    ];
+
+
+    // ==========================================
+    // 🔊 原生真人语音朗读功能 (Web Speech API 适配 iOS/iPad Safari & PWA)
+    // ==========================================
+    function speakText(text, e) {
+      if (e) e.stopPropagation();
+      if (!('speechSynthesis' in window)) {
+        alert("当前浏览器或系统不支持原生语音朗读功能。");
+        return;
+      }
+      window.speechSynthesis.cancel();
+      if (window.speechSynthesis.paused) {
+        window.speechSynthesis.resume();
+      }
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = 'en-US';
+      u.rate = 0.88;
+
+      // 自动匹配系统英语音色 (兼容 iOS Siri 英文发音)
+      const voices = window.speechSynthesis.getVoices();
+      if (voices && voices.length > 0) {
+        const enVoice = voices.find(v => v.lang.startsWith('en-US') || v.lang.startsWith('en'));
+        if (enVoice) u.voice = enVoice;
+      }
+
+      window.speechSynthesis.speak(u);
+    }
+
+    function speakCurrent(e) {
+      const item = dailyReviewQueue[currentEbIndex];
+      if (item) speakText(item.term, e);
+    }
+
+    function speakQuizCurrent(e) {
+      const item = vocabulary[quizIndex];
+      if (item) speakText(item.term, e);
+    }
+
+
+    // ==========================================
+    // 艾宾浩斯复习算法 (每天10词，数据持久化)
+    // ==========================================
+    const DAILY_LIMIT = 10;
+    const STORAGE_KEY = "antigravity_ebbinghaus_progress_v3";
+
+    function loadUserData() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) return JSON.parse(raw);
+      } catch (e) {}
+
+      const initial = {};
+      vocabulary.forEach((item) => {
+        initial[item.id] = {
+          stage: 0,
+          lastReviewed: null,
+          reviewedToday: false,
+          totalReviews: 0
+        };
+      });
+      return initial;
+    }
+
+    function saveUserData(data) {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      } catch (e) {}
+    }
+
+    let userProgress = loadUserData();
+    let dailyReviewQueue = [];
+    let currentEbIndex = 0;
+    let isEbAnswerRevealed = false;
+
+    function initDailyQueue() {
+      const unreviewed = vocabulary.filter(v => !userProgress[v.id] || !userProgress[v.id].reviewedToday);
+      unreviewed.sort((a, b) => {
+        const stageA = (userProgress[a.id] && userProgress[a.id].stage) || 0;
+        const stageB = (userProgress[b.id] && userProgress[b.id].stage) || 0;
+        return stageA - stageB;
+      });
+
+      dailyReviewQueue = unreviewed.slice(0, DAILY_LIMIT);
+      currentEbIndex = 0;
+      updateDailyProgressStats();
+      renderEbCard();
+    }
+
+    function updateDailyProgressStats() {
+      const reviewedCount = vocabulary.filter(v => userProgress[v.id] && userProgress[v.id].reviewedToday).length;
+      const totalInQueue = Math.min(vocabulary.length, DAILY_LIMIT);
+      const progressPercent = Math.round((reviewedCount / totalInQueue) * 100);
+      
+      const countEl = document.getElementById("stat-reviewed-count");
+      if (countEl) countEl.innerText = `${reviewedCount} / ${totalInQueue} 已完成`;
+
+      const barEl = document.getElementById("progress-bar");
+      if (barEl) barEl.style.width = `${Math.min(100, progressPercent)}%`;
+
+      const remaining = totalInQueue - reviewedCount;
+      const statusEl = document.getElementById("stat-queue-status");
+      if (statusEl) statusEl.innerText = remaining > 0 ? `待测: ${remaining} 词` : `今日完成 🎉`;
+
+      const masteredCount = vocabulary.filter(v => userProgress[v.id] && userProgress[v.id].stage >= 3).length;
+      const masteryRate = Math.round((masteredCount / vocabulary.length) * 100);
+      
+      const masteryEl = document.getElementById("stat-mastery-rate");
+      if (masteryEl) masteryEl.innerText = `熟练度 ${masteryRate}%`;
+
+      const headerMastered = document.getElementById("header-mastered-badge");
+      if (headerMastered) headerMastered.innerText = `已掌握: ${masteredCount}`;
+    }
+
+    function renderEbCard() {
+      const front = document.getElementById("eb-card-front");
+      const back = document.getElementById("eb-card-back");
+
+      if (dailyReviewQueue.length === 0 || currentEbIndex >= dailyReviewQueue.length) {
+        front.innerHTML = `
+          <div class="py-8 space-y-3.5 text-center my-auto">
+            <div class="text-5xl">🎉</div>
+            <h3 class="text-2xl font-bold text-[var(--accent)] font-mono">今日 10 词自测任务圆满达成！</h3>
+            <p class="text-sm text-[var(--text-sub)] max-w-lg mx-auto leading-relaxed">
+              记忆曲线已全部推进入下个复习周期。保持节奏，明天系统将自动为你排程最新复习队列！
+            </p>
+            <div class="pt-3 flex items-center justify-center gap-3.5">
+              <button onclick="resetDailyReview()" class="text-xs md:text-sm px-4 py-2 rounded-lg border border-[var(--border)] bg-[var(--card)] hover:bg-[var(--accent-soft)] text-[var(--text-main)] transition cursor-pointer font-medium">
+                重新自测今天
+              </button>
+              <button onclick="switchTab('list')" class="text-xs md:text-sm px-4 py-2 rounded-lg text-white font-bold transition cursor-pointer shadow-xs" style="background-color: var(--accent);">
+                查看全景词网 →
+              </button>
+            </div>
+          </div>
+        `;
+        back.classList.add("hidden");
+        front.classList.remove("hidden");
+        return;
+      }
+
+      const item = dailyReviewQueue[currentEbIndex];
+      const state = userProgress[item.id] || { stage: 0 };
+
+      const stagesMap = [
+        "Day 0 初始阶段",
+        "Day 1 初识巩固",
+        "Day 3 强化加深",
+        "Day 7 熟练直觉",
+        "Day 15 自动化反射",
+        "Day 30 终身掌握"
+      ];
+
+      document.getElementById("eb-current-card-idx").innerText = `正在复习 ${currentEbIndex + 1} / ${dailyReviewQueue.length}`;
+      document.getElementById("eb-card-stage").innerText = stagesMap[state.stage] || "熟练掌握";
+      document.getElementById("eb-card-cat").innerText = item.catName;
+      document.getElementById("eb-card-term").innerText = item.term;
+      document.getElementById("eb-back-term").innerText = item.term;
+
+      document.getElementById("eb-card-hint").innerHTML = `
+        <span class="font-bold text-[var(--accent)]">💡 核心引导：</span>${item.hint}
+      `;
+
+      isEbAnswerRevealed = false;
+      front.classList.remove("hidden");
+      back.classList.add("hidden");
+
+      // 1. 核心含义 (默认展示)
+      document.getElementById("eb-back-core").innerHTML = `
+        <span class="font-bold text-[var(--accent)]">【核心含义】</span>${item.coreMeaning}
+      `;
+
+      // 2. 本文真题原句 (默认展示)
+      document.getElementById("eb-back-quote").innerHTML = `
+        <div class="flex items-center justify-between text-xs text-[var(--accent)] font-semibold mb-0.5">
+          <span>📖 本文真题原句</span>
+          <button onclick="speakText('${item.articleUsage.quote.replace(/'/g, "\\'")}', event)" class="hover:underline text-xs opacity-75 cursor-pointer">🔊</button>
+        </div>
+        <div class="text-sm font-serif italic text-[var(--text-main)] font-medium">"${item.articleUsage.quote}"</div>
+        <div class="text-xs md:text-sm text-[var(--text-sub)]">↳ 译文：${item.articleUsage.translation}</div>
+      `;
+
+      // 3. 主要考法 / 搭配 (默认展示)
+      document.getElementById("eb-back-meanings").innerHTML = `
+        <div class="font-bold text-xs md:text-sm text-[var(--text-main)] mb-1">${item.usageTitle || "主要高频用法"}：</div>
+        <div class="space-y-1.5 pl-1">
+          ${item.mainUsages.map(u => `
+            <div class="flex items-start gap-2 text-xs md:text-sm leading-snug">
+              <span class="font-bold text-[var(--accent)] flex-shrink-0">${u.num}</span>
+              <span><b class="text-[var(--text-main)]">${u.title}</b>：${u.desc}</span>
+            </div>
+          `).join("")}
+        </div>
+      `;
+
+      // 4. 常见搭配 (默认展示)
+      document.getElementById("eb-back-collocations").innerHTML = `
+        <div class="font-bold text-xs md:text-sm text-[var(--accent)]">🔗 常见搭配：</div>
+        <div class="flex flex-wrap gap-2 mt-1">
+          ${item.collocations.map(c => `
+            <span class="text-xs font-mono px-2.5 py-1 rounded bg-[var(--badge-bg)] text-[var(--text-body)] border border-[var(--border-sub)] font-medium">
+              ${c}
+            </span>
+          `).join("")}
+        </div>
+      `;
+
+      // 5. 精选例句 (深入解析折叠区内)
+      document.getElementById("eb-back-examples").innerHTML = `
+        <div class="font-bold text-xs md:text-sm text-[var(--text-main)] mb-1">📝 精选阅读例句：</div>
+        <div class="space-y-2">
+          ${item.examples.map(ex => `
+            <div class="text-xs md:text-sm bg-[var(--card-sub)] p-3 rounded-xl border border-[var(--border-sub)] space-y-1 group">
+              <div class="flex items-center justify-between text-xs text-[var(--accent)] font-semibold mb-0.5">
+                <span>${ex.type === "快速记忆" ? "⚡ 快速记忆例句" : "🎯 六级真题迁移例句"}</span>
+              </div>
+              <div class="font-mono text-[var(--text-main)] flex items-center justify-between text-xs md:text-sm">
+                <span>• ${ex.en}</span>
+                <button onclick="speakText('${ex.en.replace(/'/g, "\\'")}', event)" class="text-xs text-[var(--text-muted)] hover:text-[var(--accent)] opacity-60 group-hover:opacity-100 cursor-pointer">🔊</button>
+              </div>
+              <div class="text-[var(--text-sub)] pl-2 text-xs">↳ ${ex.cn}</div>
+            </div>
+          `).join("")}
+        </div>
+      `;
+
+      // 6. 易混辨析 (深入解析折叠区内)
+      const distEl = document.getElementById("eb-back-distinction");
+      if (item.distinction) {
+        let structsHtml = "";
+        if (item.distinction.structures) {
+          structsHtml = `
+            <div class="grid grid-cols-1 gap-1.5 text-xs font-mono bg-[var(--card)] p-2.5 rounded-lg border border-[var(--border-sub)] mt-1.5">
+              ${item.distinction.structures.map(s => `
+                <div class="text-[var(--text-main)] flex items-baseline justify-between">
+                  <span>${s.label}: <b>${s.text}</b></span>
+                  <button onclick="speakText('${s.text.replace(/'/g, "\\'")}', event)" class="text-xs text-[var(--text-muted)] hover:text-[var(--accent)] cursor-pointer">🔊</button>
+                </div>
+              `).join("")}
+            </div>
+          `;
+        }
+
+        distEl.innerHTML = `
+          <div class="p-3.5 rounded-xl bg-[#f7faf8] border border-[var(--border)] text-xs md:text-sm space-y-1.5">
+            <div class="font-bold text-[var(--accent)] flex items-center gap-1">
+              <span>⚖️ 易混辨析：${item.distinction.title}</span>
+            </div>
+            <div class="text-[var(--text-body)] text-xs leading-relaxed">${item.distinction.desc}</div>
+            ${structsHtml}
+          </div>
+        `;
+        distEl.classList.remove("hidden");
+      } else {
+        distEl.classList.add("hidden");
+      }
+
+      // 7. 语法结构 (深入解析折叠区内)
+      const gramEl = document.getElementById("eb-back-grammar");
+      if (item.grammar) {
+        gramEl.innerHTML = `
+          <div class="text-xs text-[var(--text-sub)] bg-[#f4f7f4] p-2.5 rounded-lg border border-[var(--border-sub)] leading-relaxed">
+            <span class="font-bold text-[var(--accent)]">📐 语法要点：</span>${item.grammar}
+          </div>
+        `;
+        gramEl.classList.remove("hidden");
+      } else {
+        gramEl.classList.add("hidden");
+      }
+
+      // 8. 记忆逻辑 (深入解析折叠区内)
+      const logicEl = document.getElementById("eb-back-logic");
+      if (item.memoryLogic) {
+        logicEl.innerHTML = `
+          <span class="font-semibold not-italic text-[var(--accent)]">🧠 做题实操秘诀：</span>${item.memoryLogic}
+        `;
+        logicEl.classList.remove("hidden");
+      } else {
+        logicEl.classList.add("hidden");
+      }
+    }
+
+    function toggleEbAnswer() {
+      isEbAnswerRevealed = !isEbAnswerRevealed;
+      const front = document.getElementById("eb-card-front");
+      const back = document.getElementById("eb-card-back");
+
+      if (isEbAnswerRevealed) {
+        front.classList.add("hidden");
+        back.classList.remove("hidden");
+      } else {
+        front.classList.remove("hidden");
+        back.classList.add("hidden");
+      }
+    }
+
+    function handleReviewScore(score) {
+      if (dailyReviewQueue.length === 0 || currentEbIndex >= dailyReviewQueue.length) return;
+      const item = dailyReviewQueue[currentEbIndex];
+      if (!userProgress[item.id]) {
+        userProgress[item.id] = { stage: 0, reviewedToday: false, totalReviews: 0 };
+      }
+
+      const currentStage = userProgress[item.id].stage || 0;
+
+      if (score === 1) {
+        userProgress[item.id].stage = 0;
+      } else if (score === 2) {
+        userProgress[item.id].stage = Math.max(1, currentStage);
+      } else if (score === 3) {
+        userProgress[item.id].stage = Math.min(5, currentStage + 1);
+      }
+
+      userProgress[item.id].reviewedToday = true;
+      userProgress[item.id].lastScore = score;
+      userProgress[item.id].totalReviews = (userProgress[item.id].totalReviews || 0) + 1;
+      saveUserData(userProgress);
+
+      if (currentEbIndex < dailyReviewQueue.length - 1) {
+        currentEbIndex++;
+        renderEbCard();
+      } else {
+        initDailyQueue();
+      }
+      updateDailyProgressStats();
+    }
+
+    function skipCard() {
+      if (currentEbIndex < dailyReviewQueue.length - 1) {
+        currentEbIndex++;
+        renderEbCard();
+      } else {
+        alert("已经是队列最后一张卡片啦！");
+      }
+    }
+
+    function resetDailyReview() {
+      if (confirm("确定重置今天的复习打卡进度吗？")) {
+        vocabulary.forEach(v => {
+          if (userProgress[v.id]) userProgress[v.id].reviewedToday = false;
+        });
+        saveUserData(userProgress);
+        initDailyQueue();
+      }
+    }
+
+
+    // ==========================================
+    // 视图 2：自由抽测卡片 (Quiz)
+    // ==========================================
+    let quizIndex = 0;
+    let isQuizFlipped = false;
+
+    function loadQuizCard() {
+      const item = vocabulary[quizIndex];
+      if (!item) return;
+
+      document.getElementById("quiz-progress").innerText = `卡片 ${quizIndex + 1} / ${vocabulary.length}`;
+      document.getElementById("quiz-cat-badge").innerText = item.catName;
+      document.getElementById("card-term").innerText = item.term;
+
+      isQuizFlipped = false;
+      document.getElementById("card-front").classList.remove("hidden");
+      document.getElementById("card-back").classList.add("hidden");
+
+      document.getElementById("card-core").innerHTML = `
+        <span class="font-bold">【核心含义】</span>${item.coreMeaning}
+      `;
+
+      document.getElementById("card-quote").innerHTML = `
+        <div class="flex items-center justify-between text-xs md:text-sm text-[var(--accent)] font-semibold mb-0.5">
+          <span>📖 本文真题语境</span>
+          <button onclick="speakText('${item.articleUsage.quote.replace(/'/g, "\\'")}', event)" class="hover:underline text-xs opacity-75 cursor-pointer">🔊</button>
+        </div>
+        <div class="text-sm font-serif italic text-[var(--text-main)] font-medium">"${item.articleUsage.quote}"</div>
+        <div class="text-xs text-[var(--text-sub)]">↳ 译文：${item.articleUsage.translation}</div>
+      `;
+
+      document.getElementById("card-meanings").innerHTML = `
+        <div class="font-bold text-xs md:text-sm text-[var(--text-main)]">${item.usageTitle || "主要考法"}：</div>
+        ${item.mainUsages.map(u => `
+          <div class="text-xs md:text-sm leading-snug pl-1">
+            <span class="font-bold text-[var(--accent)]">${u.num}</span> <b class="text-[var(--text-main)]">${u.title}</b>：${u.desc}
+          </div>
+        `).join("")}
+      `;
+
+      document.getElementById("card-example").innerHTML = `
+        <div class="font-bold text-xs md:text-sm text-[var(--text-main)]">精选例句：</div>
+        ${item.examples.slice(0, 1).map(ex => `
+          <div class="font-mono text-[var(--text-main)] text-xs md:text-sm">${ex.en}</div>
+          <div class="text-[var(--text-muted)] text-xs pl-1">↳ ${ex.cn}</div>
+        `).join("")}
+      `;
+    }
+
+    function flipCard() {
+      isQuizFlipped = !isQuizFlipped;
+      if (isQuizFlipped) {
+        document.getElementById("card-front").classList.add("hidden");
+        document.getElementById("card-back").classList.remove("hidden");
+      } else {
+        document.getElementById("card-front").classList.remove("hidden");
+        document.getElementById("card-back").classList.add("hidden");
+      }
+    }
+
+    function nextCard() {
+      quizIndex = (quizIndex + 1) % vocabulary.length;
+      loadQuizCard();
+    }
+
+    function prevCard() {
+      quizIndex = (quizIndex - 1 + vocabulary.length) % vocabulary.length;
+      loadQuizCard();
+    }
+
+
+    // ==========================================
+    // 视图 3：词网全景渲染 (统一双列行等高网格 + 内部卡片严格对齐)
+    // ==========================================
+    let currentCategory = "all";
+    let searchQuery = "";
+
+    function createCardElement(item) {
+      const card = document.createElement("div");
+      card.className = "theme-card rounded-2xl p-5 md:p-6 bg-[var(--card)] border border-[var(--border)] shadow-xs card-layout";
+
+      const usagesHtml = item.mainUsages.map(u => `
+        <div class="flex items-start gap-2 text-xs md:text-sm leading-snug">
+          <span class="font-bold text-[var(--accent)] flex-shrink-0">${u.num}</span>
+          <div>
+            <span class="font-semibold text-[var(--text-main)]">${u.title}</span>：
+            <span class="text-[var(--text-sub)]">${u.desc}</span>
+          </div>
+        </div>
+      `).join("");
+
+      const collocationsHtml = item.collocations.map(c => `
+        <span class="text-xs font-mono px-2.5 py-0.5 rounded bg-[var(--badge-bg)] text-[var(--text-body)] border border-[var(--border-sub)] font-medium">
+          ${c}
+        </span>
+      `).join("");
+
+      const examplesHtml = item.examples.map(ex => `
+        <div class="text-xs md:text-sm bg-[var(--card-sub)] p-3 rounded-xl border border-[var(--border-sub)] space-y-1 group">
+          <div class="flex items-center justify-between text-xs text-[var(--accent)] font-semibold mb-0.5">
+            <span>${ex.type === "快速记忆" ? "⚡ 快速记忆例句" : "🎯 六级真题迁移例句"}</span>
+          </div>
+          <div class="font-mono text-[var(--text-main)] flex items-center justify-between text-xs md:text-sm">
+            <span>• ${ex.en}</span>
+            <button onclick="speakText('${ex.en.replace(/'/g, "\\'")}', event)" class="text-xs text-[var(--text-muted)] hover:text-[var(--accent)] opacity-60 group-hover:opacity-100 cursor-pointer">🔊</button>
+          </div>
+          <div class="text-[var(--text-sub)] pl-2 text-xs">↳ ${ex.cn}</div>
+        </div>
+      `).join("");
+
+      let distinctionHtml = "";
+      if (item.distinction) {
+        let structs = "";
+        if (item.distinction.structures) {
+          structs = `
+            <div class="grid grid-cols-1 gap-1.5 text-xs font-mono bg-[var(--card)] p-2.5 rounded-lg border border-[var(--border-sub)] mt-2">
+              ${item.distinction.structures.map(s => `
+                <div class="text-[var(--text-main)] flex items-baseline justify-between">
+                  <span>${s.label}: <b>${s.text}</b></span>
+                  <button onclick="speakText('${s.text.replace(/'/g, "\\'")}', event)" class="text-xs text-[var(--text-muted)] hover:text-[var(--accent)] cursor-pointer">🔊</button>
+                </div>
+              `).join("")}
+            </div>
+          `;
+        }
+        distinctionHtml = `
+          <div class="p-3.5 rounded-xl bg-[#f7faf8] border border-[var(--border)] text-xs md:text-sm space-y-1.5">
+            <div class="font-bold text-[var(--accent)] flex items-center gap-1">
+              <span>⚖️ 易混辨析：${item.distinction.title}</span>
+            </div>
+            <div class="text-[var(--text-body)] text-xs leading-relaxed">${item.distinction.desc}</div>
+            ${structs}
+          </div>
+        `;
+      }
+
+      card.innerHTML = `
+        <!-- 正文主体 (card-body 弹性伸展，支撑等高网格与底部贴齐) -->
+        <div class="card-body space-y-3 mb-3">
+          <!-- 默认展示区域 1：头部与核心含义 -->
+          <div>
+            <div class="flex items-center justify-between text-xs mb-1">
+              <span class="font-semibold text-[var(--accent)] tracking-wider uppercase">${item.catName}</span>
+              <span class="text-[var(--text-muted)] font-mono text-xs">${item.date}</span>
+            </div>
+            
+            <div class="flex items-baseline justify-between gap-2.5">
+              <div class="flex items-center gap-2.5 flex-wrap">
+                <h3 class="text-2xl md:text-3xl font-bold font-mono tracking-tight text-[var(--text-main)] leading-tight">
+                  ${item.term}
+                </h3>
+                <button onclick="speakText('${item.term.replace(/'/g, "\\'")}', event)" class="text-xs text-[var(--text-muted)] hover:text-[var(--accent)] transition p-1 cursor-pointer" title="朗读发音">🔊</button>
+              </div>
+            </div>
+
+            <div class="text-xs md:text-sm text-[var(--text-body)] font-medium mt-2 leading-relaxed bg-[#f4f7f4] px-3 py-2 rounded-lg border border-[var(--border-sub)]">
+              <span class="text-[var(--accent)] font-bold">【核心含义】</span>${item.coreMeaning}
+            </div>
+          </div>
+
+          <!-- 默认展示区域 2：本文真题原句 -->
+          <div class="p-3 rounded-xl bg-[var(--card)] border-l-3 border-[var(--accent)] space-y-1 border border-[var(--border-sub)]">
+            <div class="flex items-center justify-between text-xs text-[var(--accent)] font-semibold">
+              <span>📖 本文真题原句</span>
+              <button onclick="speakText('${item.articleUsage.quote.replace(/'/g, "\\'")}', event)" class="hover:underline text-xs opacity-75 cursor-pointer">🔊</button>
+            </div>
+            <div class="text-xs md:text-sm font-serif italic text-[var(--text-main)] font-medium">
+              "${item.articleUsage.quote}"
+            </div>
+            <div class="text-xs text-[var(--text-sub)]">
+              ↳ 译文：${item.articleUsage.translation}
+            </div>
+          </div>
+
+          <!-- 默认展示区域 3：主要考法 / 介词搭配 -->
+          <div class="space-y-1 text-xs md:text-sm">
+            <div class="text-xs md:text-sm font-bold text-[var(--text-main)] flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-[var(--accent)]"></span>${item.usageTitle || "主要高频用法"}
+            </div>
+            <div class="space-y-1.5 pl-1">
+              ${usagesHtml}
+            </div>
+          </div>
+
+          <!-- 默认展示区域 4：常见搭配 -->
+          <div class="pt-2.5 border-t border-[var(--border-sub)] space-y-1.5 text-xs md:text-sm">
+            <div class="text-xs md:text-sm font-bold text-[var(--accent)]">🔗 常见搭配</div>
+            <div class="flex flex-wrap gap-2">
+              ${collocationsHtml}
+            </div>
+          </div>
+        </div>
+
+        <!-- 深入内容折叠区域：精选例句、易混辨析、语法要点、做题秘诀 (card-footer mt-auto 严格贴底) -->
+        <details class="card-footer group mt-auto pt-2.5 border-t border-[var(--border-sub)]">
+          <summary class="flex items-center justify-between text-xs md:text-sm font-bold text-[var(--accent)] cursor-pointer select-none hover:text-[var(--accent-hover)] transition list-none py-1.5">
+            <span class="flex items-center gap-1.5">
+              <span>📖 展开深入解析（例句 / 易混辨析 / 语法）</span>
+            </span>
+            <span class="text-xs text-[var(--text-muted)] group-open:rotate-180 transition-transform duration-200">
+              ▼
+            </span>
+          </summary>
+          
+          <div class="mt-3 space-y-3">
+            <!-- 5. 例句 (快速记忆 + 六级迁移) -->
+            <div class="space-y-2">
+              <div class="text-xs md:text-sm font-bold text-[var(--text-main)]">📝 精选阅读例句</div>
+              <div class="space-y-2">
+                ${examplesHtml}
+              </div>
+            </div>
+
+            <!-- 6. 易混辨析 (按需展示) -->
+            ${distinctionHtml}
+
+            <!-- 7. 语法要点 (按需展示) -->
+            ${item.grammar ? `
+              <div class="text-xs text-[var(--text-sub)] bg-[#f4f7f4] p-2.5 rounded-lg border border-[var(--border-sub)] leading-relaxed">
+                <span class="font-bold text-[var(--accent)]">📐 语法要点：</span>${item.grammar}
+              </div>
+            ` : ""}
+
+            <!-- 8. 做题实操秘诀 (按需展示) -->
+            ${item.memoryLogic ? `
+              <div class="text-xs text-[var(--text-sub)] italic pl-1 leading-snug">
+                <span class="font-semibold not-italic text-[var(--accent)]">🧠 做题实操秘诀：</span>${item.memoryLogic}
+              </div>
+            ` : ""}
+          </div>
+        </details>
+      `;
+
+      return card;
+    }
+
+    function renderList() {
+      const grid = document.getElementById("vocabulary-grid");
+      const noResults = document.getElementById("no-results");
+
+      if (!grid) return;
+      grid.innerHTML = "";
+
+      const filtered = vocabulary.filter(item => {
+        const matchCat = (currentCategory === "all" || item.category === currentCategory);
+        const q = searchQuery.toLowerCase();
+        const matchSearch = !q || 
+          item.term.toLowerCase().includes(q) || 
+          item.coreMeaning.toLowerCase().includes(q) ||
+          item.mainUsages.some(u => u.title.toLowerCase().includes(q) || u.desc.toLowerCase().includes(q)) ||
+          item.collocations.some(c => c.toLowerCase().includes(q)) ||
+          (item.distinction && item.distinction.title.toLowerCase().includes(q)) ||
+          item.articleUsage.translation.toLowerCase().includes(q);
+        return matchCat && matchSearch;
+      });
+
+      if (filtered.length === 0) {
+        noResults.classList.remove("hidden");
+        return;
+      }
+      noResults.classList.add("hidden");
+
+      filtered.forEach(item => {
+        const card = createCardElement(item);
+        grid.appendChild(card);
+      });
+    }
+
+    function handleSearch() {
+      searchQuery = document.getElementById("search-input").value.trim();
+      renderList();
+    }
+
+    function filterCategory(cat) {
+      currentCategory = cat;
+      document.querySelectorAll(".cat-pill").forEach(pill => {
+        if (pill.getAttribute("data-cat") === cat) {
+          pill.className = "cat-pill whitespace-nowrap px-3 py-1.5 rounded-lg text-xs md:text-sm font-semibold";
+          pill.style.backgroundColor = "var(--accent)";
+          pill.style.color = "#ffffff";
+        } else {
+          pill.className = "cat-pill whitespace-nowrap px-3 py-1.5 rounded-lg text-xs md:text-sm font-medium border border-[var(--border)] bg-[var(--card)] text-[var(--text-sub)] hover:text-[var(--text-main)]";
+          pill.style.backgroundColor = "";
+          pill.style.color = "";
+        }
+      });
+      renderList();
+    }
+
+
+    // ==========================================
+    // 视图 5：统计数据看板与备份引擎
+    // ==========================================
+    function renderStatsDashboard() {
+      // 1. 基础词库与阶段统计
+      const totalWords = vocabulary.length;
+      document.getElementById("stats-total-num").innerText = totalWords;
+
+      let stageCounts = [0, 0, 0, 0, 0, 0];
+      let maxStage = 0;
+      let totalReviewSessions = 0;
+      let successfulRecallCount = 0;
+
+      vocabulary.forEach(v => {
+        const p = userProgress[v.id];
+        const s = (p && p.stage) || 0;
+        stageCounts[s] = (stageCounts[s] || 0) + 1;
+        if (s > maxStage) maxStage = s;
+
+        if (p && p.totalReviews > 0) {
+          totalReviewSessions += p.totalReviews;
+          if (p.lastScore >= 2) {
+            successfulRecallCount++;
+          }
+        }
+      });
+
+      const consolidatedCount = stageCounts.slice(1).reduce((a, b) => a + b, 0);
+      document.getElementById("stats-consolidated-num").innerText = consolidatedCount;
+
+      // 2. 今日复习行动中心计算
+      const reviewedTodayCount = vocabulary.filter(v => userProgress[v.id] && userProgress[v.id].reviewedToday).length;
+      const todayQueueTotal = Math.min(totalWords, DAILY_LIMIT);
+      const todayPendingCount = Math.max(0, todayQueueTotal - reviewedTodayCount);
+
+      const actionTitleEl = document.getElementById("stats-action-title");
+      const progressTextEl = document.getElementById("stats-today-progress-text");
+      const startBtnEl = document.getElementById("stats-start-btn");
+      const pendingCardEl = document.getElementById("stats-today-pending-card");
+      const pendingSubEl = document.getElementById("stats-today-pending-sub");
+
+      if (actionTitleEl) {
+        if (todayPendingCount > 0) {
+          actionTitleEl.innerHTML = `今日待复习：<span class="font-mono text-[var(--accent)] text-2xl md:text-3xl font-black">${todayPendingCount}</span> 词`;
+          if (startBtnEl) {
+            startBtnEl.innerHTML = `<span>开始今日复习</span><span class="font-mono text-sm">→</span>`;
+          }
+        } else {
+          actionTitleEl.innerHTML = `<span class="text-[var(--score-green-text)] font-bold">🎉 今日自测任务圆满达成！</span>`;
+          if (startBtnEl) {
+            startBtnEl.innerHTML = `<span>进入复习工作台</span><span class="font-mono text-sm">→</span>`;
+          }
+        }
+      }
+
+      if (progressTextEl) {
+        progressTextEl.innerText = `${reviewedTodayCount} / ${todayQueueTotal} 词完成`;
+      }
+
+      if (pendingCardEl) {
+        pendingCardEl.innerText = todayPendingCount;
+      }
+      if (pendingSubEl) {
+        pendingSubEl.innerText = todayPendingCount > 0 ? "每日精选 10 词强化记忆" : "今日自测已全部打卡";
+      }
+
+      // 3. 紧凑时间轴式艾宾浩斯阶段分布
+      const stageDefs = [
+        { stage: 0, tag: "Day 0", name: "初始未测" },
+        { stage: 1, tag: "Day 1", name: "初识巩固" },
+        { stage: 2, tag: "Day 3", name: "深度强化" },
+        { stage: 3, tag: "Day 7", name: "熟练直觉" },
+        { stage: 4, tag: "Day 15", name: "长效固化" },
+        { stage: 5, tag: "Day 30", name: "终身掌握" }
+      ];
+
+      const container = document.getElementById("stage-distribution-container");
+      if (container) {
+        container.innerHTML = stageDefs.map((def, idx) => {
+          const c = stageCounts[idx] || 0;
+          const pct = Math.round((c / totalWords) * 100);
+          const hasCount = c > 0;
+          return `
+            <div class="flex items-center gap-2.5 sm:gap-4 py-1 text-xs md:text-sm">
+              <span class="font-mono font-bold w-14 sm:w-16 px-1.5 py-0.5 rounded text-center text-xs flex-shrink-0 ${hasCount ? 'bg-[var(--accent-soft)] text-[var(--accent)] border border-[#d2e5d5]' : 'bg-[#edf1ed] text-[var(--text-muted)]'}">
+                ${def.tag}
+              </span>
+              <div class="w-18 sm:w-24 font-medium text-[var(--text-main)] flex-shrink-0">
+                ${def.name}
+              </div>
+              <div class="flex-1 bg-[#e3ece4] h-2 rounded-full overflow-hidden">
+                <div class="h-full rounded-full transition-all duration-300 ${hasCount ? 'bg-[var(--accent)]' : ''}" style="width: ${pct}%;"></div>
+              </div>
+              <div class="w-20 sm:w-24 text-right font-mono flex-shrink-0 text-xs md:text-sm">
+                <span class="font-bold ${hasCount ? 'text-[var(--text-main)]' : 'text-[var(--text-muted)]'}">${c}</span>
+                <span class="text-[var(--text-sub)]">词</span>
+                <span class="text-[var(--text-muted)] text-xs ml-1">(${pct}%)</span>
+              </div>
+            </div>
+          `;
+        }).join("");
+      }
+
+      // 4. 知识网络分类统计
+      const catMap = {
+        grammar: { name: "核心语法", count: 0, icon: "📐" },
+        phrase: { name: "动词短语", count: 0, icon: "⚡" },
+        preposition: { name: "介词逻辑", count: 0, icon: "🔗" },
+        academic: { name: "学术核心词", count: 0, icon: "🎓" }
+      };
+      vocabulary.forEach(v => {
+        if (catMap[v.category]) {
+          catMap[v.category].count++;
+        }
+      });
+
+      const netCatContainer = document.getElementById("stats-network-categories");
+      if (netCatContainer) {
+        netCatContainer.innerHTML = Object.keys(catMap).map(k => {
+          const item = catMap[k];
+          return `
+            <div class="bg-[var(--card-sub)] p-2.5 rounded-xl border border-[var(--border-sub)] flex items-center justify-between">
+              <div class="flex items-center gap-1.5">
+                <span class="text-sm">${item.icon}</span>
+                <span class="text-xs font-semibold text-[var(--text-main)]">${item.name}</span>
+              </div>
+              <span class="font-mono font-bold text-xs bg-[var(--badge-bg)] text-[var(--text-body)] px-2 py-0.5 rounded">
+                ${item.count} 词
+              </span>
+            </div>
+          `;
+        }).join("");
+      }
+
+      // 5. 真实学习统计指标
+      const totalReviewsEl = document.getElementById("stats-total-reviews");
+      if (totalReviewsEl) totalReviewsEl.innerText = `${totalReviewSessions} 次`;
+
+      const consolidatedWordsEl = document.getElementById("stats-consolidated-words");
+      if (consolidatedWordsEl) consolidatedWordsEl.innerText = `${consolidatedCount} 词`;
+
+      const highestStageEl = document.getElementById("stats-highest-stage");
+      if (highestStageEl) highestStageEl.innerText = stageDefs[maxStage] ? `${stageDefs[maxStage].tag} ${stageDefs[maxStage].name}` : "Day 0 初始";
+
+      const retentionRateEl = document.getElementById("stats-retention-rate");
+      const retentionSubEl = document.getElementById("stats-retention-sub");
+
+      if (retentionRateEl && retentionSubEl) {
+        if (totalReviewSessions === 0) {
+          retentionRateEl.innerText = "尚未测量";
+          retentionRateEl.className = "text-base font-bold font-mono text-[var(--text-muted)]";
+          retentionSubEl.innerText = "首轮自测后真实计算";
+        } else {
+          const retentionPct = Math.round((successfulRecallCount / totalReviewSessions) * 100);
+          retentionRateEl.innerText = `${retentionPct}%`;
+          retentionRateEl.className = "text-lg md:text-xl font-black font-mono text-[var(--accent)]";
+          retentionSubEl.innerText = `基于 ${totalReviewSessions} 次自测打卡`;
+        }
+      }
+    }
+
+    function exportBackupData() {
+      const backup = {
+        version: "v3",
+        exportDate: new Date().toISOString(),
+        totalVocabulary: vocabulary.length,
+        userProgress: userProgress
+      };
+      const blob = new Blob([JSON.stringify(backup, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `english_hub_backup_${new Date().toISOString().slice(0, 10)}.json`;
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(() => {
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }, 300);
+    }
+
+    function importBackupData(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const parsed = JSON.parse(e.target.result);
+          if (parsed && parsed.userProgress) {
+            userProgress = parsed.userProgress;
+            saveUserData(userProgress);
+            alert("🎉 数据恢复成功！复习进度已全部还原。");
+            initDailyQueue();
+          } else {
+            alert("文件格式不正确，未能找到有效进度数据。");
+          }
+        } catch (err) {
+          alert("解析文件失败，请确认文件是否为有效的 JSON 备份。");
+        }
+      };
+      reader.readAsText(file);
+    }
+
+
+    // ==========================================
+    // Tab 导航切换
+    // ==========================================
+    function switchTab(tab) {
+      const listBtn = document.getElementById("tab-list-btn");
+      const ebBtn = document.getElementById("tab-ebbinghaus-btn");
+      const quizBtn = document.getElementById("tab-quiz-btn");
+      const diffBtn = document.getElementById("tab-diff-btn");
+      const statsBtn = document.getElementById("tab-stats-btn");
+
+      const viewList = document.getElementById("view-list");
+      const viewEb = document.getElementById("view-ebbinghaus");
+      const viewQuiz = document.getElementById("view-quiz");
+      const viewDiff = document.getElementById("view-diff");
+      const viewStats = document.getElementById("view-stats");
+
+      [listBtn, ebBtn, quizBtn, diffBtn, statsBtn].forEach(b => {
+        b.className = "btn-tab px-3 py-2 rounded-lg text-[var(--text-sub)] hover:text-[var(--text-main)] transition text-center cursor-pointer";
+      });
+
+      [viewList, viewEb, viewQuiz, viewDiff, viewStats].forEach(v => v.classList.add("hidden"));
+
+      if (tab === "ebbinghaus") {
+        ebBtn.className = "btn-tab px-3 py-2 rounded-lg font-bold transition btn-tab-active text-center cursor-pointer";
+        viewEb.classList.remove("hidden");
+      } else if (tab === "quiz") {
+        quizBtn.className = "btn-tab px-3 py-2 rounded-lg font-bold transition btn-tab-active text-center cursor-pointer";
+        viewQuiz.classList.remove("hidden");
+        loadQuizCard();
+      } else if (tab === "list") {
+        listBtn.className = "btn-tab px-3 py-2 rounded-lg font-bold transition btn-tab-active text-center cursor-pointer";
+        viewList.classList.remove("hidden");
+        renderList();
+      } else if (tab === "diff") {
+        diffBtn.className = "btn-tab px-3 py-2 rounded-lg font-bold transition btn-tab-active text-center cursor-pointer";
+        viewDiff.classList.remove("hidden");
+      } else if (tab === "stats") {
+        statsBtn.className = "btn-tab px-3 py-2 rounded-lg font-bold transition btn-tab-active text-center col-span-2 sm:col-span-1 cursor-pointer";
+        viewStats.classList.remove("hidden");
+        renderStatsDashboard();
+      }
+    }
+
+    // 全局快捷键监听
+    window.addEventListener("keydown", (e) => {
+      if (!document.getElementById("view-ebbinghaus").classList.contains("hidden")) {
+        if (e.code === "Space") {
+          e.preventDefault();
+          toggleEbAnswer();
+        } else if (e.key === "1") {
+          handleReviewScore(1);
+        } else if (e.key === "2") {
+          handleReviewScore(2);
+        } else if (e.key === "3") {
+          handleReviewScore(3);
+        }
+      } else if (!document.getElementById("view-quiz").classList.contains("hidden")) {
+        if (e.code === "Space") {
+          e.preventDefault();
+          flipCard();
+        } else if (e.code === "ArrowRight") {
+          nextCard();
+        } else if (e.code === "ArrowLeft") {
+          prevCard();
+        }
+      }
+    });
+
+    // 默认启动进入首页“今日复习”
+    initDailyQueue();
+
+    // ==========================================
+    // 📱 PWA Service Worker 注册与 iOS 音频预热
+    // ==========================================
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then((reg) => {
+            console.log('[PWA] Service Worker 注册成功，Scope:', reg.scope);
+          })
+          .catch((err) => {
+            console.warn('[PWA] Service Worker 注册失败:', err);
+          });
+      });
+    }
+
+    // iOS Safari 首次触控唤醒音频引擎，确保后续朗读即点即播
+    window.addEventListener('touchstart', function initAudioSpeech() {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.getVoices();
+      }
+      window.removeEventListener('touchstart', initAudioSpeech);
+    }, { passive: true, once: true });
+  </script>
+</body>
+</html>
