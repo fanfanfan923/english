@@ -120,22 +120,38 @@
       box-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.02);
     }
 
-    /* Level 2: Liquid Glass Navigation Dock (主导航长条椭圆胶囊外框) */
+    /* Level 2: Liquid Glass Navigation Dock (主导航长条椭圆胶囊底槽 Track) */
     .glass-nav-container {
-      background: rgba(255, 255, 255, 0.55);
-      backdrop-filter: blur(24px) saturate(180%);
-      -webkit-backdrop-filter: blur(24px) saturate(180%);
-      border: 1px solid rgba(255, 255, 255, 0.75);
-      border-top: 1px solid rgba(255, 255, 255, 0.95);
-      box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.04), 0 2px 6px -1px rgba(0, 0, 0, 0.02);
-      border-radius: 9999px;
-      padding: 4px;
+      background: rgba(255, 255, 255, 0.40) !important;
+      backdrop-filter: blur(24px) saturate(180%) !important;
+      -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+      border: 1px solid rgba(255, 255, 255, 0.65) !important;
+      box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.03), inset 0 1px 1px rgba(255, 255, 255, 0.60) !important;
+      border-radius: 9999px !important;
+      padding: 5px !important;
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
       touch-action: pan-x;
       overscroll-behavior-x: contain;
       white-space: nowrap;
-      scrollbar-width: none;
+      scrollbar-width: none !important;
+      -ms-overflow-style: none !important;
+      box-sizing: border-box !important;
+      width: 100%;
+    }
+    .glass-nav-container::-webkit-scrollbar {
+      display: none !important;
+      width: 0 !important;
+      height: 0 !important;
+      background: transparent !important;
+    }
+    .glass-nav-container::after {
+      content: '';
+      flex: 0 0 2px;
+      width: 2px;
+      height: 1px;
+      opacity: 0;
+      pointer-events: none;
     }
 
     .glass-status-pill {
@@ -147,7 +163,19 @@
       box-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.03);
     }
 
-    /* 顶部导航选中的悬浮玻璃胶囊 (Liquid Glass Active Capsule) */
+    .nav-capsule-item {
+      outline: none !important;
+      -webkit-tap-highlight-color: transparent !important;
+      user-select: none !important;
+      box-sizing: border-box !important;
+      height: 38px;
+      min-height: 38px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* 顶部导航选中的悬浮玻璃胶囊 (Liquid Glass Active Capsule: 等距同心居中，无外溢放大) */
     .nav-capsule-active {
       background: rgba(255, 255, 255, 0.95) !important;
       backdrop-filter: blur(20px) saturate(180%) !important;
@@ -155,10 +183,10 @@
       color: #0F172A !important;
       font-weight: 700 !important;
       border: 1px solid rgba(255, 255, 255, 0.95) !important;
-      box-shadow: 0 4px 14px -2px rgba(0, 0, 0, 0.07), 0 1px 3px rgba(0, 0, 0, 0.04), inset 0 1px 1px #ffffff !important;
+      box-shadow: 0 2px 8px -1px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.03), inset 0 1px 1px #ffffff !important;
       border-radius: 9999px !important;
-      transform: scale(1.02);
-      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      transform: none !important;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .nav-capsule-inactive {
@@ -166,18 +194,21 @@
       color: #64748B !important;
       font-weight: 500 !important;
       border: 1px solid transparent !important;
+      box-shadow: none !important;
       border-radius: 9999px !important;
-      opacity: 0.90;
+      opacity: 0.85;
       transition: all 0.2s ease;
     }
-    .nav-capsule-inactive:hover {
-      opacity: 1;
-      color: #0F172A;
-      background: rgba(255, 255, 255, 0.45) !important;
+    @media (hover: hover) {
+      .nav-capsule-inactive:hover {
+        opacity: 1;
+        color: #0F172A;
+        background: rgba(255, 255, 255, 0.35) !important;
+      }
     }
     .nav-capsule-inactive:active {
       transform: scale(0.96);
-      background: rgba(255, 255, 255, 0.6) !important;
+      background: rgba(255, 255, 255, 0.50) !important;
     }
 
     /* 导航胶囊拖动与悬停反馈 (单点+长按拖拽体验) */
@@ -387,29 +418,11 @@
       display: none;
     }
 
-    /* 横向滚动渐变提示容器 (仅容器内部横滚，绝不导致页面 body 横滚) */
+    /* 横向滚动容器 */
     .scroll-hint-wrapper {
       position: relative;
       width: 100%;
       max-width: 100%;
-      overflow: hidden;
-    }
-    @media (max-width: 639px) {
-      .scroll-hint-wrapper::after {
-        content: '';
-        position: absolute;
-        right: 0;
-        top: 0;
-        bottom: 0;
-        width: 24px;
-        background: linear-gradient(to right, transparent, rgba(248, 250, 252, 0.95));
-        pointer-events: none;
-        z-index: 10;
-        border-radius: 0 12px 12px 0;
-      }
-      .nav-scroll-hint::after {
-        background: linear-gradient(to right, transparent, rgba(241, 245, 249, 0.95));
-      }
     }
 
     /* 统一高保真 SVG 朗读按钮规范：微型圆形毛玻璃按钮 (size: 34px，微弱投影与点击缩放反馈) */
@@ -567,22 +580,22 @@
       </div>
 
       <!-- 第三行：Segmented Navigation Dock (移动端单行横向滚动/长按拖动，桌面端 5 列自适应平铺) -->
-      <div class="scroll-hint-wrapper nav-scroll-hint mt-2.5">
-        <nav id="main-nav-bar" class="glass-nav-container flex sm:grid sm:grid-cols-5 items-center gap-1.5 p-1 overflow-x-auto sm:overflow-x-visible no-scrollbar text-xs md:text-sm">
-          <button id="tab-ebbinghaus-btn" onclick="switchTab('ebbinghaus')" class="nav-capsule-item flex-shrink-0 px-4 py-2.5 min-h-[44px] rounded-full nav-capsule-active text-center cursor-pointer flex items-center justify-center gap-1.5 select-none" data-tab="ebbinghaus">
-            <span class="text-sm">⏳</span><span class="font-bold">今日复习</span>
+      <div class="w-full mt-2.5">
+        <nav id="main-nav-bar" class="glass-nav-container flex sm:grid sm:grid-cols-5 items-center gap-1 sm:gap-1.5 overflow-x-auto sm:overflow-x-visible no-scrollbar text-xs md:text-sm">
+          <button id="tab-ebbinghaus-btn" onclick="switchTab('ebbinghaus')" class="nav-capsule-item flex-shrink-0 sm:flex-shrink whitespace-nowrap px-3.5 py-2 min-h-[38px] rounded-full nav-capsule-active text-center cursor-pointer flex items-center justify-center gap-1.5 select-none" data-tab="ebbinghaus">
+            <span class="text-sm">⏳</span><span class="text-xs sm:text-sm font-semibold tracking-tight">今日复习</span>
           </button>
-          <button id="tab-quiz-btn" onclick="switchTab('quiz')" class="nav-capsule-item flex-shrink-0 px-4 py-2.5 min-h-[44px] rounded-full nav-capsule-inactive text-center cursor-pointer flex items-center justify-center gap-1.5 select-none" data-tab="quiz">
-            <span class="text-sm">🃏</span><span>翻转自测</span>
+          <button id="tab-quiz-btn" onclick="switchTab('quiz')" class="nav-capsule-item flex-shrink-0 sm:flex-shrink whitespace-nowrap px-3.5 py-2 min-h-[38px] rounded-full nav-capsule-inactive text-center cursor-pointer flex items-center justify-center gap-1.5 select-none" data-tab="quiz">
+            <span class="text-sm">🃏</span><span class="text-xs sm:text-sm font-semibold tracking-tight">翻转自测</span>
           </button>
-          <button id="tab-list-btn" onclick="switchTab('list')" class="nav-capsule-item flex-shrink-0 px-4 py-2.5 min-h-[44px] rounded-full nav-capsule-inactive text-center cursor-pointer flex items-center justify-center gap-1.5 select-none" data-tab="list">
-            <span class="text-sm">📋</span><span>词网全景</span>
+          <button id="tab-list-btn" onclick="switchTab('list')" class="nav-capsule-item flex-shrink-0 sm:flex-shrink whitespace-nowrap px-3.5 py-2 min-h-[38px] rounded-full nav-capsule-inactive text-center cursor-pointer flex items-center justify-center gap-1.5 select-none" data-tab="list">
+            <span class="text-sm">📋</span><span class="text-xs sm:text-sm font-semibold tracking-tight">词网全景</span>
           </button>
-          <button id="tab-diff-btn" onclick="switchTab('diff')" class="nav-capsule-item flex-shrink-0 px-4 py-2.5 min-h-[44px] rounded-full nav-capsule-inactive text-center cursor-pointer flex items-center justify-center gap-1.5 select-none" data-tab="diff">
-            <span class="text-sm">⚖️</span><span>考点地图</span>
+          <button id="tab-diff-btn" onclick="switchTab('diff')" class="nav-capsule-item flex-shrink-0 sm:flex-shrink whitespace-nowrap px-3.5 py-2 min-h-[38px] rounded-full nav-capsule-inactive text-center cursor-pointer flex items-center justify-center gap-1.5 select-none" data-tab="diff">
+            <span class="text-sm">⚖️</span><span class="text-xs sm:text-sm font-semibold tracking-tight">考点地图</span>
           </button>
-          <button id="tab-stats-btn" onclick="switchTab('stats')" class="nav-capsule-item flex-shrink-0 px-4 py-2.5 min-h-[44px] rounded-full nav-capsule-inactive text-center col-span-2 sm:col-span-1 cursor-pointer flex items-center justify-center gap-1.5 select-none" data-tab="stats">
-            <span class="text-sm">📊</span><span>学习看板</span>
+          <button id="tab-stats-btn" onclick="switchTab('stats')" class="nav-capsule-item flex-shrink-0 sm:flex-shrink whitespace-nowrap px-3.5 py-2 min-h-[38px] rounded-full nav-capsule-inactive text-center cursor-pointer flex items-center justify-center gap-1.5 select-none" data-tab="stats">
+            <span class="text-sm">📊</span><span class="text-xs sm:text-sm font-semibold tracking-tight">学习看板</span>
           </button>
         </nav>
       </div>
@@ -1503,7 +1516,7 @@
 
   <script>
     // 唯一版本构建指纹 (供 PWA 全自动嗅探更新)
-    const APP_BUILD_ID = 'english-build-v1790273056';
+    const APP_BUILD_ID = 'english-build-v1790273623';
 
     // ==========================================
     // 词汇数据库（8大知识结构体系，精选实用例句与直接对照）
@@ -3259,7 +3272,7 @@
           <button 
             id="tab-${item.id}-btn" 
             onclick="switchTab('${item.id}')" 
-            class="nav-capsule-item flex-shrink-0 whitespace-nowrap px-4 py-2.5 min-h-[44px] rounded-full ${isActive ? 'nav-capsule-active' : 'nav-capsule-inactive'} transition text-center cursor-pointer flex items-center justify-center gap-1.5 select-none"
+            class="nav-capsule-item flex-shrink-0 sm:flex-shrink whitespace-nowrap px-3.5 py-2 min-h-[38px] rounded-full ${isActive ? 'nav-capsule-active' : 'nav-capsule-inactive'} text-center cursor-pointer flex items-center justify-center gap-1.5 select-none"
             data-tab="${item.id}"
           >
             <span class="text-sm">${item.icon}</span>
