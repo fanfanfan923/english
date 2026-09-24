@@ -609,32 +609,46 @@
     <!-- ========================================== -->
     <main id="view-ebbinghaus" class="space-y-4 md:space-y-5">
       
-      <!-- 【层级 2】今日复习进度区 (适中高度，清晰易读，不压缩过度) -->
-      <section class="max-w-[880px] mx-auto px-1">
-        <div class="flex items-center justify-between text-xs md:text-sm gap-2">
-          <div class="flex items-center gap-2 flex-wrap min-w-0">
-            <span class="font-bold text-[var(--text-main)] text-sm md:text-base whitespace-nowrap">今日复习队列</span>
-            <span class="text-[var(--text-muted)] text-xs whitespace-nowrap">目标 10 词</span>
-            <span class="font-mono text-[var(--accent)] font-bold bg-[var(--accent-soft)] px-2.5 py-0.5 rounded-full text-xs md:text-sm border border-[var(--border-sub)] whitespace-nowrap" id="stat-reviewed-count">
-              0 / 10 已完成
-            </span>
-            <span class="font-mono text-[var(--score-green-text)] font-bold bg-[var(--score-green-bg)] px-2.5 py-0.5 rounded-full text-xs md:text-sm border border-[var(--score-green-border)] whitespace-nowrap" id="stat-mastery-rate">
-              熟练度 0%
-            </span>
+      <!-- 【层级 1 & 2】今日复习任务与进度区 (4层信息系统：任务明确、进度清晰、不显花哨) -->
+      <section class="max-w-[880px] mx-auto px-1 space-y-2.5">
+        <div class="flex items-center justify-between gap-3">
+          <!-- 第一层：今天的学习任务 -->
+          <div class="flex items-baseline gap-2.5 min-w-0">
+            <h2 class="text-base sm:text-lg font-bold text-[var(--text-main)] tracking-tight">今日复习</h2>
+            <span class="text-xs text-[var(--text-muted)] font-medium truncate">抗遗忘智能排程</span>
           </div>
-          <button onclick="resetDailyReview()" class="glass-btn-capsule flex-shrink-0 whitespace-nowrap min-h-[44px] inline-flex items-center justify-center px-3.5 py-1 text-xs text-[var(--text-sub)] hover:text-[var(--text-main)] transition cursor-pointer select-none" style="white-space: nowrap !important;">
+          <!-- 快捷操作：重置今天 -->
+          <button onclick="resetDailyReview()" class="glass-btn-capsule flex-shrink-0 min-h-[34px] px-3.5 py-1 text-xs text-[var(--text-sub)] hover:text-[var(--text-main)] rounded-full transition cursor-pointer select-none">
             重置今天
           </button>
         </div>
 
-        <!-- 适度厚度的优雅微光进度条 -->
-        <div class="w-full bg-slate-200/60 h-2 rounded-full overflow-hidden mt-2 mb-1.5">
-          <div id="progress-bar" class="h-full w-0 transition-all duration-300 rounded-full" style="background-color: var(--accent);"></div>
-        </div>
+        <!-- 第二层：进度状态条与关键数据 -->
+        <div class="bg-[rgba(255,255,255,0.7)] backdrop-blur-md rounded-[16px] p-3 sm:p-3.5 border border-[rgba(45,106,79,0.08)] shadow-[0_4px_16px_rgba(27,67,50,0.03)] space-y-2">
+          <div class="flex items-center justify-between text-xs sm:text-sm">
+            <div class="flex items-center gap-2">
+              <span class="font-semibold text-[var(--text-main)]">已完成</span>
+              <span class="font-mono font-bold text-[var(--accent)] text-sm sm:text-base" id="stat-reviewed-count">0 / 10 词</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="flex items-center gap-1.5">
+                <span class="text-xs text-[var(--text-muted)]">熟练度</span>
+                <span class="font-mono font-bold text-[var(--score-green-text)]" id="stat-mastery-rate">0%</span>
+              </div>
+              <span class="text-[rgba(45,106,79,0.15)]">|</span>
+              <span class="font-mono text-xs font-semibold text-[var(--text-sub)]" id="stat-queue-status">待测: 10 词</span>
+            </div>
+          </div>
+          
+          <!-- 6px 护眼绿色平滑进度条 -->
+          <div class="w-full bg-[#E2ECE5] h-2 rounded-full overflow-hidden">
+            <div id="progress-bar" class="h-full w-0 transition-all duration-300 rounded-full" style="background-color: var(--accent);"></div>
+          </div>
 
-        <div class="flex items-center justify-between text-xs text-[var(--text-muted)] gap-2">
-          <span class="font-medium truncate min-w-0">科学复习节律：Day 0 → 1 → 3 → 7 → 15 → 30</span>
-          <span class="font-mono font-semibold whitespace-nowrap flex-shrink-0" id="stat-queue-status">待测: 10 词</span>
+          <div class="flex items-center justify-between text-[11px] text-[var(--text-muted)] pt-0.5">
+            <span>科学抗遗忘节律：Day 0 → 1 → 3 → 7 → 15 → 30</span>
+            <span>自测评分驱动周期</span>
+          </div>
         </div>
       </section>
 
@@ -676,9 +690,9 @@
               💡 核心引导：在六级阅读中有 4 种典型考法，请在脑海中先回想它接不同宾语时的含义...
             </div>
 
-            <!-- 核心交互 CTA 按钮 (大圆角胶囊形，高度与视觉重量适度提升，形成第一行动力) -->
+            <!-- 核心交互 CTA 按钮 (18px平滑大圆角，高度与视觉重量适度提升，形成第一行动力) -->
             <div class="pt-1 flex flex-col items-center gap-2">
-              <button onclick="toggleEbAnswer()" class="w-full py-4 px-6 rounded-full font-bold text-base md:text-lg transition-all duration-150 flex items-center justify-center gap-2 text-white bg-[var(--accent)] hover:bg-[var(--accent-hover)] shadow-sm active:scale-[0.98] cursor-pointer min-h-[50px]">
+              <button onclick="toggleEbAnswer()" class="w-full py-4 px-6 rounded-[18px] font-bold text-base md:text-lg transition-all duration-150 flex items-center justify-center gap-2 text-white bg-[var(--accent)] hover:bg-[var(--accent-hover)] shadow-sm active:scale-[0.97] cursor-pointer min-h-[50px]">
                 <span>🤔 我已主动回忆，查看解析</span>
                 <span class="text-xs md:text-sm opacity-80 font-mono hidden sm:inline">(Space) ▾</span>
               </button>
@@ -740,24 +754,24 @@
               </div>
             </details>
 
-            <!-- 底部三级自测评分按钮 (更大更易点，胶囊圆角与柔和微磨砂) -->
-            <div class="pt-4 border-t border-[var(--border)] space-y-2.5">
+            <!-- 底部三级自测评分按钮 (更大更易点，16px圆角与柔和微磨砂，轻微按压缩放) -->
+            <div class="pt-4 border-t border-[rgba(45,106,79,0.08)] space-y-2.5">
               <div class="text-center text-xs md:text-sm text-[var(--text-sub)]">
                 评估刚才的主动回忆效果，决定下一次复习间隔：
               </div>
 
               <div class="grid grid-cols-3 gap-2.5 sm:gap-3">
-                <button onclick="handleReviewScore(1)" class="flex flex-col items-center justify-center p-3 rounded-2xl border transition active:scale-95 cursor-pointer shadow-2xs min-h-[44px]" style="background-color: var(--score-red-bg); color: var(--score-red-text); border-color: var(--score-red-border); backdrop-filter: blur(12px);">
+                <button onclick="handleReviewScore(1)" class="flex flex-col items-center justify-center p-3 rounded-[16px] border transition-all active:scale-[0.97] cursor-pointer shadow-2xs min-h-[48px]" style="background-color: var(--score-red-bg); color: var(--score-red-text); border-color: var(--score-red-border); backdrop-filter: blur(12px);">
                   <span class="text-sm md:text-base font-bold whitespace-nowrap">🔴 没想出 (1)</span>
                   <span class="text-xs opacity-80 mt-0.5 whitespace-nowrap">今天重新自测</span>
                 </button>
 
-                <button onclick="handleReviewScore(2)" class="flex flex-col items-center justify-center p-3 rounded-2xl border transition active:scale-95 cursor-pointer shadow-2xs min-h-[44px]" style="background-color: var(--score-yellow-bg); color: var(--score-yellow-text); border-color: var(--score-yellow-border); backdrop-filter: blur(12px);">
+                <button onclick="handleReviewScore(2)" class="flex flex-col items-center justify-center p-3 rounded-[16px] border transition-all active:scale-[0.97] cursor-pointer shadow-2xs min-h-[48px]" style="background-color: var(--score-yellow-bg); color: var(--score-yellow-text); border-color: var(--score-yellow-border); backdrop-filter: blur(12px);">
                   <span class="text-sm md:text-base font-bold whitespace-nowrap">🟡 较模糊 (2)</span>
                   <span class="text-xs opacity-80 mt-0.5 whitespace-nowrap">明天巩固 (Day 1)</span>
                 </button>
 
-                <button onclick="handleReviewScore(3)" class="flex flex-col items-center justify-center p-3 rounded-2xl border transition active:scale-95 cursor-pointer shadow-2xs min-h-[44px]" style="background-color: var(--score-green-bg); color: var(--score-green-text); border-color: var(--score-green-border); backdrop-filter: blur(12px);">
+                <button onclick="handleReviewScore(3)" class="flex flex-col items-center justify-center p-3 rounded-[16px] border transition-all active:scale-[0.97] cursor-pointer shadow-2xs min-h-[48px]" style="background-color: var(--score-green-bg); color: var(--score-green-text); border-color: var(--score-green-border); backdrop-filter: blur(12px);">
                   <span class="text-sm md:text-base font-bold whitespace-nowrap">🟢 已掌握 (3)</span>
                   <span class="text-xs opacity-80 mt-0.5 whitespace-nowrap">推进下阶段 (+3天)</span>
                 </button>
@@ -820,15 +834,15 @@
 
       </div>
 
-      <!-- 底部控制按钮 (大胶囊形，最小44px触控) -->
+      <!-- 底部控制按钮 (次级按钮 16px，主行动按钮 18px，触控区及微交互对齐) -->
       <div class="flex items-center justify-center gap-3 pt-2">
-        <button onclick="prevCard()" class="glass-btn-capsule px-5 py-2.5 min-h-[44px] text-xs sm:text-sm font-semibold rounded-full cursor-pointer flex items-center justify-center select-none active:scale-95">
+        <button onclick="prevCard()" class="glass-btn-capsule px-5 py-2.5 min-h-[44px] text-xs sm:text-sm font-semibold rounded-[16px] cursor-pointer flex items-center justify-center select-none active:scale-[0.97] transition-all">
           ← 上一个
         </button>
-        <button onclick="flipCard()" class="px-6 py-2.5 min-h-[44px] text-xs sm:text-sm font-bold rounded-full text-white transition shadow-sm active:scale-95 cursor-pointer flex items-center justify-center select-none bg-[var(--accent)] hover:bg-[var(--accent-hover)]">
+        <button onclick="flipCard()" class="px-6 py-2.5 min-h-[44px] text-xs sm:text-sm font-bold rounded-[18px] text-white transition-all shadow-sm active:scale-[0.97] cursor-pointer flex items-center justify-center select-none bg-[var(--accent)] hover:bg-[var(--accent-hover)]">
           🔄 翻转卡片
         </button>
-        <button onclick="nextCard()" class="glass-btn-capsule px-5 py-2.5 min-h-[44px] text-xs sm:text-sm font-semibold rounded-full cursor-pointer flex items-center justify-center select-none active:scale-95">
+        <button onclick="nextCard()" class="glass-btn-capsule px-5 py-2.5 min-h-[44px] text-xs sm:text-sm font-semibold rounded-[16px] cursor-pointer flex items-center justify-center select-none active:scale-[0.97] transition-all">
           下一个 →
         </button>
       </div>
@@ -1348,7 +1362,7 @@
             </div>
           </div>
           <div>
-            <button onclick="switchTab('ebbinghaus')" id="stats-start-btn" class="btn-tab w-full sm:w-auto px-7 py-3.5 rounded-full font-bold text-base text-white transition-all shadow-xs flex items-center justify-center gap-2 hover:opacity-95 active:scale-[0.98] cursor-pointer min-h-[48px]" style="background-color: var(--accent);">
+            <button onclick="switchTab('ebbinghaus')" id="stats-start-btn" class="btn-tab w-full sm:w-auto px-7 py-3.5 rounded-[18px] font-bold text-base text-white transition-all shadow-xs flex items-center justify-center gap-2 hover:opacity-95 active:scale-[0.97] cursor-pointer min-h-[48px]" style="background-color: var(--accent);">
               <span>开始今日复习</span>
               <span class="font-mono text-sm">→</span>
             </button>
@@ -1444,7 +1458,7 @@
           </div>
 
           <div class="pt-2">
-            <button onclick="switchTab('list')" class="w-full py-2.5 px-4 min-h-[44px] text-xs md:text-sm font-semibold rounded-full border border-[var(--border)] bg-[var(--card)] hover:bg-[var(--accent-soft)] text-[var(--accent)] transition cursor-pointer flex items-center justify-center gap-1.5 shadow-xs">
+            <button onclick="switchTab('list')" class="w-full py-2.5 px-4 min-h-[44px] text-xs md:text-sm font-semibold rounded-[16px] border border-[var(--border)] bg-[var(--card)] hover:bg-[var(--accent-soft)] text-[var(--accent)] transition-all active:scale-[0.97] cursor-pointer flex items-center justify-center gap-1.5 shadow-xs">
               <span>查看全景词网 →</span>
             </button>
           </div>
@@ -1518,7 +1532,7 @@
 
   <script>
     // 唯一版本构建指纹 (供 PWA 全自动嗅探更新)
-    const APP_BUILD_ID = 'english-build-v1790275024';
+    const APP_BUILD_ID = 'english-build-v1790275258';
 
     // ==========================================
     // 词汇数据库（8大知识结构体系，精选实用例句与直接对照）
@@ -2453,10 +2467,10 @@
               记忆曲线已全部推进入下个复习周期。保持节奏，明天系统将自动为你排程最新复习队列！
             </p>
             <div class="pt-3 flex items-center justify-center gap-3.5">
-              <button onclick="resetDailyReview()" class="text-xs md:text-sm px-4 py-2 rounded-full border border-[var(--border)] bg-[var(--card)] hover:bg-[var(--accent-soft)] text-[var(--text-main)] transition cursor-pointer font-medium">
+              <button onclick="resetDailyReview()" class="text-xs md:text-sm px-4 py-2.5 rounded-[16px] border border-[var(--border)] bg-[var(--card)] hover:bg-[var(--accent-soft)] text-[var(--text-main)] transition-all active:scale-[0.97] cursor-pointer font-medium">
                 重新自测今天
               </button>
-              <button onclick="switchTab('list')" class="text-xs md:text-sm px-4 py-2 rounded-full text-white font-bold transition cursor-pointer shadow-xs" style="background-color: var(--accent);">
+              <button onclick="switchTab('list')" class="text-xs md:text-sm px-5 py-2.5 rounded-[18px] text-white font-bold transition-all active:scale-[0.97] cursor-pointer shadow-xs" style="background-color: var(--accent);">
                 查看全景词网 →
               </button>
             </div>
