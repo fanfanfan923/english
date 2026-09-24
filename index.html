@@ -542,26 +542,33 @@
       
       <!-- 搜索与分类过滤栏 -->
       <div class="flex flex-col gap-2.5">
-        <div class="relative w-full">
-          <svg class="absolute left-3.5 top-3.5 w-4 h-4 text-[var(--text-muted)] pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+        <div class="relative w-full flex items-center">
+          <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-muted)] pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
           <input 
             id="search-input" 
             oninput="handleSearch()" 
             type="text" 
-            placeholder="搜索英文词汇、中文核心含义、高频搭配、例句..."
-            class="w-full min-h-[44px] bg-[var(--card)] border border-[var(--border)] rounded-xl pl-10 pr-3.5 py-2.5 text-xs md:text-sm text-[var(--text-main)] placeholder-[var(--text-muted)] focus:outline-none focus:border-[var(--accent)] shadow-2xs"
+            placeholder="搜索英文词汇、中文核心含义、高频搭配、例句"
+            class="w-full min-h-[44px] bg-[var(--card)] border border-[var(--border)] rounded-xl pl-10 pr-11 py-2.5 text-xs md:text-sm text-[var(--text-main)] placeholder-[var(--text-muted)] focus:outline-none focus:border-[var(--accent)] shadow-2xs transition"
           >
+          <button 
+            id="search-clear-btn" 
+            type="button" 
+            onclick="clearSearch()" 
+            class="hidden absolute right-0 top-0 bottom-0 w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--accent)] active:scale-90 transition cursor-pointer"
+            title="清空搜索"
+            aria-label="清空搜索">
+            <svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
         </div>
 
         <div class="scroll-hint-wrapper">
           <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5 px-0.5" id="category-pills">
-            <button onclick="filterCategory('all', event)" class="cat-pill flex-shrink-0 whitespace-nowrap px-3.5 py-2 min-h-[40px] rounded-xl text-xs md:text-sm font-semibold transition active:scale-95 cursor-pointer" style="background-color: var(--accent); color: #ffffff;" data-cat="all">全部 (15)</button>
-            <button onclick="filterCategory('phrasal', event)" class="cat-pill flex-shrink-0 whitespace-nowrap px-3.5 py-2 min-h-[40px] rounded-xl text-xs md:text-sm font-medium border border-[var(--border)] bg-[var(--card)] text-[var(--text-sub)] hover:text-[var(--text-main)] transition active:scale-95 cursor-pointer" data-cat="phrasal">动词短语 (4)</button>
-            <button onclick="filterCategory('academic', event)" class="cat-pill flex-shrink-0 whitespace-nowrap px-3.5 py-2 min-h-[40px] rounded-xl text-xs md:text-sm font-medium border border-[var(--border)] bg-[var(--card)] text-[var(--text-sub)] hover:text-[var(--text-main)] transition active:scale-95 cursor-pointer" data-cat="academic">学术核心词 (6)</button>
-            <button onclick="filterCategory('prep', event)" class="cat-pill flex-shrink-0 whitespace-nowrap px-3.5 py-2 min-h-[40px] rounded-xl text-xs md:text-sm font-medium border border-[var(--border)] bg-[var(--card)] text-[var(--text-sub)] hover:text-[var(--text-main)] transition active:scale-95 cursor-pointer" data-cat="prep">介词逻辑 (3)</button>
-            <button onclick="filterCategory('grammar', event)" class="cat-pill flex-shrink-0 whitespace-nowrap px-3.5 py-2 min-h-[40px] rounded-xl text-xs md:text-sm font-medium border border-[var(--border)] bg-[var(--card)] text-[var(--text-sub)] hover:text-[var(--text-main)] transition active:scale-95 cursor-pointer" data-cat="grammar">核心语法 (2)</button>
+            <!-- 统一由 JavaScript 根据 vocabulary 动态计算渲染 -->
           </div>
         </div>
       </div>
@@ -1186,6 +1193,9 @@
   </div>
 
   <script>
+    // 唯一版本构建指纹 (供 PWA 全自动嗅探更新)
+    const APP_BUILD_ID = 'english-build-v1790269704';
+
     // ==========================================
     // 词汇数据库（8大知识结构体系，精选实用例句与直接对照）
     // ==========================================
@@ -1922,21 +1932,24 @@
     const STORAGE_KEY = "antigravity_ebbinghaus_progress_v3";
 
     function loadUserData() {
+      let data = {};
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
-        if (raw) return JSON.parse(raw);
+        if (raw) data = JSON.parse(raw);
       } catch (e) {}
 
-      const initial = {};
+      // 保证新增单词也能无缝接入进度体系，绝不丢失已有复习记录
       vocabulary.forEach((item) => {
-        initial[item.id] = {
-          stage: 0,
-          lastReviewed: null,
-          reviewedToday: false,
-          totalReviews: 0
-        };
+        if (!data[item.id]) {
+          data[item.id] = {
+            stage: 0,
+            lastReviewed: null,
+            reviewedToday: false,
+            totalReviews: 0
+          };
+        }
       });
-      return initial;
+      return data;
     }
 
     function saveUserData(data) {
@@ -2507,29 +2520,84 @@
       });
     }
 
-    function handleSearch() {
-      searchQuery = document.getElementById("search-input").value.trim();
-      renderList();
+    const CATEGORY_CONFIG = [
+      { id: "all", name: "全部" },
+      { id: "phrasal", name: "动词短语" },
+      { id: "academic", name: "学术核心词" },
+      { id: "prep", name: "介词逻辑" },
+      { id: "grammar", name: "核心语法" }
+    ];
+
+    function renderCategoryPills() {
+      const container = document.getElementById("category-pills");
+      if (!container) return;
+
+      // 动态根据 vocabulary 唯一数据源统计各分类数量，严禁硬编码
+      const counts = { all: vocabulary.length };
+      vocabulary.forEach(v => {
+        if (v.category) {
+          counts[v.category] = (counts[v.category] || 0) + 1;
+        }
+      });
+
+      container.innerHTML = CATEGORY_CONFIG.map(cat => {
+        const count = counts[cat.id] || 0;
+        const isActive = currentCategory === cat.id;
+        return `
+          <button 
+            type="button"
+            onclick="filterCategory('${cat.id}', event)" 
+            class="cat-pill flex-shrink-0 whitespace-nowrap px-3.5 py-2 min-h-[40px] rounded-xl text-xs md:text-sm transition active:scale-95 cursor-pointer ${isActive ? 'font-semibold' : 'font-medium border border-[var(--border)] bg-[var(--card)] text-[var(--text-sub)] hover:text-[var(--text-main)]'}" 
+            style="${isActive ? 'background-color: var(--accent); color: #ffffff;' : ''}" 
+            data-cat="${cat.id}"
+          >
+            ${cat.name} (${count})
+          </button>
+        `;
+      }).join("");
     }
 
     function filterCategory(cat, e) {
       currentCategory = cat;
-      document.querySelectorAll(".cat-pill").forEach(pill => {
-        if (pill.getAttribute("data-cat") === cat) {
-          pill.className = "cat-pill flex-shrink-0 whitespace-nowrap px-3.5 py-2 min-h-[40px] rounded-xl text-xs md:text-sm font-semibold transition active:scale-95 cursor-pointer";
-          pill.style.backgroundColor = "var(--accent)";
-          pill.style.color = "#ffffff";
-          if (pill && typeof pill.scrollIntoView === "function") {
-            try {
-              pill.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-            } catch (err) {}
-          }
-        } else {
-          pill.className = "cat-pill flex-shrink-0 whitespace-nowrap px-3.5 py-2 min-h-[40px] rounded-xl text-xs md:text-sm font-medium border border-[var(--border)] bg-[var(--card)] text-[var(--text-sub)] hover:text-[var(--text-main)] transition active:scale-95 cursor-pointer";
-          pill.style.backgroundColor = "";
-          pill.style.color = "";
+      renderCategoryPills();
+      renderList();
+
+      setTimeout(() => {
+        const activePill = document.querySelector(`.cat-pill[data-cat="${cat}"]`);
+        if (activePill && typeof activePill.scrollIntoView === "function") {
+          try {
+            activePill.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+          } catch (err) {}
         }
-      });
+      }, 50);
+    }
+
+    function handleSearch() {
+      const input = document.getElementById("search-input");
+      const clearBtn = document.getElementById("search-clear-btn");
+      searchQuery = input ? input.value.trim() : "";
+
+      if (clearBtn) {
+        if (searchQuery.length > 0) {
+          clearBtn.classList.remove("hidden");
+        } else {
+          clearBtn.classList.add("hidden");
+        }
+      }
+      renderList();
+    }
+
+    function clearSearch() {
+      const input = document.getElementById("search-input");
+      const clearBtn = document.getElementById("search-clear-btn");
+      if (input) {
+        input.value = "";
+        input.focus();
+      }
+      searchQuery = "";
+      if (clearBtn) {
+        clearBtn.classList.add("hidden");
+      }
       renderList();
     }
 
@@ -2739,60 +2807,70 @@
 
 
     // ==========================================
-    // Tab 导航切换
+    // 统一导航配置与动态渲染系统 (桌面端/移动端统一数据驱动，单源维护)
     // ==========================================
+    const NAV_CONFIG = [
+      { id: "ebbinghaus", name: "今日复习", icon: "⏳" },
+      { id: "quiz", name: "翻转自测", icon: "🃏" },
+      { id: "list", name: "词网全景", icon: "📋" },
+      { id: "diff", name: "考点地图", icon: "⚖️" },
+      { id: "stats", name: "学习看板", icon: "📊" }
+    ];
+
+    let currentTab = "ebbinghaus";
+
+    function renderNavBar() {
+      const nav = document.getElementById("main-nav-bar");
+      if (!nav) return;
+      nav.innerHTML = NAV_CONFIG.map(item => {
+        const isActive = currentTab === item.id;
+        return `
+          <button 
+            id="tab-${item.id}-btn" 
+            onclick="switchTab('${item.id}')" 
+            class="btn-tab flex-shrink-0 whitespace-nowrap px-3.5 py-2.5 min-h-[44px] rounded-lg ${isActive ? 'font-bold btn-tab-active' : 'text-[var(--text-sub)] hover:text-[var(--text-main)]'} transition text-center cursor-pointer flex items-center justify-center gap-1.5"
+          >
+            <span>${item.icon}</span>
+            <span>${item.name}</span>
+          </button>
+        `;
+      }).join("");
+    }
+
     function switchTab(tab) {
-      const listBtn = document.getElementById("tab-list-btn");
-      const ebBtn = document.getElementById("tab-ebbinghaus-btn");
-      const quizBtn = document.getElementById("tab-quiz-btn");
-      const diffBtn = document.getElementById("tab-diff-btn");
-      const statsBtn = document.getElementById("tab-stats-btn");
+      currentTab = tab;
+      renderNavBar();
 
-      const viewList = document.getElementById("view-list");
-      const viewEb = document.getElementById("view-ebbinghaus");
-      const viewQuiz = document.getElementById("view-quiz");
-      const viewDiff = document.getElementById("view-diff");
-      const viewStats = document.getElementById("view-stats");
+      const viewMap = {
+        ebbinghaus: document.getElementById("view-ebbinghaus"),
+        quiz: document.getElementById("view-quiz"),
+        list: document.getElementById("view-list"),
+        diff: document.getElementById("view-diff"),
+        stats: document.getElementById("view-stats")
+      };
 
-      [listBtn, ebBtn, quizBtn, diffBtn, statsBtn].forEach(b => {
-        b.className = "btn-tab px-3 py-2 rounded-lg text-[var(--text-sub)] hover:text-[var(--text-main)] transition text-center cursor-pointer";
+      Object.entries(viewMap).forEach(([key, el]) => {
+        if (!el) return;
+        if (key === tab) {
+          el.classList.remove("hidden");
+        } else {
+          el.classList.add("hidden");
+        }
       });
 
-      [viewList, viewEb, viewQuiz, viewDiff, viewStats].forEach(v => v.classList.add("hidden"));
-
-      if (tab === "ebbinghaus") {
-        ebBtn.className = "btn-tab px-3 py-2 rounded-lg font-bold transition btn-tab-active text-center cursor-pointer";
-        viewEb.classList.remove("hidden");
-      } else if (tab === "quiz") {
-        quizBtn.className = "btn-tab px-3 py-2 rounded-lg font-bold transition btn-tab-active text-center cursor-pointer";
-        viewQuiz.classList.remove("hidden");
-        loadQuizCard();
-      } else if (tab === "list") {
-        listBtn.className = "btn-tab px-3 py-2 rounded-lg font-bold transition btn-tab-active text-center cursor-pointer";
-        viewList.classList.remove("hidden");
-        renderList();
-      } else if (tab === "diff") {
-        diffBtn.className = "btn-tab px-3 py-2 rounded-lg font-bold transition btn-tab-active text-center cursor-pointer";
-        viewDiff.classList.remove("hidden");
-      } else if (tab === "stats") {
-        statsBtn.className = "btn-tab px-3 py-2 rounded-lg font-bold transition btn-tab-active text-center cursor-pointer";
-        viewStats.classList.remove("hidden");
-        renderStatsDashboard();
-      }
+      if (tab === "quiz") loadQuizCard();
+      else if (tab === "list") renderList();
+      else if (tab === "stats") renderStatsDashboard();
 
       // 移动端自动将选中的 Tab 平滑滚动居中，保证良好视线
-      const activeBtn = {
-        ebbinghaus: ebBtn,
-        quiz: quizBtn,
-        list: listBtn,
-        diff: diffBtn,
-        stats: statsBtn
-      }[tab];
-      if (activeBtn && typeof activeBtn.scrollIntoView === "function") {
-        try {
-          activeBtn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-        } catch (err) {}
-      }
+      setTimeout(() => {
+        const activeBtn = document.getElementById(`tab-${tab}-btn`);
+        if (activeBtn && typeof activeBtn.scrollIntoView === "function") {
+          try {
+            activeBtn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+          } catch (err) {}
+        }
+      }, 50);
     }
 
     // 全局快捷键监听
@@ -2820,7 +2898,9 @@
       }
     });
 
-    // 默认启动进入首页“今日复习”
+    // 默认启动初始化：动态渲染主导航、动态计算分类胶囊、进入首页“今日复习”
+    renderNavBar();
+    renderCategoryPills();
     initDailyQueue();
 
     // ==========================================
@@ -2846,7 +2926,7 @@
       }, 2500);
     }
 
-    // 全自动无感检测云端是否有新单词发布 (杀后台打开、多任务切回时触发)
+    // 全自动无感检测云端是否有新版本发布 (界面/样式/词库任意更新均能秒级感知)
     let isCheckingSync = false;
     async function silentCheckRemoteUpdates() {
       if (isCheckingSync || !navigator.onLine) return;
@@ -2857,36 +2937,44 @@
         if (!res.ok) return;
         const html = await res.text();
 
-        // 统计云端最新词条数
+        // 1. 检查构建指纹是否有更新 (样式/UI/功能任意变动即触发)
+        const buildMatch = html.match(/APP_BUILD_ID\s*=\s*['"]([^'"]+)['"]/);
+        const remoteBuildId = buildMatch ? buildMatch[1] : null;
+
+        // 2. 统计云端最新词条数
         const idMatches = html.match(/id:\s*(\d+)/g);
-        if (idMatches && idMatches.length > 0) {
-          const remoteCount = idMatches.length;
-          const currentCount = typeof vocabulary !== 'undefined' ? vocabulary.length : 0;
+        const remoteCount = idMatches ? idMatches.length : 0;
+        const currentCount = typeof vocabulary !== 'undefined' ? vocabulary.length : 0;
 
-          // 若云端词汇数量大于本地，执行全自动无感更新
-          if (remoteCount > currentCount) {
-            console.log(`[AutoSync] 发现云端新词: 本地 ${currentCount} 词 -> 云端 ${remoteCount} 词。正在自动同步...`);
-            
-            // 清空本地 Service Worker 缓存，保证下次冷启动即为最新
-            if ('caches' in window) {
-              const keys = await caches.keys();
-              await Promise.all(keys.map(k => caches.delete(k)));
-            }
-            if ('serviceWorker' in navigator) {
-              const regs = await navigator.serviceWorker.getRegistrations();
-              for (let r of regs) {
-                await r.update().catch(() => {});
-              }
-            }
+        const hasNewBuild = remoteBuildId && typeof APP_BUILD_ID !== 'undefined' && remoteBuildId !== APP_BUILD_ID;
+        const hasCountChange = remoteCount !== currentCount;
 
-            showAutoSyncToast(`已自动同步 ${remoteCount - currentCount} 个新单词（现共 ${remoteCount} 词）`);
-            setTimeout(() => {
-              if (!isAutoRefreshing) {
-                isAutoRefreshing = true;
-                window.location.reload();
-              }
-            }, 600);
+        if (hasNewBuild || hasCountChange) {
+          console.log(`[AutoSync] 发现云端更新: 本地 [${APP_BUILD_ID}] -> 云端 [${remoteBuildId}], 词汇: ${currentCount} -> ${remoteCount}`);
+          
+          // 清空本地 Service Worker 缓存，保证下次冷启动即为最新
+          if ('caches' in window) {
+            const keys = await caches.keys();
+            await Promise.all(keys.map(k => caches.delete(k)));
           }
+          if ('serviceWorker' in navigator) {
+            const regs = await navigator.serviceWorker.getRegistrations();
+            for (let r of regs) {
+              await r.update().catch(() => {});
+            }
+          }
+
+          const toastMsg = hasCountChange 
+            ? `已自动同步新词库（现共 ${remoteCount} 词）` 
+            : `已检测到最新界面更新，正在无感载入...`;
+          showAutoSyncToast(toastMsg);
+
+          setTimeout(() => {
+            if (!isAutoRefreshing) {
+              isAutoRefreshing = true;
+              window.location.reload();
+            }
+          }, 600);
         }
       } catch (err) {
         // 离线或网络波动静默处理，不弹报错
@@ -2934,26 +3022,34 @@
     // 每 60 秒定期静默检查一次
     setInterval(silentCheckRemoteUpdates, 60000);
 
-    // 手动一键强制同步最新云端词库 (保留备用)
+    // 手动一键强制同步最新云端词库与界面 (强力击穿一切浏览器与 CDN 缓存)
     async function forceSyncLatest() {
-      const btn = event && event.currentTarget;
-      if (btn) btn.innerHTML = '<span>⏳</span><span>同步中...</span>';
+      const btn = event && (event.currentTarget || event.target.closest("button"));
+      if (btn) {
+        btn.innerHTML = `
+          <svg class="w-3.5 h-3.5 animate-spin" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+          </svg>
+          <span>同步中...</span>
+        `;
+      }
       try {
+        if ('caches' in window) {
+          const keys = await caches.keys();
+          await Promise.all(keys.map(k => caches.delete(k)));
+        }
         if ('serviceWorker' in navigator) {
           const regs = await navigator.serviceWorker.getRegistrations();
           for (let r of regs) {
             await r.update().catch(() => {});
+            await r.unregister().catch(() => {});
           }
-        }
-        if ('caches' in window) {
-          const keys = await caches.keys();
-          await Promise.all(keys.map(k => caches.delete(k)));
         }
       } catch (err) {
         console.warn('Sync error:', err);
       }
       // 强制绕过本地缓存刷新
-      window.location.href = window.location.pathname + '?t=' + Date.now();
+      window.location.replace(window.location.pathname + '?t=' + Date.now());
     }
 
     // iOS Safari 首次触控唤醒音频与语音引擎 (解除 WebKit 音频上下文挂起并锁定媒体播放通道)
