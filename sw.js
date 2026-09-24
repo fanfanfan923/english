@@ -1,5 +1,5 @@
 // Service Worker for 英语高阶词义网络与复习工作台
-const CACHE_NAME = 'english-hub-cache-v1790270522';
+const CACHE_NAME = 'english-hub-cache-v1790270978';
 
 const STATIC_ASSETS = [
   './',
