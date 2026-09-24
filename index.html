@@ -280,7 +280,7 @@
                 <span class="text-xs md:text-sm opacity-80 font-mono">(Space) ▾</span>
               </button>
               <span class="text-xs text-[var(--text-muted)]">先在大脑中回忆释义与用法，再展开验证，学习效率大幅提升</span>
-              <span class="text-[11px] text-[var(--text-muted)] opacity-75">💡 提示：若 iPhone 听不到声音，请检查手机左侧是否开启了静音模式（侧边静音开关）</span>
+              <span class="text-[11px] text-[var(--text-muted)] opacity-75">🎧 原声发音已接入系统媒体通道，支持静音模式下直接外放/耳机收听</span>
             </div>
 
           </div>
@@ -1658,9 +1658,20 @@
       return cleaned || raw;
     }
 
-    // 引擎 1：播放高清原生真人美音 MP3 (通过 HTML5 Media Audio，音质纯正无机械感)
+    // 强制声明 iOS 媒体播放会话，绕过物理静音开关限制，让声音走媒体播放通道
+    function forceMediaPlaybackSession() {
+      if ('audioSession' in navigator) {
+        try {
+          navigator.audioSession.type = 'playback';
+        } catch (e) {}
+      }
+    }
+
+    // 引擎 1：播放高清原生真人美音 MP3 (通过 HTML5 Media Audio，音质纯正无机械感，支持静音模式外放)
     function playHumanMp3(cleanText, onFallback) {
       try {
+        forceMediaPlaybackSession();
+
         if (currentAudioInstance) {
           currentAudioInstance.pause();
           currentAudioInstance.currentTime = 0;
@@ -1669,7 +1680,27 @@
 
         const audioUrl = "https://dict.youdao.com/dictvoice?audio=" + encodeURIComponent(cleanText) + "&type=2";
         const audio = new Audio(audioUrl);
+        audio.preload = "auto";
+        audio.volume = 1.0;
         currentAudioInstance = audio;
+
+        // 设置 iOS MediaSession，向系统明确声明这是媒体播放 (与网易云/抖音同级)
+        if ('mediaSession' in navigator) {
+          try {
+            navigator.mediaSession.metadata = new MediaMetadata({
+              title: cleanText,
+              artist: '英语复习工作台',
+              album: '高频真题原声'
+            });
+            navigator.mediaSession.playbackState = 'playing';
+          } catch (e) {}
+        }
+
+        audio.onended = () => {
+          if ('mediaSession' in navigator) {
+            try { navigator.mediaSession.playbackState = 'none'; } catch (e) {}
+          }
+        };
 
         let hasFallenBack = false;
         const triggerFallback = () => {
@@ -2787,8 +2818,11 @@
       window.location.href = window.location.pathname + '?t=' + Date.now();
     }
 
-    // iOS Safari 首次触控唤醒音频与语音引擎 (解除 WebKit 音频上下文挂起)
+    // iOS Safari 首次触控唤醒音频与语音引擎 (解除 WebKit 音频上下文挂起并锁定媒体播放通道)
     window.addEventListener('touchstart', function initAudioSpeech() {
+      if (typeof forceMediaPlaybackSession === 'function') {
+        forceMediaPlaybackSession();
+      }
       if ('speechSynthesis' in window) {
         window.speechSynthesis.getVoices();
       }
