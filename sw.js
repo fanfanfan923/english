@@ -1,5 +1,5 @@
 // Service Worker for 英语高阶词义网络与复习工作台
-const CACHE_NAME = 'english-hub-cache-v1790270004';
+const CACHE_NAME = 'english-hub-cache-v1790270280';
 
 const STATIC_ASSETS = [
   './',
@@ -39,7 +39,13 @@ self.addEventListener('activate', (event) => {
           }
         })
       );
-    }).then(() => self.clients.claim())
+    }).then(() => self.clients.claim()).then(() => {
+      return self.clients.matchAll({ type: 'window' }).then((clients) => {
+        clients.forEach((client) => {
+          client.postMessage({ type: 'SW_ACTIVATED', version: CACHE_NAME });
+        });
+      });
+    })
   );
 });
 
@@ -58,8 +64,7 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // 2) HTML 主页面导航请求：Network-First (网络优先)
-  // 联网状态下永远拉取 GitHub 最新版本并静默刷新缓存；断网离线时无缝回退本地缓存
+  // 2) HTML 主页面导航请求：Network-First (网络优先，强制绕过浏览器陈旧磁盘缓存)
   const isHtmlNavigation = req.mode === 'navigate' ||
     (req.headers.get('accept') && req.headers.get('accept').includes('text/html')) ||
     url.pathname.endsWith('index.html') ||
@@ -68,7 +73,10 @@ self.addEventListener('fetch', (event) => {
 
   if (isHtmlNavigation) {
     event.respondWith(
-      fetch(req)
+      fetch(req.url, {
+        headers: req.headers,
+        cache: 'no-cache'
+      })
         .then((networkResponse) => {
           if (networkResponse && networkResponse.status === 200) {
             const copy = networkResponse.clone();
