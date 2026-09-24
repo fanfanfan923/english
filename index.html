@@ -706,10 +706,10 @@
             </div>
 
             <!-- 1. 核心含义 (默认展示，字号提升) -->
-            <div id="eb-back-core" class="text-sm md:text-base text-[var(--text-main)] font-medium p-3.5 rounded-2xl bg-[#E6F1EB]/40 leading-relaxed"></div>
+            <div id="eb-back-core" class="text-sm md:text-base p-[12px_14px] rounded-[14px] bg-[rgba(220,237,229,0.35)] leading-[1.6]"></div>
 
             <!-- 2. 本文真题原句 (默认展示) -->
-            <div id="eb-back-quote" class="p-3.5 rounded-r-2xl border-l-[3px] border-l-[#2D6A4F] bg-[#E6F1EB]/45 space-y-1.5"></div>
+            <div id="eb-back-quote" class="p-[12px_14px] rounded-[4px_12px_12px_4px] border-l-[3px] border-l-[#2D6A4F] bg-[rgba(240,247,243,0.65)] space-y-1.5"></div>
 
             <!-- 3. 主要考法 / 搭配 (默认展示) -->
             <div id="eb-back-meanings" class="space-y-1.5 text-xs md:text-sm text-[var(--text-body)]"></div>
@@ -812,8 +812,8 @@
             <span class="text-sm font-bold text-[var(--text-main)]">知识结构解析</span>
             <span class="text-xs text-[var(--text-muted)]">再次点击翻回正面</span>
           </div>
-          <div id="card-core" class="text-xs md:text-sm text-[var(--accent)] font-medium p-3.5 rounded-2xl bg-[#E6F1EB]/40 text-wrap-safe"></div>
-          <div id="card-quote" class="p-3.5 rounded-r-2xl border-l-[3px] border-l-[#2D6A4F] bg-[#E6F1EB]/45 text-xs md:text-sm space-y-1.5 text-wrap-safe"></div>
+          <div id="card-core" class="text-xs md:text-sm p-[12px_14px] rounded-[14px] bg-[rgba(220,237,229,0.35)] leading-[1.6] text-wrap-safe"></div>
+          <div id="card-quote" class="p-[12px_14px] rounded-[4px_12px_12px_4px] border-l-[3px] border-l-[#2D6A4F] bg-[rgba(240,247,243,0.65)] text-xs md:text-sm space-y-1.5 text-wrap-safe"></div>
           <div class="space-y-1.5 text-xs md:text-sm text-[var(--text-body)] text-wrap-safe" id="card-meanings"></div>
           <div class="space-y-1.5 text-xs md:text-sm text-[var(--text-sub)] border-t border-[var(--border-sub)] pt-2.5 text-wrap-safe" id="card-example"></div>
         </div>
@@ -862,7 +862,7 @@
             autocapitalize="off"
             spellcheck="false"
             placeholder="搜索英文词汇、中文释义、高频搭配、例句"
-            class="search-input-field w-full h-[50px] min-h-[50px] rounded-[24px] pl-11 pr-12 text-sm text-[var(--text-main)] placeholder-[var(--text-muted)] focus:outline-none"
+            class="search-input-field w-full h-[48px] min-h-[48px] rounded-[22px] pl-11 pr-12 text-sm text-[var(--text-main)] placeholder-[var(--text-muted)] focus:outline-none"
           >
           <button 
             type="button" 
@@ -1518,7 +1518,7 @@
 
   <script>
     // 唯一版本构建指纹 (供 PWA 全自动嗅探更新)
-    const APP_BUILD_ID = 'english-build-v1790274886';
+    const APP_BUILD_ID = 'english-build-v1790275024';
 
     // ==========================================
     // 词汇数据库（8大知识结构体系，精选实用例句与直接对照）
@@ -2141,29 +2141,11 @@
       );
     }
 
-    // 语音预热机制：在用户首次触摸/点击屏幕任意位置时，立即唤醒 iOS Web Audio / Speech 会话
-    let isSpeechWarmedUp = false;
-    function warmUpSpeech() {
-      if (isSpeechWarmedUp || !('speechSynthesis' in window)) return;
-      isSpeechWarmedUp = true;
-      forceMediaPlaybackSession();
-      try {
-        loadVoices();
-        const silent = new SpeechSynthesisUtterance(' ');
-        silent.volume = 0.01;
-        silent.lang = 'en-US';
-        window.speechSynthesis.speak(silent);
-      } catch (e) {}
-    }
-    ['touchstart', 'pointerdown', 'click'].forEach(evt => {
-      document.addEventListener(evt, warmUpSpeech, { once: true, passive: true });
-    });
-
     // 停止当前所有播放与按钮动画 (避免多句排队)
     function stopCurrentSpeech() {
       if ('speechSynthesis' in window) {
         try {
-          if (window.speechSynthesis.speaking || window.speechSynthesis.pending) {
+          if (window.speechSynthesis.speaking) {
             window.speechSynthesis.cancel();
           }
         } catch (e) {}
@@ -2174,6 +2156,27 @@
       }
       activeUtterance = null;
       window._activeUtterance = null;
+    }
+
+    // 页面初始化时可靠准备音频语音资源 (Section 19: 修复首次点击音频无法发音的初始化冲突)
+    function initSpeechEngine() {
+      if (!('speechSynthesis' in window)) return;
+      forceMediaPlaybackSession();
+      try {
+        loadVoices();
+      } catch (e) {}
+    }
+    if (typeof window !== 'undefined') {
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initSpeechEngine);
+      } else {
+        initSpeechEngine();
+      }
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.onvoiceschanged = () => {
+          loadVoices();
+        };
+      }
     }
 
     // 统一朗读入口 (所有词汇、例句、辨析、自测卡片均走此处，必须严格同步触发以满足 iOS Safari 用户交互策略)
@@ -2194,11 +2197,11 @@
       // 获取触发的按钮元素，用于展示动态脉冲动画
       const btn = e ? (e.currentTarget || (e.target && e.target.closest("button"))) : null;
 
-      // 1. 如果有前一句正在播放，立即停止上一句并重置其动画状态（避免排队）
-      stopCurrentSpeech();
-
       const cleanText = cleanPronounceText(rawText);
       if (!cleanText) return;
+
+      // 1. 如果已有前一句正在播放，停止上一句并重置动画
+      stopCurrentSpeech();
 
       // 2. 标记当前按钮进入播放中（SVG 图标微脉冲）
       if (btn) {
@@ -2403,18 +2406,31 @@
     function renderCollocationListHtml(collocations, term) {
       if (!collocations || !collocations.length) return "";
       const items = collocations.map((c) => {
-        const highlighted = highlightCollocationKeywords(c, term);
+        let enPart = c;
+        let cnPart = "";
+        const match = c.match(/^(.*?)\s*([（\(].*?[）\)])$/);
+        if (match) {
+          enPart = match[1];
+          cnPart = match[2].replace(/^[（\(]\s*/, '').replace(/\s*[）\)]$/, '');
+        }
+
+        const highlighted = highlightCollocationKeywords(enPart, term);
         return `
-          <div class="py-2.5 first:pt-0.5 last:pb-0.5 flex items-start gap-2.5 text-xs sm:text-[13px] md:text-sm text-[#1E293B] leading-relaxed">
-            <span class="w-1.5 h-1.5 rounded-full bg-[#2D6A4F]/60 flex-shrink-0 mt-2"></span>
-            <div class="flex-1 min-w-0 text-wrap-safe">${highlighted}</div>
+          <div class="py-2.5 first:pt-1 last:pb-1 text-xs sm:text-[13px] md:text-sm leading-relaxed">
+            <div class="flex items-start justify-between gap-2">
+              <div class="text-[#1E293B] font-medium min-w-0 text-wrap-safe">
+                ${highlighted}
+              </div>
+              ${getAudioButtonHtml(enPart, "-my-1")}
+            </div>
+            ${cnPart ? `<div class="text-[#4A5568] text-xs mt-1 pl-0.5 leading-normal">↳ ${cnPart}</div>` : ""}
           </div>
         `;
       }).join("");
 
       return `
-        <div class="p-3.5 sm:p-4 my-2.5 rounded-2xl bg-[#E6F1EB]/35">
-          <div class="text-xs font-bold text-[#2D6A4F] mb-2 flex items-center gap-1.5">
+        <div class="my-2.5 pt-1">
+          <div class="text-xs font-bold text-[#1B4332] mb-1.5 flex items-center gap-1.5">
             <span>🔗 核心高频搭配</span>
           </div>
           <div class="divide-y divide-[rgba(45,106,79,0.08)]">
@@ -2477,19 +2493,19 @@
       front.classList.remove("hidden");
       back.classList.add("hidden");
 
-      // 1. 核心含义 (默认展示)
+      // 1. 核心含义 (Section 14: 自然停留 · 浅底色 · 无边框)
       document.getElementById("eb-back-core").innerHTML = `
-        <span class="font-bold text-[var(--accent)]">【核心含义】</span>${item.coreMeaning}
+        <span class="font-semibold text-[#1B4332]">【核心含义】</span><span class="text-[#2D3748] leading-[1.6]">${item.coreMeaning}</span>
       `;
 
-      // 2. 本文真题原句 (默认展示 · 取消机械全斜体 · 优雅层级)
+      // 2. 本文真题原句 (Section 15: iOS Quote 质感 · 仅左强调线)
       document.getElementById("eb-back-quote").innerHTML = `
-        <div class="flex items-center justify-between text-xs text-[var(--accent)] font-semibold mb-1">
+        <div class="flex items-center justify-between text-xs text-[#2D6A4F] font-semibold mb-1">
           <span>📖 本文真题原句</span>
           ${getAudioButtonHtml(item.articleUsage.quote)}
         </div>
-        <div class="text-sm sm:text-base text-[var(--text-main)] font-normal leading-[1.5]">"${item.articleUsage.quote}"</div>
-        <div class="text-[13px] text-[var(--text-sub)] mt-1 leading-relaxed">↳ 译文：${item.articleUsage.translation}</div>
+        <div class="text-sm sm:text-base text-[#17382B] font-semibold leading-[1.55]">"${item.articleUsage.quote}"</div>
+        <div class="text-[13px] text-[#4A5568] mt-1.5 leading-relaxed">↳ 译文：${item.articleUsage.translation}</div>
       `;
 
       // 3. 主要考法 / 搭配 (默认展示)
@@ -2508,20 +2524,22 @@
       // 4. 常见搭配 (收纳到一个统一大玻璃卡片内 · 移除碎片化小框)
       document.getElementById("eb-back-collocations").innerHTML = renderCollocationListHtml(item.collocations, item.term);
 
-      // 5. 精选例句 (深入解析折叠区内 · 去除厚框，采用典雅列表线)
+      // 5. 精选例句 (Section 17: 阅读舒适度优先 · 真实阅读排版)
       document.getElementById("eb-back-examples").innerHTML = `
-        <div class="font-bold text-xs md:text-sm text-[var(--text-main)] mb-1.5">📝 精选阅读例句：</div>
-        <div class="space-y-2">
+        <div class="font-bold text-xs md:text-sm text-[#17382B] mb-1.5">📝 精选阅读例句：</div>
+        <div class="space-y-3">
           ${item.examples.map(ex => `
-            <div class="py-2.5 border-b border-[rgba(45,106,79,0.08)] last:border-b-0 space-y-1 group">
-              <div class="flex items-center justify-between text-xs text-[var(--accent)] font-semibold mb-0.5">
+            <div class="py-2 border-b border-[rgba(45,106,79,0.08)] last:border-b-0 space-y-1.5">
+              <div class="flex items-center justify-between text-xs text-[#2D6A4F] font-semibold">
                 <span>${ex.type === "快速记忆" ? "⚡ 快速记忆例句" : "🎯 六级真题迁移例句"}</span>
-              </div>
-              <div class="text-[var(--text-main)] flex items-center justify-between text-xs sm:text-sm font-medium leading-[1.5]">
-                <span>• ${ex.en}</span>
                 ${getAudioButtonHtml(ex.en)}
               </div>
-              <div class="text-[var(--text-sub)] pl-2 text-[13px] leading-relaxed">↳ ${ex.cn}</div>
+              <div class="text-[#1F2937] text-sm sm:text-base font-semibold leading-[1.6] text-wrap-safe">
+                ${ex.en}
+              </div>
+              <div class="text-[#4A5568] text-[13px] leading-[1.6] text-wrap-safe">
+                ↳ ${ex.cn}
+              </div>
             </div>
           `).join("")}
         </div>
@@ -2667,32 +2685,37 @@
       document.getElementById("card-back").classList.add("hidden");
 
       document.getElementById("card-core").innerHTML = `
-        <span class="font-bold">【核心含义】</span>${item.coreMeaning}
+        <span class="font-semibold text-[#1B4332]">【核心含义】</span><span class="text-[#2D3748]">${item.coreMeaning}</span>
       `;
 
       document.getElementById("card-quote").innerHTML = `
-        <div class="flex items-center justify-between text-xs text-[var(--accent)] font-semibold mb-1">
+        <div class="flex items-center justify-between text-xs text-[#2D6A4F] font-semibold mb-1">
           <span>📖 本文真题语境</span>
           ${getAudioButtonHtml(item.articleUsage.quote)}
         </div>
-        <div class="text-sm sm:text-base text-[var(--text-main)] font-normal leading-[1.5]">"${item.articleUsage.quote}"</div>
-        <div class="text-[13px] text-[var(--text-sub)] mt-1 leading-relaxed">↳ 译文：${item.articleUsage.translation}</div>
+        <div class="text-sm sm:text-base text-[#17382B] font-semibold leading-[1.55]">"${item.articleUsage.quote}"</div>
+        <div class="text-[13px] text-[#4A5568] mt-1.5 leading-relaxed">↳ 译文：${item.articleUsage.translation}</div>
       `;
 
       document.getElementById("card-meanings").innerHTML = `
-        <div class="font-bold text-xs md:text-sm text-[var(--text-main)] mb-1">${item.usageTitle || "主要考法"}：</div>
+        <div class="font-bold text-xs md:text-sm text-[#17382B] mb-1.5">${item.usageTitle || "主要考法"}：</div>
         ${item.mainUsages.map(u => `
-          <div class="text-xs md:text-sm leading-snug pl-1">
-            <span class="font-bold text-[var(--accent)]">${u.num}</span> <b class="text-[var(--text-main)]">${u.title}</b>：${u.desc}
+          <div class="text-xs md:text-sm leading-snug pl-1 py-0.5">
+            <span class="font-bold text-[var(--accent)]">${u.num}</span> <b class="text-[var(--text-main)]">${u.title}</b>：<span class="text-[var(--text-sub)]">${u.desc}</span>
           </div>
         `).join("")}
       `;
 
       document.getElementById("card-example").innerHTML = `
-        <div class="font-bold text-xs md:text-sm text-[var(--text-main)] mb-1">精选例句：</div>
+        <div class="font-bold text-xs md:text-sm text-[#17382B] mb-1">精选例句：</div>
         ${item.examples.slice(0, 1).map(ex => `
-          <div class="text-[var(--text-main)] text-xs sm:text-sm font-normal leading-[1.5]">${ex.en}</div>
-          <div class="text-[var(--text-sub)] text-[13px] pl-1 leading-relaxed">↳ ${ex.cn}</div>
+          <div class="space-y-1 pt-0.5">
+            <div class="text-[#1F2937] text-xs sm:text-sm font-semibold leading-[1.6] flex items-center justify-between">
+              <span>${ex.en}</span>
+              ${getAudioButtonHtml(ex.en)}
+            </div>
+            <div class="text-[#4A5568] text-[13px] leading-[1.6]">↳ ${ex.cn}</div>
+          </div>
         `).join("")}
       `;
     }
@@ -2740,15 +2763,17 @@
       `).join("");
 
       const examplesHtml = item.examples.map(ex => `
-        <div class="py-2.5 border-b border-[rgba(45,106,79,0.08)] last:border-b-0 space-y-1 group">
-          <div class="flex items-center justify-between text-xs text-[var(--accent)] font-semibold mb-0.5">
+        <div class="py-2 border-b border-[rgba(45,106,79,0.08)] last:border-b-0 space-y-1.5">
+          <div class="flex items-center justify-between text-xs text-[#2D6A4F] font-semibold">
             <span>${ex.type === "快速记忆" ? "⚡ 快速记忆例句" : "🎯 六级真题迁移例句"}</span>
-          </div>
-          <div class="text-[var(--text-main)] flex items-center justify-between text-xs sm:text-sm font-medium leading-[1.5]">
-            <span>• ${ex.en}</span>
             ${getAudioButtonHtml(ex.en)}
           </div>
-          <div class="text-[var(--text-sub)] pl-2 text-[13px] leading-relaxed">↳ ${ex.cn}</div>
+          <div class="text-[#1F2937] text-sm sm:text-base font-semibold leading-[1.6] text-wrap-safe">
+            ${ex.en}
+          </div>
+          <div class="text-[#4A5568] text-[13px] leading-[1.6] text-wrap-safe">
+            ↳ ${ex.cn}
+          </div>
         </div>
       `).join("");
 
@@ -2797,21 +2822,21 @@
               </div>
             </div>
 
-            <div class="text-xs md:text-sm text-[var(--text-main)] font-medium mt-2 leading-relaxed px-3.5 py-2.5 rounded-xl bg-[#E6F1EB]/40">
-              <span class="text-[var(--accent)] font-bold">【核心含义】</span>${item.coreMeaning}
+            <div class="text-xs sm:text-sm p-[12px_14px] rounded-[14px] bg-[rgba(220,237,229,0.35)] leading-[1.6] mt-2">
+              <span class="text-[#1B4332] font-semibold">【核心含义】</span><span class="text-[#2D3748]">${item.coreMeaning}</span>
             </div>
           </div>
 
-          <!-- 默认展示区域 2：本文真题原句 (无衬线 Apple 规范排版 · 仅左强调线) -->
-          <div class="p-3.5 rounded-r-xl border-l-[3px] border-l-[#2D6A4F] bg-[#E6F1EB]/45 space-y-1.5">
-            <div class="flex items-center justify-between text-xs text-[var(--accent)] font-semibold mb-0.5">
+          <!-- 默认展示区域 2：本文真题原句 (Section 15: iOS Quote 风格 · 仅左强调线) -->
+          <div class="p-[12px_14px] rounded-[4px_12px_12px_4px] border-l-[3px] border-l-[#2D6A4F] bg-[rgba(240,247,243,0.65)] space-y-1.5">
+            <div class="flex items-center justify-between text-xs text-[#2D6A4F] font-semibold mb-1">
               <span>📖 本文真题原句</span>
               ${getAudioButtonHtml(item.articleUsage.quote)}
             </div>
-            <div class="text-sm sm:text-base text-[var(--text-main)] font-normal leading-[1.5]">
+            <div class="text-sm sm:text-base text-[#17382B] font-semibold leading-[1.55]">
               "${item.articleUsage.quote}"
             </div>
-            <div class="text-[13px] text-[var(--text-sub)] leading-relaxed">
+            <div class="text-[13px] text-[#4A5568] mt-1.5 leading-relaxed">
               ↳ 译文：${item.articleUsage.translation}
             </div>
           </div>
