@@ -34,35 +34,46 @@
       --sal: env(safe-area-inset-left, 0px);
       --sar: env(safe-area-inset-right, 0px);
 
-      /* iOS 极简通透玻璃拟态 (Glassmorphism) 色彩系统：微光冷灰底 + 真·毛玻璃 + 墨青/雅蓝核心高亮 */
-      --bg: #F8FAFC;
-      --card: rgba(255, 255, 255, 0.65);
-      --card-sub: rgba(255, 255, 255, 0.45);
-      --card-hover: rgba(255, 255, 255, 0.85);
-      --text-main: #0F172A;
-      --text-body: #1E293B;
-      --text-sub: #475569;
-      --text-muted: #64748B;
-      --border: rgba(255, 255, 255, 0.70);
-      --border-sub: rgba(226, 232, 240, 0.65);
-      --border-hover: rgba(203, 213, 225, 0.80);
-      --accent: #0F766E;
-      --accent-hover: #115E59;
-      --accent-soft: rgba(204, 251, 241, 0.60);
-      --accent-blue: #0284C7;
-      --badge-bg: rgba(241, 245, 249, 0.80);
-      --badge-text: #0F766E;
+      /* 护眼鼠尾草绿色彩系统 (Sage Green Environment & 3-Level Hierarchy) */
+      --bg: #DCEDE5;
       
-      /* 自测评分色彩 (轻透玻璃质感) */
-      --score-red-bg: rgba(254, 242, 242, 0.75);
+      /* Level 3: 核心内容卡片 (纯白底色，墨绿阴影与鼠尾草边框，清晰层级) */
+      --card: #FFFFFF;
+      --card-sub: rgba(244, 248, 245, 0.88);
+      --card-hover: #FFFFFF;
+      --card-border: #D3E4DB;
+      --card-shadow: 0 4px 14px rgba(27, 67, 50, 0.06);
+
+      /* Level 2: 轻微毛玻璃质感 (导航、搜索框、Tab、胶囊) */
+      --glass-bg: rgba(255, 255, 255, 0.62);
+      --glass-border: rgba(255, 255, 255, 0.65);
+      --glass-shadow: 0 4px 16px rgba(35, 80, 60, 0.06);
+
+      /* 高对比度护眼文字规范 (Section Eleven) */
+      --text-main: #17382B;  /* 主要文字 */
+      --text-body: #1E293B;  /* 英文正文 */
+      --text-sub: #334155;   /* 次要文字/释义 */
+      --text-muted: #456457; /* 辅助信息/未选中文字 */
+
+      /* 森林绿与品牌强调色 (Section Eight, Twelve, Fourteen) */
+      --accent: #2D6A4F;       /* 深森林绿 */
+      --accent-dark: #1B4332;  /* 选中文字/深墨绿 */
+      --accent-hover: #1B4332;
+      --accent-soft: rgba(45, 106, 79, 0.10);
+      --border: #D3E4DB;
+      --border-sub: #E2ECE6;
+      --border-hover: #C5DCD0;
+
+      /* 自测评分色彩 (轻透温和) */
+      --score-red-bg: rgba(254, 242, 242, 0.85);
       --score-red-text: #B91C1C;
-      --score-red-border: rgba(254, 202, 202, 0.70);
-      --score-yellow-bg: rgba(254, 252, 232, 0.75);
+      --score-red-border: rgba(254, 202, 202, 0.80);
+      --score-yellow-bg: rgba(254, 252, 232, 0.85);
       --score-yellow-text: #A16207;
-      --score-yellow-border: rgba(254, 240, 138, 0.70);
-      --score-green-bg: rgba(240, 253, 244, 0.75);
+      --score-yellow-border: rgba(254, 240, 138, 0.80);
+      --score-green-bg: rgba(240, 253, 244, 0.85);
       --score-green-text: #15803D;
-      --score-green-border: rgba(187, 247, 208, 0.70);
+      --score-green-border: rgba(187, 247, 208, 0.80);
     }
 
     *, *::before, *::after {
@@ -77,56 +88,55 @@
       -webkit-touch-callout: none;
     }
 
+    /* 二、背景必须是明显的护眼鼠尾草浅绿色 */
     body {
-      background-color: var(--bg);
-      background-image: 
-        radial-gradient(circle at 10% 8%, rgba(226, 232, 240, 0.65) 0%, transparent 40%),
-        radial-gradient(circle at 90% 18%, rgba(224, 242, 254, 0.45) 0%, transparent 45%),
-        radial-gradient(circle at 15% 65%, rgba(241, 245, 249, 0.7) 0%, transparent 45%),
-        radial-gradient(circle at 85% 85%, rgba(226, 232, 240, 0.5) 0%, transparent 50%);
+      background: linear-gradient(
+        180deg,
+        #DCEDE5 0%,
+        #E6F2EB 45%,
+        #EAF5EF 100%
+      );
       background-attachment: fixed;
       color: var(--text-body);
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "PingFang SC", "Hiragino Sans GB", "Segoe UI", system-ui, sans-serif;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      line-height: 1.55;
-      /* 严格避开 iPhone 刘海/灵动岛与底部小黑条 (Home Indicator) */
+      line-height: 1.65;
       padding-top: 0;
       padding-bottom: max(2.5rem, calc(var(--sab) + 2rem));
       padding-left: max(0.85rem, calc(var(--sal) + 0.35rem));
       padding-right: max(0.85rem, calc(var(--sar) + 0.35rem));
+      min-height: 100vh;
     }
 
-    /* iOS 27 真·毛玻璃面板 (Frosted Glass & Squircle 连续曲率) */
+    /* Level 3: 核心内容卡片 (纯白底色，墨绿阴影与鼠尾草边框，清晰层级) */
     .theme-card {
-      border-radius: 24px !important;
-      background: rgba(255, 255, 255, 0.65) !important;
-      backdrop-filter: blur(24px) saturate(180%) !important;
-      -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
-      border: 1px solid rgba(255, 255, 255, 0.70) !important;
-      box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.04), 0 2px 8px -1px rgba(0, 0, 0, 0.02) !important;
+      border-radius: 20px !important;
+      background: #FFFFFF !important;
+      border: 1px solid #D3E4DB !important;
+      box-shadow: 0 4px 14px rgba(27, 67, 50, 0.06) !important;
       transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
       box-sizing: border-box;
       position: relative;
     }
 
-    /* 统一高频搭配大玻璃卡片 (合并碎片化小框) */
+    /* Level 2: 统一高频搭配大玻璃卡片 (合并碎片化小框) */
     .collocation-glass-box {
-      background: rgba(255, 255, 255, 0.45);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.65);
-      border-radius: 20px;
-      box-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.02);
+      background: rgba(246, 250, 248, 0.75);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid #DCE8E1;
+      border-radius: 16px;
+      box-shadow: 0 1px 4px rgba(27, 67, 50, 0.02);
     }
 
     /* Level 2: Liquid Glass Navigation Dock (主导航长条椭圆胶囊底槽 Track) */
     .glass-nav-container {
-      background: rgba(255, 255, 255, 0.40) !important;
-      backdrop-filter: blur(24px) saturate(180%) !important;
-      -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+      background: rgba(255, 255, 255, 0.62) !important;
+      backdrop-filter: blur(20px) !important;
+      -webkit-backdrop-filter: blur(20px) !important;
       border: 1px solid rgba(255, 255, 255, 0.65) !important;
-      box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.03), inset 0 1px 1px rgba(255, 255, 255, 0.60) !important;
+      box-shadow: 0 4px 16px rgba(35, 80, 60, 0.06) !important;
       border-radius: 9999px !important;
       padding: 5px !important;
       overflow-x: auto;
@@ -155,12 +165,12 @@
     }
 
     .glass-status-pill {
-      background: rgba(255, 255, 255, 0.60);
+      background: rgba(255, 255, 255, 0.62);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.65);
       border-radius: 9999px;
-      box-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.03);
+      box-shadow: 0 2px 10px rgba(35, 80, 60, 0.04);
     }
 
     .nav-capsule-item {
@@ -175,15 +185,15 @@
       justify-content: center;
     }
 
-    /* 顶部导航选中的悬浮玻璃胶囊 (Liquid Glass Active Capsule: 等距同心居中，无外溢放大) */
+    /* 顶部导航选中的悬浮玻璃胶囊 (Section Eight: 半透明白色高亮胶囊，文字 #1B4332) */
     .nav-capsule-active {
-      background: rgba(255, 255, 255, 0.95) !important;
-      backdrop-filter: blur(20px) saturate(180%) !important;
-      -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
-      color: #0F172A !important;
+      background: rgba(255, 255, 255, 0.92) !important;
+      backdrop-filter: blur(16px) !important;
+      -webkit-backdrop-filter: blur(16px) !important;
+      color: #1B4332 !important;
       font-weight: 700 !important;
       border: 1px solid rgba(255, 255, 255, 0.95) !important;
-      box-shadow: 0 2px 8px -1px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.03), inset 0 1px 1px #ffffff !important;
+      box-shadow: 0 3px 10px rgba(27, 67, 50, 0.08) !important;
       border-radius: 9999px !important;
       transform: none !important;
       transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
@@ -191,18 +201,18 @@
 
     .nav-capsule-inactive {
       background: transparent !important;
-      color: #64748B !important;
+      color: #456457 !important;
       font-weight: 500 !important;
       border: 1px solid transparent !important;
       box-shadow: none !important;
       border-radius: 9999px !important;
-      opacity: 0.85;
+      opacity: 0.90;
       transition: all 0.2s ease;
     }
     @media (hover: hover) {
       .nav-capsule-inactive:hover {
         opacity: 1;
-        color: #0F172A;
+        color: #1B4332;
         background: rgba(255, 255, 255, 0.35) !important;
       }
     }
@@ -211,31 +221,32 @@
       background: rgba(255, 255, 255, 0.50) !important;
     }
 
-    /* 导航胶囊拖动与悬停反馈 (单点+长按拖拽体验) */
+    /* 导航胶囊拖动与悬停反馈 (Section Nine: 浮起、轻微放大、阴影增强) */
     .nav-capsule-dragging {
-      transform: scale(1.08) translateY(-2px) !important;
-      box-shadow: 0 12px 28px -4px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.06) !important;
-      backdrop-filter: blur(28px) saturate(200%) !important;
-      -webkit-backdrop-filter: blur(28px) saturate(200%) !important;
+      transform: scale(1.06) translateY(-2px) !important;
+      box-shadow: 0 8px 20px rgba(27, 67, 50, 0.15) !important;
+      backdrop-filter: blur(24px) !important;
+      -webkit-backdrop-filter: blur(24px) !important;
+      background: rgba(255, 255, 255, 0.96) !important;
       z-index: 30;
       transition: transform 0.15s ease, box-shadow 0.15s ease !important;
     }
     .nav-capsule-hover-target {
-      background: rgba(15, 118, 110, 0.12) !important;
-      border: 1px solid rgba(15, 118, 110, 0.35) !important;
+      background: rgba(45, 106, 79, 0.14) !important;
+      border: 1px solid rgba(45, 106, 79, 0.35) !important;
       transform: scale(1.04) !important;
       transition: all 0.15s ease !important;
     }
 
     /* 兼容老 class */
     .btn-tab-active {
-      background: rgba(255, 255, 255, 0.95) !important;
-      backdrop-filter: blur(20px) saturate(180%) !important;
-      -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
-      color: #0F172A !important;
+      background: rgba(255, 255, 255, 0.92) !important;
+      backdrop-filter: blur(16px) !important;
+      -webkit-backdrop-filter: blur(16px) !important;
+      color: #1B4332 !important;
       font-weight: 700 !important;
       border: 1px solid rgba(255, 255, 255, 0.95) !important;
-      box-shadow: 0 4px 14px -2px rgba(0, 0, 0, 0.07), inset 0 1px 1px #ffffff !important;
+      box-shadow: 0 3px 10px rgba(27, 67, 50, 0.08) !important;
       border-radius: 9999px !important;
     }
 
@@ -243,29 +254,29 @@
       white-space: nowrap;
       transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
       min-height: 44px;
-      color: #64748B;
+      color: #456457;
       border: 1px solid transparent;
       border-radius: 9999px;
     }
 
     /* 分类标签高光与微磨砂胶囊 */
     .cat-pill-active {
-      background: #0F766E !important;
+      background: #2D6A4F !important;
       color: #ffffff !important;
       font-weight: 600 !important;
-      border: 1px solid rgba(255, 255, 255, 0.35) !important;
-      box-shadow: 0 4px 14px -2px rgba(15, 118, 110, 0.25) !important;
+      border: 1px solid #2D6A4F !important;
+      box-shadow: 0 3px 10px rgba(45, 106, 79, 0.25) !important;
       border-radius: 9999px !important;
       transform: scale(1.02);
-      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 0.2s ease;
     }
     .cat-pill-inactive {
       background: rgba(255, 255, 255, 0.55) !important;
       backdrop-filter: blur(14px) !important;
       -webkit-backdrop-filter: blur(14px) !important;
-      color: #475569 !important;
+      color: #456457 !important;
       font-weight: 500 !important;
-      border: 1px solid rgba(255, 255, 255, 0.70) !important;
+      border: 1px solid rgba(255, 255, 255, 0.65) !important;
       box-shadow: 0 1px 4px rgba(0, 0, 0, 0.02) !important;
       border-radius: 9999px !important;
       transition: all 0.2s ease;
@@ -273,21 +284,16 @@
 
     /* 内部卡片嵌套玻璃层 (Nested Inner Glass) */
     .glass-inner-core {
-      background: rgba(255, 255, 255, 0.50);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.70);
-      border-radius: 18px;
-      box-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.02);
+      background: rgba(246, 250, 248, 0.75);
+      border: 1px solid #DCE8E1;
+      border-radius: 14px;
     }
-    .glass-inner-quote {
-      background: rgba(255, 255, 255, 0.55);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.70);
-      border-left: 3px solid var(--accent);
-      border-radius: 18px;
-      box-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.02);
+    .glass-inner-quote, .reading-quote-box {
+      background: rgba(244, 248, 245, 0.85);
+      border: 1px solid #D8E6DE;
+      border-left: 3px solid #2D6A4F !important;
+      border-radius: 14px;
+      box-shadow: 0 1px 4px rgba(27, 67, 50, 0.02);
     }
 
     /* 玻璃胶囊通用按钮 (同步按钮、重置胶囊) */
@@ -298,19 +304,19 @@
       border: 1px solid rgba(255, 255, 255, 0.75);
       border-top: 1px solid rgba(255, 255, 255, 0.95);
       border-radius: 9999px;
-      color: #0F172A;
-      box-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.04);
+      color: #1B4332;
+      box-shadow: 0 2px 10px rgba(35, 80, 60, 0.05);
       transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
       touch-action: manipulation;
     }
     .glass-btn-capsule:hover, .glass-btn-secondary:hover {
       background: rgba(255, 255, 255, 0.85);
-      box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.06);
+      box-shadow: 0 4px 14px rgba(35, 80, 60, 0.08);
       transform: translateY(-1px);
     }
     .glass-btn-capsule:active, .glass-btn-secondary:active {
       transform: scale(0.95);
-      background: rgba(241, 245, 249, 0.85);
+      background: rgba(255, 255, 255, 0.95);
     }
 
     /* 屏蔽 WebKit / iOS Safari 自带的粗糙原生清除与搜索按钮 */
@@ -323,28 +329,27 @@
       display: none !important;
     }
 
-    /* 搜索框专用微弱透光玻璃胶囊 (高度 52px，轻微背景模糊，大圆角胶囊形) */
+    /* 搜索框专用轻微透光玻璃胶囊 (Section Ten: 18~22px圆角，轻微背景模糊) */
     .search-input-field {
-      height: 52px;
-      min-height: 52px;
-      border-radius: 9999px;
-      background: rgba(255, 255, 255, 0.65);
+      height: 50px;
+      min-height: 50px;
+      border-radius: 20px !important;
+      background: rgba(255, 255, 255, 0.62) !important;
       backdrop-filter: blur(20px) saturate(160%);
       -webkit-backdrop-filter: blur(20px) saturate(160%);
-      border: 1px solid rgba(255, 255, 255, 0.75);
-      border-top: 1px solid rgba(255, 255, 255, 0.95);
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03), inset 0 1px 1px rgba(255, 255, 255, 0.85);
-      color: #0F172A;
+      border: 1px solid rgba(255, 255, 255, 0.70) !important;
+      box-shadow: 0 4px 14px rgba(27, 67, 50, 0.04) !important;
+      color: #17382B !important;
       font-size: 14px;
       transition: all 0.2s ease;
     }
     .search-input-field:focus {
-      background: rgba(255, 255, 255, 0.90);
-      border-color: rgba(15, 118, 110, 0.45);
-      box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.12), inset 0 1px 1px rgba(255, 255, 255, 0.95);
+      background: rgba(255, 255, 255, 0.88) !important;
+      border-color: rgba(45, 106, 79, 0.45) !important;
+      box-shadow: 0 4px 16px rgba(45, 106, 79, 0.10), 0 0 0 2px rgba(45, 106, 79, 0.15) !important;
     }
 
-    /* 移动端悬浮透光导航头 (充沛顶部 Safe Area，彻底解决刘海/灵动岛压迫感) */
+    /* 移动端悬浮透光导航头 (护眼绿调透光 + Safe Area 保护) */
     @media (max-width: 768px) {
       .mobile-sticky-header {
         position: sticky;
@@ -354,23 +359,22 @@
         margin-right: -0.85rem;
         padding-left: max(0.85rem, calc(var(--sal) + 0.35rem));
         padding-right: max(0.85rem, calc(var(--sar) + 0.35rem));
-        /* 充沛安全的顶部间距：严格避开 Dynamic Island / 状态栏 */
         padding-top: max(20px, calc(var(--sat) + 14px));
         padding-bottom: 12px;
         margin-top: 0 !important;
-        background: rgba(248, 250, 252, 0.75);
-        backdrop-filter: blur(24px) saturate(180%);
-        -webkit-backdrop-filter: blur(24px) saturate(180%);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.75);
-        box-shadow: 0 2px 10px -2px rgba(0, 0, 0, 0.03);
+        background: rgba(220, 237, 229, 0.78);
+        backdrop-filter: blur(20px) saturate(180%);
+        -webkit-backdrop-filter: blur(20px) saturate(180%);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.60);
+        box-shadow: 0 2px 10px -2px rgba(27, 67, 50, 0.04);
         transition: background 0.25s ease, backdrop-filter 0.25s ease, box-shadow 0.25s ease;
       }
       .mobile-sticky-header.scrolled {
-        background: rgba(248, 250, 252, 0.88);
-        backdrop-filter: blur(28px) saturate(190%);
-        -webkit-backdrop-filter: blur(28px) saturate(190%);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.85);
-        box-shadow: 0 6px 24px -2px rgba(0, 0, 0, 0.05);
+        background: rgba(220, 237, 229, 0.92);
+        backdrop-filter: blur(24px) saturate(190%);
+        -webkit-backdrop-filter: blur(24px) saturate(190%);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.70);
+        box-shadow: 0 4px 16px -2px rgba(27, 67, 50, 0.06);
       }
     }
 
@@ -436,12 +440,12 @@
       height: 34px !important;
       padding: 0;
       border-radius: 9999px;
-      color: #64748B;
-      background: rgba(255, 255, 255, 0.80);
+      color: #2D6A4F;
+      background: rgba(255, 255, 255, 0.85);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.85);
-      box-shadow: 0 2px 6px -1px rgba(0, 0, 0, 0.04), inset 0 1px 1px #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.90);
+      box-shadow: 0 2px 6px rgba(27, 67, 50, 0.06), inset 0 1px 1px #ffffff;
       transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
       touch-action: manipulation;
       cursor: pointer;
@@ -652,8 +656,8 @@
           </div>
         </div>
 
-        <!-- 主学习卡片主体 (24px Squircle 平滑圆角，通透毛玻璃质感) -->
-        <div id="eb-card-box" class="theme-card rounded-[24px] p-6 sm:p-8 md:p-10 shadow-sm border border-[var(--border)] bg-[var(--card)] transition-all min-h-[320px] flex flex-col justify-center">
+        <!-- 主学习卡片主体 (20px Squircle 平滑圆角，纯白内容层) -->
+        <div id="eb-card-box" class="theme-card rounded-[20px] p-6 sm:p-8 md:p-10 shadow-sm border border-[var(--border)] bg-[var(--card)] transition-all min-h-[320px] flex flex-col justify-center">
           
           <!-- 正面：纯净主动回忆界面 (超大英文核心词，清晰引导，醒目CTA) -->
           <div id="eb-card-front" class="space-y-4 sm:space-y-6 my-auto">
@@ -789,8 +793,8 @@
         <span id="quiz-cat-badge" class="px-3 py-1 rounded-full text-xs font-semibold bg-[var(--accent-soft)] text-[var(--accent)] border border-[var(--border-sub)]">分类</span>
       </div>
 
-      <!-- 单层大圆角扁平核心卡片 (rounded-[24px] Squircle，消除内部嵌套) -->
-      <div id="flashcard" onclick="flipCard()" class="theme-card rounded-[24px] p-6 sm:p-8 md:p-10 text-center min-h-[320px] flex flex-col items-center justify-center cursor-pointer transition-all duration-200 select-none">
+      <!-- 单层大圆角扁平核心卡片 (rounded-[20px] Squircle，纯白内容层) -->
+      <div id="flashcard" onclick="flipCard()" class="theme-card rounded-[20px] p-6 sm:p-8 md:p-10 text-center min-h-[320px] flex flex-col items-center justify-center cursor-pointer transition-all duration-200 select-none">
         
         <div id="card-front" class="space-y-4 my-auto w-full">
           <div class="flex items-center justify-center gap-2">
@@ -860,7 +864,7 @@
             autocapitalize="off"
             spellcheck="false"
             placeholder="搜索英文词汇、中文释义、高频搭配、例句"
-            class="search-input-field w-full h-[52px] min-h-[52px] rounded-full pl-11 pr-12 text-sm text-[var(--text-main)] placeholder-[var(--text-muted)] focus:outline-none"
+            class="search-input-field w-full h-[50px] min-h-[50px] rounded-[20px] pl-11 pr-12 text-sm text-[var(--text-main)] placeholder-[var(--text-muted)] focus:outline-none"
           >
           <button 
             type="button" 
@@ -901,7 +905,7 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4.5 items-stretch">
         
         <!-- 考点 1：whom vs. who -->
-        <div class="theme-card rounded-[24px] p-5 md:p-6 bg-[var(--card)] border border-[var(--border)] shadow-xs card-layout">
+        <div class="theme-card rounded-[20px] p-5 md:p-6 bg-[var(--card)] border border-[var(--border)] shadow-xs card-layout">
           <!-- 头部标题与分类 -->
           <div class="flex items-center justify-between border-b border-[var(--border-sub)] pb-2.5 mb-3">
             <h3 class="font-bold text-base md:text-lg text-[var(--text-main)] tracking-tight">whom vs. who</h3>
@@ -935,7 +939,7 @@
                   <span>the person to whom I spoke</span>
                   <button type="button" onclick="speakText('the person to whom I spoke', event)" class="audio-speaker-btn -my-1" title="朗读发音" aria-label="朗读发音"><svg class="w-3.5 h-3.5 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.757 3.63 8.25 4.51 8.25H6.75z" /></svg></button>
                 </div>
-                <div class="text-[#64748B] text-[13px] leading-relaxed">↳ 译文：与我交谈的那个人（动词搭配 speak to sb ➔ to whom）</div>
+                <div class="text-[#475569] text-[13px] leading-relaxed">↳ 译文：与我交谈的那个人（动词搭配 speak to sb ➔ to whom）</div>
               </div>
 
               <div class="p-3 rounded-2xl border border-[var(--border-sub)] bg-[var(--card-sub)] space-y-1">
@@ -947,7 +951,7 @@
                   <span>the person who I spoke to</span>
                   <button type="button" onclick="speakText('the person who I spoke to', event)" class="audio-speaker-btn -my-1" title="朗读发音" aria-label="朗读发音"><svg class="w-3.5 h-3.5 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.757 3.63 8.25 4.51 8.25H6.75z" /></svg></button>
                 </div>
-                <div class="text-[#64748B] text-[13px] leading-relaxed">↳ 译文：跟我说话的那个人</div>
+                <div class="text-[#475569] text-[13px] leading-relaxed">↳ 译文：跟我说话的那个人</div>
               </div>
 
               <div class="p-3 rounded-2xl border border-[var(--border-sub)] bg-[var(--card-sub)] space-y-1">
@@ -959,7 +963,7 @@
                   <span>the person I spoke to</span>
                   <button type="button" onclick="speakText('the person I spoke to', event)" class="audio-speaker-btn -my-1" title="朗读发音" aria-label="朗读发音"><svg class="w-3.5 h-3.5 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.757 3.63 8.25 4.51 8.25H6.75z" /></svg></button>
                 </div>
-                <div class="text-[#64748B] text-[13px] leading-relaxed">↳ 译文：我说话的那个人</div>
+                <div class="text-[#475569] text-[13px] leading-relaxed">↳ 译文：我说话的那个人</div>
               </div>
             </div>
           </div>
@@ -987,7 +991,7 @@
         </div>
 
         <!-- 考点 2：entail vs. require vs. involve -->
-        <div class="theme-card rounded-[24px] p-5 md:p-6 bg-[var(--card)] border border-[var(--border)] shadow-xs card-layout">
+        <div class="theme-card rounded-[20px] p-5 md:p-6 bg-[var(--card)] border border-[var(--border)] shadow-xs card-layout">
           <!-- 头部标题与分类 -->
           <div class="flex items-center justify-between border-b border-[var(--border-sub)] pb-2.5 mb-3">
             <h3 class="font-bold text-base md:text-lg text-[var(--text-main)] tracking-tight">entail vs. require vs. involve</h3>
@@ -1018,7 +1022,7 @@
                   <span>• The position requires three years of relevant experience.</span>
                   <button type="button" onclick="speakText('The position requires three years of relevant experience.', event)" class="audio-speaker-btn -my-1" title="朗读发音" aria-label="朗读发音"><svg class="w-3.5 h-3.5 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.757 3.63 8.25 4.51 8.25H6.75z" /></svg></button>
                 </div>
-                <div class="text-[#64748B] pl-2 text-[13px] leading-relaxed">↳ 翻译：该岗位硬性要求三年相关工作经验。</div>
+                <div class="text-[#475569] pl-2 text-[13px] leading-relaxed">↳ 翻译：该岗位硬性要求三年相关工作经验。</div>
               </div>
 
               <div class="p-3 rounded-2xl border border-[var(--score-green-border)] bg-[var(--score-green-bg)] space-y-1">
@@ -1027,7 +1031,7 @@
                   <span>• Winning the championship entails immense sacrifice and discipline.</span>
                   <button type="button" onclick="speakText('Winning the championship entails immense sacrifice and discipline.', event)" class="audio-speaker-btn -my-1" title="朗读发音" aria-label="朗读发音"><svg class="w-3.5 h-3.5 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.757 3.63 8.25 4.51 8.25H6.75z" /></svg></button>
                 </div>
-                <div class="text-[#64748B] pl-2 text-[13px] leading-relaxed">↳ 翻译：赢得冠军必然伴随着巨大的牺牲与严苛的自律。</div>
+                <div class="text-[#475569] pl-2 text-[13px] leading-relaxed">↳ 翻译：赢得冠军必然伴随着巨大的牺牲与严苛的自律。</div>
               </div>
 
               <div class="p-3 rounded-2xl border border-[var(--border-sub)] bg-[var(--card-sub)] text-xs text-[var(--text-sub)]">
@@ -1054,7 +1058,7 @@
         </div>
 
         <!-- 考点 3：validate vs. verify -->
-        <div class="theme-card rounded-[24px] p-5 md:p-6 bg-[var(--card)] border border-[var(--border)] shadow-xs card-layout">
+        <div class="theme-card rounded-[20px] p-5 md:p-6 bg-[var(--card)] border border-[var(--border)] shadow-xs card-layout">
           <!-- 头部标题与分类 -->
           <div class="flex items-center justify-between border-b border-[var(--border-sub)] pb-2.5 mb-3">
             <h3 class="font-bold text-base md:text-lg text-[var(--text-main)] tracking-tight">validate vs. verify</h3>
@@ -1083,7 +1087,7 @@
                   <span>• Please verify your credentials before logging in.</span>
                   <button type="button" onclick="speakText('Please verify your credentials before logging in.', event)" class="audio-speaker-btn -my-1" title="朗读发音" aria-label="朗读发音"><svg class="w-3.5 h-3.5 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.757 3.63 8.25 4.51 8.25H6.75z" /></svg></button>
                 </div>
-                <div class="text-[#64748B] pl-2 text-[13px] leading-relaxed">↳ 翻译：登录前请先核验您的身份凭证。</div>
+                <div class="text-[#475569] pl-2 text-[13px] leading-relaxed">↳ 翻译：登录前请先核验您的身份凭证。</div>
               </div>
 
               <div class="p-3 rounded-2xl border border-[var(--score-green-border)] bg-[var(--score-green-bg)] space-y-1">
@@ -1092,7 +1096,7 @@
                   <span>• Subsequent trials validated the initial hypothesis.</span>
                   <button type="button" onclick="speakText('Subsequent trials validated the initial hypothesis.', event)" class="audio-speaker-btn -my-1" title="朗读发音" aria-label="朗读发音"><svg class="w-3.5 h-3.5 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.757 3.63 8.25 4.51 8.25H6.75z" /></svg></button>
                 </div>
-                <div class="text-[#64748B] pl-2 text-[13px] leading-relaxed">↳ 翻译：随后的试验验证了最初的假说（证明其理论成立）。</div>
+                <div class="text-[#475569] pl-2 text-[13px] leading-relaxed">↳ 翻译：随后的试验验证了最初的假说（证明其理论成立）。</div>
               </div>
             </div>
           </div>
@@ -1117,7 +1121,7 @@
         </div>
 
         <!-- 考点 4：autonomy vs. independence -->
-        <div class="theme-card rounded-[24px] p-5 md:p-6 bg-[var(--card)] border border-[var(--border)] shadow-xs card-layout">
+        <div class="theme-card rounded-[20px] p-5 md:p-6 bg-[var(--card)] border border-[var(--border)] shadow-xs card-layout">
           <!-- 头部标题与分类 -->
           <div class="flex items-center justify-between border-b border-[var(--border-sub)] pb-2.5 mb-3">
             <h3 class="font-bold text-base md:text-lg text-[var(--text-main)] tracking-tight">autonomy vs. independence</h3>
@@ -1146,7 +1150,7 @@
                   <span>• Financial independence allows for self-reliant choices.</span>
                   <button type="button" onclick="speakText('Financial independence allows for self-reliant choices.', event)" class="audio-speaker-btn -my-1" title="朗读发音" aria-label="朗读发音"><svg class="w-3.5 h-3.5 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.757 3.63 8.25 4.51 8.25H6.75z" /></svg></button>
                 </div>
-                <div class="text-[#64748B] pl-2 text-[13px] leading-relaxed">↳ 翻译：经济独立能让人做出自食其力的生活抉择。</div>
+                <div class="text-[#475569] pl-2 text-[13px] leading-relaxed">↳ 翻译：经济独立能让人做出自食其力的生活抉择。</div>
               </div>
 
               <div class="p-3 rounded-2xl border border-[var(--score-green-border)] bg-[var(--score-green-bg)] space-y-1">
@@ -1155,7 +1159,7 @@
                   <span>• Physicians must maintain clinical autonomy in decision-making.</span>
                   <button type="button" onclick="speakText('Physicians must maintain clinical autonomy in decision-making.', event)" class="audio-speaker-btn -my-1" title="朗读发音" aria-label="朗读发音"><svg class="w-3.5 h-3.5 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.757 3.63 8.25 4.51 8.25H6.75z" /></svg></button>
                 </div>
-                <div class="text-[#64748B] pl-2 text-[13px] leading-relaxed">↳ 翻译：医生在临床决策中必须保持专业自主权。</div>
+                <div class="text-[#475569] pl-2 text-[13px] leading-relaxed">↳ 翻译：医生在临床决策中必须保持专业自主权。</div>
               </div>
             </div>
           </div>
@@ -1179,7 +1183,7 @@
         </div>
 
         <!-- 考点 5：take on vs. take up -->
-        <div class="theme-card rounded-[24px] p-5 md:p-6 bg-[var(--card)] border border-[var(--border)] shadow-xs card-layout">
+        <div class="theme-card rounded-[20px] p-5 md:p-6 bg-[var(--card)] border border-[var(--border)] shadow-xs card-layout">
           <!-- 头部标题与分类 -->
           <div class="flex items-center justify-between border-b border-[var(--border-sub)] pb-2.5 mb-3">
             <h3 class="font-bold text-base md:text-lg text-[var(--text-main)] tracking-tight">take on vs. take up</h3>
@@ -1208,7 +1212,7 @@
                   <span>• The debate has taken on an increasingly complex character.</span>
                   <button type="button" onclick="speakText('The debate has taken on an increasingly complex character.', event)" class="audio-speaker-btn -my-1" title="朗读发音" aria-label="朗读发音"><svg class="w-3.5 h-3.5 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.757 3.63 8.25 4.51 8.25H6.75z" /></svg></button>
                 </div>
-                <div class="text-[#64748B] pl-2 text-[13px] leading-relaxed">↳ 翻译：辩论呈现出日益复杂的特征（六级阅读真题用法）。</div>
+                <div class="text-[#475569] pl-2 text-[13px] leading-relaxed">↳ 翻译：辩论呈现出日益复杂的特征（六级阅读真题用法）。</div>
               </div>
 
               <div class="p-3 rounded-2xl border border-[var(--border-sub)] bg-[var(--card-sub)] space-y-1">
@@ -1217,7 +1221,7 @@
                   <span>• She decided to take up photography in her spare time.</span>
                   <button type="button" onclick="speakText('She decided to take up photography in her spare time.', event)" class="audio-speaker-btn -my-1" title="朗读发音" aria-label="朗读发音"><svg class="w-3.5 h-3.5 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.757 3.63 8.25 4.51 8.25H6.75z" /></svg></button>
                 </div>
-                <div class="text-[#64748B] pl-2 text-[13px] leading-relaxed">↳ 翻译：她决定在业余时间开始学习摄影。</div>
+                <div class="text-[#475569] pl-2 text-[13px] leading-relaxed">↳ 翻译：她决定在业余时间开始学习摄影。</div>
               </div>
             </div>
           </div>
@@ -1254,7 +1258,7 @@
         </div>
 
         <!-- 考点 6：underlying vs. surface -->
-        <div class="theme-card rounded-[24px] p-5 md:p-6 bg-[var(--card)] border border-[var(--border)] shadow-xs card-layout">
+        <div class="theme-card rounded-[20px] p-5 md:p-6 bg-[var(--card)] border border-[var(--border)] shadow-xs card-layout">
           <!-- 头部标题与分类 -->
           <div class="flex items-center justify-between border-b border-[var(--border-sub)] pb-2.5 mb-3">
             <h3 class="font-bold text-base md:text-lg text-[var(--text-main)] tracking-tight">underlying vs. surface</h3>
@@ -1283,7 +1287,7 @@
                   <span>• Researchers investigate the underlying causes of inflation.</span>
                   <button type="button" onclick="speakText('Researchers investigate the underlying causes of inflation.', event)" class="audio-speaker-btn -my-1" title="朗读发音" aria-label="朗读发音"><svg class="w-3.5 h-3.5 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.757 3.63 8.25 4.51 8.25H6.75z" /></svg></button>
                 </div>
-                <div class="text-[#64748B] pl-2 text-[13px] leading-relaxed">↳ 翻译：研究人员正在探究通货膨胀背后的深层根本原因。</div>
+                <div class="text-[#475569] pl-2 text-[13px] leading-relaxed">↳ 翻译：研究人员正在探究通货膨胀背后的深层根本原因。</div>
               </div>
 
               <div class="p-3 rounded-2xl border border-[var(--border-sub)] bg-[var(--card-sub)] space-y-1">
@@ -1292,7 +1296,7 @@
                   <span>• Treating only surface symptoms cannot resolve the crisis.</span>
                   <button type="button" onclick="speakText('Treating only surface symptoms cannot resolve the crisis.', event)" class="audio-speaker-btn -my-1" title="朗读发音" aria-label="朗读发音"><svg class="w-3.5 h-3.5 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.757 3.63 8.25 4.51 8.25H6.75z" /></svg></button>
                 </div>
-                <div class="text-[#64748B] pl-2 text-[13px] leading-relaxed">↳ 翻译：仅针对浅表症状进行治疗无法从根本上化解危机。</div>
+                <div class="text-[#475569] pl-2 text-[13px] leading-relaxed">↳ 翻译：仅针对浅表症状进行治疗无法从根本上化解危机。</div>
               </div>
             </div>
           </div>
@@ -1329,7 +1333,7 @@
     <main id="view-stats" class="hidden max-w-[880px] mx-auto space-y-5">
       
       <!-- 【第一层】今日复习核心行动 (首屏第一视觉焦点：明确“今日该做什么”) -->
-      <section class="theme-card rounded-[24px] p-5 md:p-6 bg-[var(--card)] shadow-xs border border-[var(--border)] space-y-4">
+      <section class="theme-card rounded-[20px] p-5 md:p-6 bg-[var(--card)] shadow-xs border border-[var(--border)] space-y-4">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[var(--border-sub)]">
           <div class="space-y-1.5">
             <div class="flex items-center gap-2">
@@ -1385,7 +1389,7 @@
       </section>
 
       <!-- 【第二层】艾宾浩斯阶段进度 (时间轴式排布，紧凑清晰，拒绝 Excel 厚条) -->
-      <section class="theme-card rounded-[24px] p-5 md:p-6 bg-[var(--card)] space-y-4 border border-[var(--border)] shadow-xs">
+      <section class="theme-card rounded-[20px] p-5 md:p-6 bg-[var(--card)] space-y-4 border border-[var(--border)] shadow-xs">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2 border-b border-[var(--border-sub)]">
           <div>
             <h3 class="font-bold text-sm md:text-base text-[var(--text-main)] flex items-center gap-2">
@@ -1421,7 +1425,7 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         
         <!-- 知识网络 -->
-        <section class="theme-card rounded-[24px] p-5 bg-[var(--card)] space-y-3.5 border border-[var(--border)] shadow-xs flex flex-col justify-between">
+        <section class="theme-card rounded-[20px] p-5 bg-[var(--card)] space-y-3.5 border border-[var(--border)] shadow-xs flex flex-col justify-between">
           <div class="space-y-3">
             <div class="flex items-center justify-between">
               <h3 class="font-bold text-sm md:text-base text-[var(--text-main)] flex items-center gap-2">
@@ -1449,7 +1453,7 @@
         </section>
 
         <!-- 真实学习统计 -->
-        <section class="theme-card rounded-[24px] p-5 bg-[var(--card)] space-y-3.5 border border-[var(--border)] shadow-xs flex flex-col justify-between">
+        <section class="theme-card rounded-[20px] p-5 bg-[var(--card)] space-y-3.5 border border-[var(--border)] shadow-xs flex flex-col justify-between">
           <div class="space-y-3">
             <div class="flex items-center justify-between">
               <h3 class="font-bold text-sm md:text-base text-[var(--text-main)] flex items-center gap-2">
@@ -1516,7 +1520,7 @@
 
   <script>
     // 唯一版本构建指纹 (供 PWA 全自动嗅探更新)
-    const APP_BUILD_ID = 'english-build-v1790273623';
+    const APP_BUILD_ID = 'english-build-v1790274245';
 
     // ==========================================
     // 词汇数据库（8大知识结构体系，精选实用例句与直接对照）
@@ -2395,7 +2399,7 @@
       } else {
         regex = /\b(?:with|to|on|for|from|in|by|about|at)\s+whom\b/gi;
       }
-      return text.replace(regex, (match) => `<strong class="font-semibold text-[var(--accent)] tracking-tight">${match}</strong>`);
+      return text.replace(regex, (match) => `<strong class="font-bold text-[#2D6A4F] tracking-tight">${match}</strong>`);
     }
 
     function renderCollocationListHtml(collocations, term) {
@@ -2403,8 +2407,8 @@
       const items = collocations.map((c) => {
         const highlighted = highlightCollocationKeywords(c, term);
         return `
-          <div class="py-2 first:pt-1 last:pb-1 flex items-start gap-2.5 text-xs sm:text-[13px] md:text-sm text-[var(--text-body)] leading-relaxed">
-            <span class="w-1.5 h-1.5 rounded-full bg-[var(--accent)]/50 flex-shrink-0 mt-1.5"></span>
+          <div class="py-2.5 first:pt-1 last:pb-1 flex items-start gap-2.5 text-xs sm:text-[13px] md:text-sm text-[#1E293B] leading-relaxed">
+            <span class="w-1.5 h-1.5 rounded-full bg-[#2D6A4F]/50 flex-shrink-0 mt-2"></span>
             <div class="flex-1 min-w-0 text-wrap-safe">${highlighted}</div>
           </div>
         `;
@@ -2412,10 +2416,10 @@
 
       return `
         <div class="collocation-glass-box p-3.5 sm:p-4 my-2.5">
-          <div class="text-xs font-bold text-[var(--accent)] mb-2 flex items-center gap-1.5">
+          <div class="text-xs font-bold text-[#2D6A4F] mb-2 flex items-center gap-1.5">
             <span>🔗 核心高频搭配</span>
           </div>
-          <div class="divide-y divide-black/[0.04]">
+          <div class="divide-y divide-[#F0F5F2]">
             ${items}
           </div>
         </div>
@@ -2487,7 +2491,7 @@
           ${getAudioButtonHtml(item.articleUsage.quote)}
         </div>
         <div class="text-sm sm:text-base text-[var(--text-main)] font-normal leading-[1.5]">"${item.articleUsage.quote}"</div>
-        <div class="text-[13px] text-[#64748B] mt-1 leading-relaxed">↳ 译文：${item.articleUsage.translation}</div>
+        <div class="text-[13px] text-[#475569] mt-1 leading-relaxed">↳ 译文：${item.articleUsage.translation}</div>
       `;
 
       // 3. 主要考法 / 搭配 (默认展示)
@@ -2519,7 +2523,7 @@
                 <span>• ${ex.en}</span>
                 ${getAudioButtonHtml(ex.en)}
               </div>
-              <div class="text-[#64748B] pl-2 text-[13px] leading-relaxed">↳ ${ex.cn}</div>
+              <div class="text-[#475569] pl-2 text-[13px] leading-relaxed">↳ ${ex.cn}</div>
             </div>
           `).join("")}
         </div>
@@ -2674,7 +2678,7 @@
           ${getAudioButtonHtml(item.articleUsage.quote)}
         </div>
         <div class="text-sm sm:text-base text-[var(--text-main)] font-normal leading-[1.5]">"${item.articleUsage.quote}"</div>
-        <div class="text-[13px] text-[#64748B] mt-1 leading-relaxed">↳ 译文：${item.articleUsage.translation}</div>
+        <div class="text-[13px] text-[#475569] mt-1 leading-relaxed">↳ 译文：${item.articleUsage.translation}</div>
       `;
 
       document.getElementById("card-meanings").innerHTML = `
@@ -2690,7 +2694,7 @@
         <div class="font-bold text-xs md:text-sm text-[var(--text-main)] mb-1">精选例句：</div>
         ${item.examples.slice(0, 1).map(ex => `
           <div class="text-[var(--text-main)] text-xs sm:text-sm font-normal leading-[1.5]">${ex.en}</div>
-          <div class="text-[#64748B] text-[13px] pl-1 leading-relaxed">↳ ${ex.cn}</div>
+          <div class="text-[#475569] text-[13px] pl-1 leading-relaxed">↳ ${ex.cn}</div>
         `).join("")}
       `;
     }
@@ -2725,7 +2729,7 @@
 
     function createCardElement(item) {
       const card = document.createElement("div");
-      card.className = "theme-card rounded-[24px] p-5 md:p-6 bg-[var(--card)] border border-[var(--border)] shadow-xs card-layout";
+      card.className = "theme-card rounded-[20px] p-5 md:p-6 bg-[var(--card)] border border-[var(--border)] shadow-xs card-layout";
 
       const usagesHtml = item.mainUsages.map(u => `
         <div class="flex items-start gap-2 text-xs md:text-sm leading-snug">
@@ -2746,7 +2750,7 @@
             <span>• ${ex.en}</span>
             ${getAudioButtonHtml(ex.en)}
           </div>
-          <div class="text-[#64748B] pl-2 text-[13px] leading-relaxed">↳ ${ex.cn}</div>
+          <div class="text-[#475569] pl-2 text-[13px] leading-relaxed">↳ ${ex.cn}</div>
         </div>
       `).join("");
 
@@ -2801,7 +2805,7 @@
           </div>
 
           <!-- 默认展示区域 2：本文真题原句 (无衬线 Apple 规范排版) -->
-          <div class="glass-inner-quote p-3.5 rounded-2xl border-l-3 border-[var(--accent)] space-y-1.5 border">
+          <div class="glass-inner-quote p-3.5 rounded-2xl border-l-[3px] border-l-[#2D6A4F] space-y-1.5 border">
             <div class="flex items-center justify-between text-xs text-[var(--accent)] font-semibold mb-0.5">
               <span>📖 本文真题原句</span>
               ${getAudioButtonHtml(item.articleUsage.quote)}
@@ -2809,7 +2813,7 @@
             <div class="text-sm sm:text-base text-[var(--text-main)] font-normal leading-[1.5]">
               "${item.articleUsage.quote}"
             </div>
-            <div class="text-[13px] text-[#64748B] leading-relaxed">
+            <div class="text-[13px] text-[#475569] leading-relaxed">
               ↳ 译文：${item.articleUsage.translation}
             </div>
           </div>
