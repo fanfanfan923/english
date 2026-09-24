@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>英语词汇</title>
+  <title>英语词网</title>
 
   <!-- PWA & iOS Safari 原生化配置 -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="英语复习">
-  <meta name="application-name" content="英语复习">
+  <meta name="apple-mobile-web-app-title" content="英语词网">
+  <meta name="application-name" content="英语词网">
   <meta name="theme-color" content="#2d6a4f">
   <meta name="format-detection" content="telephone=no">
   <meta name="mobile-web-app-capable" content="yes">
@@ -91,38 +91,45 @@
       line-height: 1.55;
       /* 严格避开 iPhone 刘海/灵动岛与底部小黑条 (Home Indicator) */
       padding-top: 0;
-      padding-bottom: max(2rem, calc(var(--sab) + 1.5rem));
+      padding-bottom: max(2.5rem, calc(var(--sab) + 2rem));
       padding-left: max(0.85rem, calc(var(--sal) + 0.35rem));
       padding-right: max(0.85rem, calc(var(--sar) + 0.35rem));
     }
 
     /* iOS 27 Liquid Glass 三层透光设计系统 */
-    /* Level 1: Subtle Translucent Glass (主卡片容器) */
+    /* Level 1: Clean Card (主卡片容器：保持通透但底色干净，确保文字极度易读) */
     .theme-card {
-      background: rgba(255, 255, 255, 0.62);
-      backdrop-filter: blur(22px) saturate(140%);
-      -webkit-backdrop-filter: blur(22px) saturate(140%);
-      border: 1px solid rgba(255, 255, 255, 0.75);
-      border-top: 1px solid rgba(255, 255, 255, 0.95);
-      box-shadow: 0 8px 32px 0 rgba(20, 50, 30, 0.06), 0 2px 6px 0 rgba(20, 50, 30, 0.03), inset 0 1px 1px 0 rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(20px) saturate(135%);
+      -webkit-backdrop-filter: blur(20px) saturate(135%);
+      border: 1px solid rgba(255, 255, 255, 0.85);
+      border-top: 1px solid #ffffff;
+      box-shadow: 0 4px 20px 0 rgba(20, 50, 30, 0.05), 0 1px 3px 0 rgba(20, 50, 30, 0.02), inset 0 1px 1px 0 #ffffff;
       transition: all 0.2s ease;
       box-sizing: border-box;
       position: relative;
     }
 
-    /* Level 2: Medium Translucent Glass (主导航外框、状态胶囊) */
+    /* Level 2: Liquid Glass Navigation Dock (主导航长条椭圆胶囊外框) */
     .glass-nav-container {
-      background: rgba(225, 239, 230, 0.62);
-      backdrop-filter: blur(20px) saturate(150%);
-      -webkit-backdrop-filter: blur(20px) saturate(150%);
-      border: 1px solid rgba(255, 255, 255, 0.8);
-      border-top: 1px solid rgba(255, 255, 255, 0.95);
-      box-shadow: 0 2px 10px rgba(20, 50, 30, 0.05), inset 0 1px 1px rgba(255, 255, 255, 0.9);
-      border-radius: 14px;
+      background: rgba(226, 241, 232, 0.68);
+      backdrop-filter: blur(24px) saturate(150%);
+      -webkit-backdrop-filter: blur(24px) saturate(150%);
+      border: 1px solid rgba(255, 255, 255, 0.85);
+      border-top: 1px solid rgba(255, 255, 255, 0.98);
+      box-shadow: 0 4px 18px rgba(20, 50, 30, 0.05), inset 0 1px 1.5px rgba(255, 255, 255, 0.9);
+      border-radius: 9999px;
+      padding: 4px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      touch-action: pan-x;
+      overscroll-behavior-x: contain;
+      white-space: nowrap;
+      scrollbar-width: none;
     }
 
     .glass-status-pill {
-      background: rgba(232, 244, 236, 0.68);
+      background: rgba(232, 244, 236, 0.72);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid rgba(255, 255, 255, 0.85);
@@ -131,90 +138,130 @@
       box-shadow: 0 1px 4px rgba(20, 50, 30, 0.04), inset 0 1px 1px rgba(255, 255, 255, 0.85);
     }
 
-    /* Level 3: White Glass Highlight (激活选项卡、轻量毛玻璃按钮) */
-    .btn-tab-active {
-      background: rgba(255, 255, 255, 0.78) !important;
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      color: #133e29 !important;
+    /* 顶部导航选中的悬浮玻璃胶囊 (Liquid Glass Active Capsule) */
+    .nav-capsule-active {
+      background: rgba(255, 255, 255, 0.92) !important;
+      backdrop-filter: blur(20px) saturate(160%) !important;
+      -webkit-backdrop-filter: blur(20px) saturate(160%) !important;
+      color: #123821 !important;
       font-weight: 700 !important;
-      border: 1px solid rgba(255, 255, 255, 0.9) !important;
+      border: 1px solid rgba(255, 255, 255, 0.95) !important;
       border-top: 1px solid #ffffff !important;
-      box-shadow: 0 2px 8px rgba(20, 50, 30, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.9) !important;
-      border-radius: 10px;
+      box-shadow: 0 3px 12px rgba(20, 55, 30, 0.09), 0 1px 3px rgba(20, 50, 30, 0.04), inset 0 1px 1px #ffffff !important;
+      border-radius: 9999px !important;
+      transform: scale(1.02);
+      transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    .nav-capsule-inactive {
+      background: transparent !important;
+      color: #42634d !important;
+      font-weight: 500 !important;
+      border: 1px solid transparent !important;
+      border-radius: 9999px !important;
+      opacity: 0.88;
+      transition: all 0.2s ease;
+    }
+    .nav-capsule-inactive:hover {
+      opacity: 1;
+      color: #143522;
+      background: rgba(255, 255, 255, 0.4) !important;
+    }
+    .nav-capsule-inactive:active {
+      transform: scale(0.96);
+      background: rgba(255, 255, 255, 0.55) !important;
+    }
+
+    /* 兼容老 class */
+    .btn-tab-active {
+      background: rgba(255, 255, 255, 0.92) !important;
+      backdrop-filter: blur(20px) saturate(160%) !important;
+      -webkit-backdrop-filter: blur(20px) saturate(160%) !important;
+      color: #123821 !important;
+      font-weight: 700 !important;
+      border: 1px solid rgba(255, 255, 255, 0.95) !important;
+      border-top: 1px solid #ffffff !important;
+      box-shadow: 0 3px 12px rgba(20, 55, 30, 0.09), inset 0 1px 1px #ffffff !important;
+      border-radius: 9999px !important;
     }
 
     .btn-tab {
       white-space: nowrap;
-      transition: all 0.15s ease;
+      transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1);
       min-height: 44px;
-      color: #334e39;
+      color: #42634d;
       border: 1px solid transparent;
-      border-radius: 10px;
-    }
-    .btn-tab:hover {
-      color: #0a1c10;
+      border-radius: 9999px;
     }
 
-    /* 分类标签高光与微磨砂 (未选中白玻璃，选中翡翠绿玻璃) */
+    /* 分类标签高光与微磨砂胶囊 (选中翡翠绿玻璃胶囊，未选中白玻璃胶囊) */
     .cat-pill-active {
-      background: rgba(30, 92, 62, 0.82) !important;
-      backdrop-filter: blur(16px) saturate(135%) !important;
-      -webkit-backdrop-filter: blur(16px) saturate(135%) !important;
+      background: rgba(36, 99, 68, 0.88) !important;
+      backdrop-filter: blur(16px) saturate(140%) !important;
+      -webkit-backdrop-filter: blur(16px) saturate(140%) !important;
       color: #ffffff !important;
-      font-weight: 700 !important;
-      border: 1px solid rgba(255, 255, 255, 0.35) !important;
-      border-top: 1px solid rgba(255, 255, 255, 0.55) !important;
-      box-shadow: 0 2px 10px rgba(20, 65, 40, 0.22), inset 0 1px 1px rgba(255, 255, 255, 0.4) !important;
+      font-weight: 600 !important;
+      border: 1px solid rgba(255, 255, 255, 0.45) !important;
+      border-top: 1px solid rgba(255, 255, 255, 0.7) !important;
+      box-shadow: 0 3px 12px rgba(25, 75, 50, 0.22), inset 0 1px 1px rgba(255, 255, 255, 0.5) !important;
+      border-radius: 9999px !important;
+      transform: scale(1.02);
+      transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
     }
     .cat-pill-inactive {
-      background: rgba(255, 255, 255, 0.45);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      color: #334e39;
-      border: 1px solid rgba(255, 255, 255, 0.7);
-      border-top: 1px solid rgba(255, 255, 255, 0.9);
-      box-shadow: 0 1px 3px rgba(20, 50, 30, 0.03);
+      background: rgba(255, 255, 255, 0.6) !important;
+      backdrop-filter: blur(14px) !important;
+      -webkit-backdrop-filter: blur(14px) !important;
+      color: #2b4c37 !important;
+      font-weight: 500 !important;
+      border: 1px solid rgba(255, 255, 255, 0.85) !important;
+      border-top: 1px solid rgba(255, 255, 255, 0.98) !important;
+      box-shadow: 0 1px 4px rgba(20, 50, 30, 0.03), inset 0 1px 1px rgba(255, 255, 255, 0.85) !important;
+      border-radius: 9999px !important;
+      transition: all 0.2s ease;
     }
 
     /* 内部卡片嵌套玻璃层 (Nested Inner Glass) */
     .glass-inner-core {
-      background: rgba(235, 245, 238, 0.55);
+      background: rgba(235, 245, 238, 0.6);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
       border: 1px solid rgba(255, 255, 255, 0.75);
       border-top: 1px solid rgba(255, 255, 255, 0.9);
-      border-radius: 12px;
+      border-radius: 14px;
       box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.8), 0 1px 3px rgba(20, 50, 30, 0.03);
     }
     .glass-inner-quote {
-      background: rgba(255, 255, 255, 0.65);
+      background: rgba(255, 255, 255, 0.7);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
       border: 1px solid rgba(255, 255, 255, 0.8);
       border-left: 3.5px solid var(--accent);
-      border-radius: 12px;
+      border-radius: 14px;
       box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.85), 0 1px 3px rgba(20, 50, 30, 0.03);
     }
 
-    /* 次级操作轻量毛玻璃按钮 (同步按钮) */
-    .glass-btn-secondary {
-      background: rgba(255, 255, 255, 0.72);
+    /* 玻璃胶囊通用按钮 (同步按钮、重置胶囊) */
+    .glass-btn-capsule, .glass-btn-secondary {
+      background: rgba(255, 255, 255, 0.75);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid rgba(255, 255, 255, 0.85);
-      border-top: 1px solid rgba(255, 255, 255, 0.95);
-      color: #15452e;
-      box-shadow: 0 1px 4px rgba(20, 50, 30, 0.05), inset 0 1px 1px rgba(255, 255, 255, 0.85);
-      transition: all 0.15s ease;
+      border-top: 1px solid rgba(255, 255, 255, 0.98);
+      border-radius: 9999px;
+      color: #143823;
+      box-shadow: 0 2px 8px rgba(20, 50, 30, 0.05), inset 0 1px 1px rgba(255, 255, 255, 0.9);
+      transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+      touch-action: manipulation;
     }
-    .glass-btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.88);
-      box-shadow: 0 2px 8px rgba(20, 50, 30, 0.09);
+    .glass-btn-capsule:hover, .glass-btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 3px 12px rgba(20, 50, 30, 0.08);
+      transform: translateY(-1px);
     }
-    .glass-btn-secondary:active {
+    .glass-btn-capsule:active, .glass-btn-secondary:active {
       transform: scale(0.95);
-      background: rgba(240, 248, 242, 0.8);
+      background: rgba(238, 247, 241, 0.85);
     }
 
     /* 屏蔽 WebKit / iOS Safari 自带的粗糙原生清除与搜索按钮 */
@@ -227,28 +274,28 @@
       display: none !important;
     }
 
-    /* 搜索框专用微弱透光玻璃质感 (高度约 52px，轻微背景模糊，圆角 16px) */
+    /* 搜索框专用微弱透光玻璃胶囊 (高度 52px，轻微背景模糊，大圆角胶囊形) */
     .search-input-field {
       height: 52px;
       min-height: 52px;
-      border-radius: 16px;
-      background: rgba(255, 255, 255, 0.52);
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.65);
       backdrop-filter: blur(18px) saturate(135%);
       -webkit-backdrop-filter: blur(18px) saturate(135%);
       border: 1px solid rgba(255, 255, 255, 0.85);
       border-top: 1px solid rgba(255, 255, 255, 0.98);
-      box-shadow: 0 1px 4px rgba(20, 50, 30, 0.04), inset 0 1px 1px rgba(255, 255, 255, 0.8);
+      box-shadow: 0 2px 10px rgba(20, 50, 30, 0.04), inset 0 1px 1px rgba(255, 255, 255, 0.85);
       color: #0a1c10;
       font-size: 14px;
       transition: all 0.2s ease;
     }
     .search-input-field:focus {
-      background: rgba(255, 255, 255, 0.82);
-      border-color: rgba(30, 92, 62, 0.6);
-      box-shadow: 0 0 0 3px rgba(30, 92, 62, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.9);
+      border-color: rgba(30, 92, 62, 0.5);
+      box-shadow: 0 0 0 3px rgba(30, 92, 62, 0.12), inset 0 1px 1px rgba(255, 255, 255, 0.95);
     }
 
-    /* 移动端悬浮透光导航头 (滚动时增加折射密度) */
+    /* 移动端悬浮透光导航头 (充沛顶部 Safe Area，彻底解决刘海/灵动岛压迫感) */
     @media (max-width: 768px) {
       .mobile-sticky-header {
         position: sticky;
@@ -259,20 +306,20 @@
         padding-left: max(0.85rem, calc(var(--sal) + 0.35rem));
         padding-right: max(0.85rem, calc(var(--sar) + 0.35rem));
         /* 充沛安全的顶部间距：严格避开 Dynamic Island / 状态栏 */
-        padding-top: max(16px, calc(var(--sat) + 12px));
-        padding-bottom: 10px;
+        padding-top: max(20px, calc(var(--sat) + 14px));
+        padding-bottom: 12px;
         margin-top: 0 !important;
-        background: rgba(241, 247, 243, 0.72);
-        backdrop-filter: blur(20px) saturate(140%);
-        -webkit-backdrop-filter: blur(20px) saturate(140%);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.7);
-        box-shadow: 0 1px 4px rgba(20, 50, 30, 0.03);
-        transition: background 0.25s ease, backdrop-filter 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+        background: rgba(242, 247, 244, 0.75);
+        backdrop-filter: blur(24px) saturate(145%);
+        -webkit-backdrop-filter: blur(24px) saturate(145%);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.75);
+        box-shadow: 0 1px 6px rgba(20, 50, 30, 0.03);
+        transition: background 0.25s ease, backdrop-filter 0.25s ease, box-shadow 0.25s ease;
       }
       .mobile-sticky-header.scrolled {
-        background: rgba(236, 245, 239, 0.86);
-        backdrop-filter: blur(24px) saturate(155%);
-        -webkit-backdrop-filter: blur(24px) saturate(155%);
+        background: rgba(238, 246, 241, 0.88);
+        backdrop-filter: blur(28px) saturate(155%);
+        -webkit-backdrop-filter: blur(28px) saturate(155%);
         border-bottom: 1px solid rgba(255, 255, 255, 0.85);
         box-shadow: 0 4px 20px rgba(20, 50, 30, 0.06);
       }
@@ -372,26 +419,31 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-width: 44px;
-      min-height: 44px;
-      width: 44px;
-      height: 44px;
+      min-width: 44px !important;
+      min-height: 44px !important;
+      width: 44px !important;
+      height: 44px !important;
       padding: 0;
-      border-radius: 12px;
+      border-radius: 9999px;
       color: var(--text-muted);
-      background: transparent;
-      border: none;
-      transition: all 0.15s ease;
+      background: rgba(255, 255, 255, 0.55);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.85);
+      border-top: 1px solid #ffffff;
+      box-shadow: 0 1px 4px rgba(20, 50, 30, 0.04), inset 0 1px 1px rgba(255, 255, 255, 0.8);
+      transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1);
       touch-action: manipulation;
       cursor: pointer;
       flex-shrink: 0;
     }
     .audio-speaker-btn:hover {
       color: var(--accent);
-      background-color: var(--accent-soft);
+      background-color: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 2px 8px rgba(20, 50, 30, 0.08);
     }
     .audio-speaker-btn:active {
-      transform: scale(0.9);
+      transform: scale(0.92);
       color: var(--accent);
       background-color: var(--badge-bg);
     }
@@ -456,51 +508,51 @@
     <!-- 顶部 App Header (简洁原生风格) -->
     <!-- ========================================== -->
     <header id="app-header" class="mobile-sticky-header border-b border-[var(--border)] pb-2.5">
-      <div class="flex items-center justify-between gap-2.5">
-        <div>
-          <h1 class="text-lg sm:text-xl font-bold text-[var(--text-main)] tracking-tight antialiased">
-            英语词汇
+      <div class="flex items-center justify-between gap-2">
+        <div class="min-w-0">
+          <h1 class="text-xl sm:text-2xl font-bold text-[var(--text-main)] tracking-tight antialiased truncate">
+            英语词网
           </h1>
+          <p class="text-[11px] sm:text-xs text-[var(--text-muted)] font-medium mt-0.5 truncate">结构化词汇 · 高效复习</p>
         </div>
 
-        <!-- 紧凑状态栏 + 二级按钮 (同步) -->
-        <div class="flex items-center justify-end gap-2 text-xs font-mono">
+        <!-- 紧凑状态栏 + 二级按钮 (↻ 同步) -->
+        <div class="flex items-center justify-end gap-1.5 sm:gap-2 text-xs font-mono flex-shrink-0">
           <div class="glass-status-pill flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 text-xs font-mono text-[var(--text-sub)] whitespace-nowrap">
-            <span>📅 09-23</span>
-            <span class="opacity-40">·</span>
+            <span class="hidden sm:inline">📅 09-23 · </span>
             <span>词库: <b class="text-[var(--text-main)] font-bold" id="header-total-badge">15</b></span>
-            <span class="opacity-40">·</span>
-            <span class="text-[var(--accent)] font-semibold" id="header-mastered-badge">已掌握: 0</span>
+            <span class="opacity-40 hidden sm:inline">·</span>
+            <span class="text-[var(--accent)] font-semibold hidden sm:inline" id="header-mastered-badge">已掌握: 0</span>
           </div>
           
           <button onclick="forceSyncLatest()" 
-                  class="glass-btn-secondary flex-shrink-0 min-h-[44px] min-w-[44px] px-3 sm:px-3.5 py-1.5 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 cursor-pointer select-none" 
+                  class="glass-btn-capsule flex-shrink-0 min-h-[44px] min-w-[44px] px-3.5 sm:px-4 py-2 rounded-full text-xs font-semibold flex items-center justify-center gap-1.5 cursor-pointer select-none" 
                   title="点击立即强制同步云端最新词库">
-            <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+            <svg class="w-4 h-4 flex-shrink-0 text-[var(--accent)]" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
             </svg>
-            <span class="whitespace-nowrap font-medium">同步</span>
+            <span class="whitespace-nowrap font-medium text-[var(--accent)]">↻ 同步</span>
           </button>
         </div>
       </div>
 
-      <!-- Segmented Navigation (移动端单行横向滚动，桌面端 5 列自适应平铺) -->
+      <!-- Segmented Navigation (移动端单行横向滚动/拖动，桌面端 5 列自适应平铺) -->
       <div class="scroll-hint-wrapper nav-scroll-hint mt-2.5">
-        <nav id="main-nav-bar" class="glass-nav-container flex sm:grid sm:grid-cols-5 items-center gap-1.5 p-1.5 overflow-x-auto sm:overflow-x-visible no-scrollbar text-xs md:text-sm">
-          <button id="tab-ebbinghaus-btn" onclick="switchTab('ebbinghaus')" class="btn-tab flex-shrink-0 px-3.5 py-2.5 min-h-[44px] rounded-lg font-bold transition btn-tab-active text-center cursor-pointer flex items-center justify-center gap-1">
-            <span>⏳</span><span>今日复习</span>
+        <nav id="main-nav-bar" class="glass-nav-container flex sm:grid sm:grid-cols-5 items-center gap-1 p-1 overflow-x-auto sm:overflow-x-visible no-scrollbar text-xs md:text-sm">
+          <button id="tab-ebbinghaus-btn" onclick="switchTab('ebbinghaus')" class="nav-capsule-item flex-shrink-0 px-4 py-2.5 min-h-[44px] rounded-full nav-capsule-active text-center cursor-pointer flex items-center justify-center gap-1.5 select-none" data-tab="ebbinghaus">
+            <span class="text-sm">⏳</span><span class="font-bold">今日复习</span>
           </button>
-          <button id="tab-quiz-btn" onclick="switchTab('quiz')" class="btn-tab flex-shrink-0 px-3.5 py-2.5 min-h-[44px] rounded-lg text-[var(--text-sub)] hover:text-[var(--text-main)] transition text-center cursor-pointer flex items-center justify-center gap-1">
-            <span>🃏</span><span>翻转自测</span>
+          <button id="tab-quiz-btn" onclick="switchTab('quiz')" class="nav-capsule-item flex-shrink-0 px-4 py-2.5 min-h-[44px] rounded-full nav-capsule-inactive text-center cursor-pointer flex items-center justify-center gap-1.5 select-none" data-tab="quiz">
+            <span class="text-sm">🃏</span><span>翻转自测</span>
           </button>
-          <button id="tab-list-btn" onclick="switchTab('list')" class="btn-tab flex-shrink-0 px-3.5 py-2.5 min-h-[44px] rounded-lg text-[var(--text-sub)] hover:text-[var(--text-main)] transition text-center cursor-pointer flex items-center justify-center gap-1">
-            <span>📋</span><span>词网全景</span>
+          <button id="tab-list-btn" onclick="switchTab('list')" class="nav-capsule-item flex-shrink-0 px-4 py-2.5 min-h-[44px] rounded-full nav-capsule-inactive text-center cursor-pointer flex items-center justify-center gap-1.5 select-none" data-tab="list">
+            <span class="text-sm">📋</span><span>词网全景</span>
           </button>
-          <button id="tab-diff-btn" onclick="switchTab('diff')" class="btn-tab flex-shrink-0 px-3.5 py-2.5 min-h-[44px] rounded-lg text-[var(--text-sub)] hover:text-[var(--text-main)] transition text-center cursor-pointer flex items-center justify-center gap-1">
-            <span>⚖️</span><span>考点地图</span>
+          <button id="tab-diff-btn" onclick="switchTab('diff')" class="nav-capsule-item flex-shrink-0 px-4 py-2.5 min-h-[44px] rounded-full nav-capsule-inactive text-center cursor-pointer flex items-center justify-center gap-1.5 select-none" data-tab="diff">
+            <span class="text-sm">⚖️</span><span>考点地图</span>
           </button>
-          <button id="tab-stats-btn" onclick="switchTab('stats')" class="btn-tab flex-shrink-0 px-3.5 py-2.5 min-h-[44px] rounded-lg text-[var(--text-sub)] hover:text-[var(--text-main)] transition text-center col-span-2 sm:col-span-1 cursor-pointer flex items-center justify-center gap-1">
-            <span>📊</span><span>学习看板</span>
+          <button id="tab-stats-btn" onclick="switchTab('stats')" class="nav-capsule-item flex-shrink-0 px-4 py-2.5 min-h-[44px] rounded-full nav-capsule-inactive text-center col-span-2 sm:col-span-1 cursor-pointer flex items-center justify-center gap-1.5 select-none" data-tab="stats">
+            <span class="text-sm">📊</span><span>学习看板</span>
           </button>
         </nav>
       </div>
@@ -525,7 +577,7 @@
               熟练度 0%
             </span>
           </div>
-          <button onclick="resetDailyReview()" class="flex-shrink-0 whitespace-nowrap min-h-[44px] inline-flex items-center justify-end px-2 py-1 text-xs text-[var(--text-muted)] hover:text-[var(--text-main)] underline transition cursor-pointer select-none" style="white-space: nowrap !important;">
+          <button onclick="resetDailyReview()" class="glass-btn-capsule flex-shrink-0 whitespace-nowrap min-h-[44px] inline-flex items-center justify-center px-3.5 py-1 text-xs text-[var(--text-sub)] hover:text-[var(--text-main)] transition cursor-pointer select-none" style="white-space: nowrap !important;">
             重置今天
           </button>
         </div>
@@ -579,9 +631,9 @@
               💡 核心引导：在六级阅读中有 4 种典型考法，请在脑海中先回想它接不同宾语时的含义...
             </div>
 
-            <!-- 核心交互 CTA 按钮 (高度与视觉重量适度提升，形成第一行动力) -->
+            <!-- 核心交互 CTA 按钮 (大圆角胶囊形，高度与视觉重量适度提升，形成第一行动力) -->
             <div class="pt-1 flex flex-col items-center gap-2">
-              <button onclick="toggleEbAnswer()" class="w-full py-3.5 md:py-4 px-5 rounded-xl font-bold text-base md:text-lg transition-all duration-150 flex items-center justify-center gap-2 text-white bg-[var(--accent)] hover:bg-[var(--accent-hover)] shadow-sm active:scale-[0.98] cursor-pointer min-h-[48px]">
+              <button onclick="toggleEbAnswer()" class="w-full py-3.5 md:py-4 px-6 rounded-full font-bold text-base md:text-lg transition-all duration-150 flex items-center justify-center gap-2 text-white bg-[var(--accent)] hover:bg-[var(--accent-hover)] shadow-sm active:scale-[0.98] cursor-pointer min-h-[48px]">
                 <span>🤔 我已主动回忆，查看解析</span>
                 <span class="text-xs md:text-sm opacity-80 font-mono hidden sm:inline">(Space) ▾</span>
               </button>
@@ -620,9 +672,9 @@
             <!-- 4. 常见搭配 (默认展示) -->
             <div id="eb-back-collocations" class="pt-2.5 border-t border-[var(--border-sub)] space-y-1.5 text-xs md:text-sm"></div>
 
-            <!-- 5~8 深入解析 (默认折叠，点击展开) -->
+            <!-- 5~8 深入解析 (默认折叠，胶囊按钮栏) -->
             <details class="group pt-2.5 border-t border-[var(--border-sub)]">
-              <summary class="flex items-center justify-between text-xs md:text-sm font-bold text-[var(--accent)] cursor-pointer select-none hover:text-[var(--accent-hover)] transition list-none py-1.5">
+              <summary class="flex items-center justify-between text-xs md:text-sm font-bold text-[var(--accent)] cursor-pointer select-none hover:text-[var(--accent-hover)] transition list-none py-2 px-3.5 rounded-full bg-[var(--card-sub)] border border-[var(--border-sub)]">
                 <span class="flex items-center gap-1.5">
                   <span>📖 展开深入解析（例句 / 易混辨析 / 语法）</span>
                 </span>
@@ -643,24 +695,24 @@
               </div>
             </details>
 
-            <!-- 底部三级自测评分按钮 (更大更易点) -->
+            <!-- 底部三级自测评分按钮 (更大更易点，胶囊圆角与柔和微磨砂) -->
             <div class="pt-4 border-t border-[var(--border)] space-y-2.5">
               <div class="text-center text-xs md:text-sm text-[var(--text-sub)]">
                 评估刚才的主动回忆效果，决定下一次复习间隔：
               </div>
 
-              <div class="grid grid-cols-3 gap-3">
-                <button onclick="handleReviewScore(1)" class="flex flex-col items-center justify-center p-3 rounded-xl border transition active:scale-98 cursor-pointer shadow-2xs" style="background-color: var(--score-red-bg); color: var(--score-red-text); border-color: var(--score-red-border);">
+              <div class="grid grid-cols-3 gap-2.5 sm:gap-3">
+                <button onclick="handleReviewScore(1)" class="flex flex-col items-center justify-center p-3 rounded-2xl border transition active:scale-95 cursor-pointer shadow-2xs min-h-[44px]" style="background-color: var(--score-red-bg); color: var(--score-red-text); border-color: var(--score-red-border); backdrop-filter: blur(12px);">
                   <span class="text-sm md:text-base font-bold whitespace-nowrap">🔴 没想出 (1)</span>
                   <span class="text-xs opacity-80 mt-0.5 whitespace-nowrap">今天重新自测</span>
                 </button>
 
-                <button onclick="handleReviewScore(2)" class="flex flex-col items-center justify-center p-3 rounded-xl border transition active:scale-98 cursor-pointer shadow-2xs" style="background-color: var(--score-yellow-bg); color: var(--score-yellow-text); border-color: var(--score-yellow-border);">
+                <button onclick="handleReviewScore(2)" class="flex flex-col items-center justify-center p-3 rounded-2xl border transition active:scale-95 cursor-pointer shadow-2xs min-h-[44px]" style="background-color: var(--score-yellow-bg); color: var(--score-yellow-text); border-color: var(--score-yellow-border); backdrop-filter: blur(12px);">
                   <span class="text-sm md:text-base font-bold whitespace-nowrap">🟡 较模糊 (2)</span>
                   <span class="text-xs opacity-80 mt-0.5 whitespace-nowrap">明天巩固 (Day 1)</span>
                 </button>
 
-                <button onclick="handleReviewScore(3)" class="flex flex-col items-center justify-center p-3 rounded-xl border transition active:scale-98 cursor-pointer shadow-2xs" style="background-color: var(--score-green-bg); color: var(--score-green-text); border-color: var(--score-green-border);">
+                <button onclick="handleReviewScore(3)" class="flex flex-col items-center justify-center p-3 rounded-2xl border transition active:scale-95 cursor-pointer shadow-2xs min-h-[44px]" style="background-color: var(--score-green-bg); color: var(--score-green-text); border-color: var(--score-green-border); backdrop-filter: blur(12px);">
                   <span class="text-sm md:text-base font-bold whitespace-nowrap">🟢 已掌握 (3)</span>
                   <span class="text-xs opacity-80 mt-0.5 whitespace-nowrap">推进下阶段 (+3天)</span>
                 </button>
@@ -723,13 +775,13 @@
         </div>
 
         <div class="flex items-center justify-center gap-2.5 pt-1">
-          <button onclick="prevCard()" class="btn-tab px-4 py-2.5 min-h-[44px] text-xs md:text-sm font-medium rounded-xl border border-[var(--border)] bg-[var(--card)] hover:bg-[var(--accent-soft)] active:scale-95 text-[var(--text-body)] transition cursor-pointer flex items-center justify-center">
+          <button onclick="prevCard()" class="glass-btn-capsule px-4 py-2.5 min-h-[44px] text-xs md:text-sm font-medium rounded-full border border-[var(--border)] bg-[var(--card)] hover:bg-[var(--accent-soft)] active:scale-95 text-[var(--text-body)] transition cursor-pointer flex items-center justify-center select-none">
             ← 上一个
           </button>
-          <button onclick="flipCard()" class="btn-tab px-5 py-2.5 min-h-[44px] text-xs md:text-sm font-bold rounded-xl text-white transition shadow-xs active:scale-95 cursor-pointer flex items-center justify-center" style="background-color: var(--accent);">
+          <button onclick="flipCard()" class="px-5 py-2.5 min-h-[44px] text-xs md:text-sm font-bold rounded-full text-white transition shadow-xs active:scale-95 cursor-pointer flex items-center justify-center select-none" style="background-color: var(--accent);">
             🔄 翻转卡片
           </button>
-          <button onclick="nextCard()" class="btn-tab px-4 py-2.5 min-h-[44px] text-xs md:text-sm font-medium rounded-xl border border-[var(--border)] bg-[var(--card)] hover:bg-[var(--accent-soft)] active:scale-95 text-[var(--text-body)] transition cursor-pointer flex items-center justify-center">
+          <button onclick="nextCard()" class="glass-btn-capsule px-4 py-2.5 min-h-[44px] text-xs md:text-sm font-medium rounded-full border border-[var(--border)] bg-[var(--card)] hover:bg-[var(--accent-soft)] active:scale-95 text-[var(--text-body)] transition cursor-pointer flex items-center justify-center select-none">
             下一个 →
           </button>
         </div>
@@ -751,7 +803,7 @@
       <div class="flex flex-col gap-2.5">
         <div class="search-box relative w-full flex items-center">
           <!-- 搜索图标 (确保持久显示，尺寸适中，获得焦点时保持显示) -->
-          <div class="absolute left-3.5 top-1/2 -translate-y-1/2 flex items-center justify-center pointer-events-none z-10 text-[var(--text-muted)]" style="width: 20px; height: 20px;">
+          <div class="absolute left-4 top-1/2 -translate-y-1/2 flex items-center justify-center pointer-events-none z-10 text-[var(--text-muted)]" style="width: 20px; height: 20px;">
             <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
             </svg>
@@ -763,17 +815,17 @@
             autocorrect="off"
             autocapitalize="off"
             spellcheck="false"
-            placeholder="搜索英文词汇、中文核心含义、高频搭配、例句"
-            class="search-input-field w-full h-[52px] min-h-[52px] rounded-2xl pl-11 pr-12 text-sm text-[var(--text-main)] placeholder-[var(--text-muted)] focus:outline-none"
+            placeholder="搜索英文词汇、中文释义或搭配"
+            class="search-input-field w-full h-[52px] min-h-[52px] rounded-full pl-11 pr-12 text-sm text-[var(--text-main)] placeholder-[var(--text-muted)] focus:outline-none"
           >
           <button 
             type="button" 
             id="search-clear-btn" 
-            class="search-clear-btn hidden absolute right-1 top-1/2 -translate-y-1/2 w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center cursor-pointer select-none text-[var(--text-muted)] hover:text-[var(--accent)] active:scale-90 transition z-10"
+            class="search-clear-btn hidden absolute right-1.5 top-1/2 -translate-y-1/2 w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center cursor-pointer select-none text-[var(--text-muted)] hover:text-[var(--accent)] active:scale-90 transition z-10"
             title="清空搜索"
             aria-label="清除搜索">
-            <span class="w-5 h-5 rounded-full bg-[rgba(45,106,79,0.12)] flex items-center justify-center text-[var(--accent)] hover:bg-[rgba(45,106,79,0.22)] active:scale-90 transition" style="width: 20px; height: 20px;">
-              <svg style="width: 12px; height: 12px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <span class="w-6 h-6 rounded-full bg-[rgba(45,106,79,0.12)] flex items-center justify-center text-[var(--accent)] hover:bg-[rgba(45,106,79,0.22)] active:scale-90 transition">
+              <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </span>
@@ -1408,7 +1460,7 @@
 
   <script>
     // 唯一版本构建指纹 (供 PWA 全自动嗅探更新)
-    const APP_BUILD_ID = 'english-build-v1790271326';
+    const APP_BUILD_ID = 'english-build-v1790271974';
 
     // ==========================================
     // 词汇数据库（8大知识结构体系，精选实用例句与直接对照）
@@ -2031,36 +2083,23 @@
       );
     }
 
-    // 确保语音就绪（冷启动第一次点击如果 voices 尚未异步返回，等待 voiceschanged，超时 200ms）
-    async function ensureSpeechReady() {
-      if (!('speechSynthesis' in window)) return null;
-      let voices = loadVoices();
-      if (voices.length > 0) {
-        return selectEnglishVoice(voices);
-      }
-
-      await new Promise(resolve => {
-        let done = false;
-        const handler = () => {
-          if (!done) {
-            done = true;
-            window.speechSynthesis.removeEventListener('voiceschanged', handler);
-            resolve();
-          }
-        };
-        window.speechSynthesis.addEventListener('voiceschanged', handler);
-        setTimeout(() => {
-          if (!done) {
-            done = true;
-            window.speechSynthesis.removeEventListener('voiceschanged', handler);
-            resolve();
-          }
-        }, 200);
-      });
-
-      voices = loadVoices();
-      return selectEnglishVoice(voices);
+    // 语音预热机制：在用户首次触摸/点击屏幕任意位置时，立即唤醒 iOS Web Audio / Speech 会话
+    let isSpeechWarmedUp = false;
+    function warmUpSpeech() {
+      if (isSpeechWarmedUp || !('speechSynthesis' in window)) return;
+      isSpeechWarmedUp = true;
+      forceMediaPlaybackSession();
+      try {
+        loadVoices();
+        const silent = new SpeechSynthesisUtterance(' ');
+        silent.volume = 0.01;
+        silent.lang = 'en-US';
+        window.speechSynthesis.speak(silent);
+      } catch (e) {}
     }
+    ['touchstart', 'pointerdown', 'click'].forEach(evt => {
+      document.addEventListener(evt, warmUpSpeech, { once: true, passive: true });
+    });
 
     // 停止当前所有播放与按钮动画 (避免多句排队)
     function stopCurrentSpeech() {
@@ -2072,15 +2111,15 @@
         } catch (e) {}
       }
       if (currentPlayingButton) {
-        currentPlayingButton.classList.remove('audio-playing', 'scale-110');
+        currentPlayingButton.classList.remove('audio-playing', 'scale-105');
         currentPlayingButton = null;
       }
       activeUtterance = null;
       window._activeUtterance = null;
     }
 
-    // 统一朗读入口 (所有词汇、例句、辨析、自测卡片均走此处，绝不出现通道分裂)
-    async function speakText(rawText, e) {
+    // 统一朗读入口 (所有词汇、例句、辨析、自测卡片均走此处，必须严格同步触发以满足 iOS Safari 用户交互策略)
+    function speakText(rawText, e) {
       if (e) {
         try {
           if (typeof e.stopPropagation === 'function') e.stopPropagation();
@@ -2106,11 +2145,18 @@
       // 2. 标记当前按钮进入播放中（SVG 图标微脉冲）
       if (btn) {
         currentPlayingButton = btn;
-        btn.classList.add('audio-playing', 'scale-110');
+        btn.classList.add('audio-playing', 'scale-105');
       }
 
-      // 3. 异步确保获取可用英文 Voice（冷启动首次点击绝不直接 return）
-      const selectedVoice = await ensureSpeechReady();
+      // 3. 严格同步获取可用英文 Voice，绝不使用 await（防止 iOS Safari 用户手势 Token 失效导致静默拦截）
+      let voices = loadVoices();
+      if (!voices || voices.length === 0) {
+        try {
+          voices = window.speechSynthesis.getVoices() || [];
+          if (voices.length > 0) availableVoices = voices;
+        } catch (err) {}
+      }
+      const selectedVoice = selectEnglishVoice(voices);
 
       // 4. iOS Safari 特殊状态唤醒：如果挂起 paused，执行 resume()
       try {
@@ -2131,7 +2177,7 @@
 
       utterance.onstart = () => {
         if (currentPlayingButton) {
-          currentPlayingButton.classList.add('audio-playing', 'scale-110');
+          currentPlayingButton.classList.add('audio-playing', 'scale-105');
         }
       };
 
@@ -2140,7 +2186,6 @@
       };
 
       utterance.onerror = (err) => {
-        // 如果是主动切换句子触发的取消中断，属于正常行为
         if (err && err.error !== 'interrupted' && err.error !== 'canceled') {
           console.warn('[TTS] 朗读播放结束或发生错误:', err);
         }
@@ -2151,9 +2196,12 @@
       activeUtterance = utterance;
       window._activeUtterance = utterance;
 
-      // 7. 提交朗读
+      // 7. 同步在手势主线程提交 speak
       try {
         window.speechSynthesis.speak(utterance);
+        if (window.speechSynthesis.paused) {
+          window.speechSynthesis.resume();
+        }
       } catch (err) {
         console.warn('[TTS] 执行 speak 失败:', err);
         stopCurrentSpeech();
@@ -2616,7 +2664,7 @@
           </div>
           <div class="font-mono text-[var(--text-main)] flex items-center justify-between text-xs md:text-sm">
             <span>• ${ex.en}</span>
-            ${getAudioButtonHtml(ex.en, "w-7 h-7 min-w-[28px] min-h-[28px] text-[var(--text-muted)] hover:text-[var(--accent)]")}
+            ${getAudioButtonHtml(ex.en, "text-[var(--text-muted)] hover:text-[var(--accent)]")}
           </div>
           <div class="text-[var(--text-sub)] pl-2 text-xs">↳ ${ex.cn}</div>
         </div>
@@ -2631,7 +2679,7 @@
               ${item.distinction.structures.map(s => `
                 <div class="text-[var(--text-main)] flex items-baseline justify-between">
                   <span>${s.label}: <b>${s.text}</b></span>
-                  ${getAudioButtonHtml(s.text, "w-7 h-7 min-w-[28px] min-h-[28px] text-[var(--text-muted)] hover:text-[var(--accent)]")}
+                  ${getAudioButtonHtml(s.text, "text-[var(--text-muted)] hover:text-[var(--accent)]")}
                 </div>
               `).join("")}
             </div>
@@ -2663,7 +2711,7 @@
                 <h3 class="text-xl sm:text-2xl md:text-3xl font-bold font-mono tracking-tight text-[var(--text-main)] leading-tight text-wrap-safe">
                   ${item.term}
                 </h3>
-                ${getAudioButtonHtml(item.term, "w-8 h-8 min-w-[32px] min-h-[32px] text-[var(--text-muted)] hover:text-[var(--accent)]")}
+                ${getAudioButtonHtml(item.term, "text-[var(--text-muted)] hover:text-[var(--accent)]")}
               </div>
             </div>
 
@@ -2676,7 +2724,7 @@
           <div class="glass-inner-quote p-3 rounded-xl border-l-3 border-[var(--accent)] space-y-1 border">
             <div class="flex items-center justify-between text-xs text-[var(--accent)] font-semibold">
               <span>📖 本文真题原句</span>
-              ${getAudioButtonHtml(item.articleUsage.quote, "w-7 h-7 min-w-[28px] min-h-[28px] text-[var(--accent)] hover:bg-[var(--accent-soft)]")}
+              ${getAudioButtonHtml(item.articleUsage.quote, "text-[var(--accent)] hover:bg-[var(--accent-soft)]")}
             </div>
             <div class="text-xs md:text-sm font-serif italic text-[var(--text-main)] font-medium">
               "${item.articleUsage.quote}"
@@ -2697,7 +2745,7 @@
 
         <!-- 深入内容折叠区域：主要考法全解、精选例句、易混辨析、语法要点、做题秘诀 (card-footer mt-auto 严格贴底) -->
         <details class="card-footer group mt-auto pt-2.5 border-t border-[var(--border-sub)]">
-          <summary class="flex items-center justify-between text-xs md:text-sm font-bold text-[var(--accent)] cursor-pointer select-none hover:text-[var(--accent-hover)] transition list-none py-1.5">
+          <summary class="flex items-center justify-between text-xs md:text-sm font-bold text-[var(--accent)] cursor-pointer select-none hover:text-[var(--accent-hover)] transition list-none py-2 px-3.5 rounded-full bg-[var(--card-sub)] border border-[var(--border-sub)]">
             <span class="flex items-center gap-1.5">
               <span>📖 展开深入解析（考法 / 例句 / 易混辨析 / 语法）</span>
             </span>
@@ -2807,7 +2855,7 @@
           <button 
             type="button"
             onclick="filterCategory('${cat.id}', event)" 
-            class="cat-pill flex-shrink-0 whitespace-nowrap px-3.5 py-2 min-h-[40px] rounded-xl text-xs md:text-sm transition active:scale-95 cursor-pointer ${isActive ? 'cat-pill-active' : 'cat-pill-inactive hover:text-[var(--text-main)]'}" 
+            class="cat-pill flex-shrink-0 whitespace-nowrap px-4 py-2 min-h-[42px] rounded-full text-xs md:text-sm transition active:scale-95 cursor-pointer ${isActive ? 'cat-pill-active' : 'cat-pill-inactive hover:text-[var(--text-main)]'} select-none" 
             data-cat="${cat.id}"
           >
             ${cat.name} (${count})
@@ -3149,10 +3197,11 @@
           <button 
             id="tab-${item.id}-btn" 
             onclick="switchTab('${item.id}')" 
-            class="btn-tab flex-shrink-0 whitespace-nowrap px-3.5 py-2.5 min-h-[44px] rounded-lg ${isActive ? 'font-bold btn-tab-active' : 'text-[var(--text-sub)] hover:text-[var(--text-main)]'} transition text-center cursor-pointer flex items-center justify-center gap-1.5"
+            class="nav-capsule-item flex-shrink-0 whitespace-nowrap px-4 py-2.5 min-h-[44px] rounded-full ${isActive ? 'nav-capsule-active' : 'nav-capsule-inactive'} transition text-center cursor-pointer flex items-center justify-center gap-1.5 select-none"
+            data-tab="${item.id}"
           >
-            <span>${item.icon}</span>
-            <span>${item.name}</span>
+            <span class="text-sm">${item.icon}</span>
+            <span class="text-xs sm:text-sm font-semibold tracking-tight">${item.name}</span>
           </button>
         `;
       }).join("");
@@ -3186,7 +3235,7 @@
       }
       else if (tab === "stats") renderStatsDashboard();
 
-      // 移动端自动将选中的 Tab 平滑滚动居中，保证良好视线
+      // 移动端自动将选中的 Tab 顺畅滑动居中，呈现 iOS Liquid Glass 停靠感
       setTimeout(() => {
         const activeBtn = document.getElementById(`tab-${tab}-btn`);
         if (activeBtn && typeof activeBtn.scrollIntoView === "function") {
@@ -3194,7 +3243,48 @@
             activeBtn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
           } catch (err) {}
         }
-      }, 50);
+      }, 40);
+    }
+
+    // 顶部导航与分类栏拖拽手势支持（单点切换，左右按住自由拖动，松手自然停靠）
+    function initNavGesture() {
+      const nav = document.getElementById("main-nav-bar");
+      if (!nav) return;
+
+      let isDown = false;
+      let startX = 0;
+      let scrollStart = 0;
+      let hasDragged = false;
+
+      nav.addEventListener("mousedown", (e) => {
+        isDown = true;
+        hasDragged = false;
+        startX = e.pageX - nav.offsetLeft;
+        scrollStart = nav.scrollLeft;
+      });
+
+      window.addEventListener("mouseup", () => {
+        isDown = false;
+        setTimeout(() => { hasDragged = false; }, 30);
+      });
+
+      nav.addEventListener("mousemove", (e) => {
+        if (!isDown) return;
+        const x = e.pageX - nav.offsetLeft;
+        const dist = x - startX;
+        if (Math.abs(dist) > 5) {
+          hasDragged = true;
+          e.preventDefault();
+          nav.scrollLeft = scrollStart - dist;
+        }
+      });
+
+      nav.addEventListener("click", (e) => {
+        if (hasDragged) {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+        }
+      }, true);
     }
 
     // 全局快捷键监听
@@ -3222,11 +3312,12 @@
       }
     });
 
-    // 默认启动初始化：动态渲染主导航、动态计算分类胶囊、进入首页“今日复习”、初始化搜索交互
+    // 默认启动初始化：动态渲染主导航、动态计算分类胶囊、进入首页“今日复习”、初始化搜索与手势
     renderNavBar();
     renderCategoryPills();
     initDailyQueue();
     initSearchBoxEvents();
+    initNavGesture();
 
     // ==========================================
     // 📱 PWA Service Worker 注册与全自动云端静默同步引擎
