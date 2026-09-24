@@ -1,14 +1,14 @@
 {
-  "name": "英语高阶词义网络与复习工作台",
-  "short_name": "英语复习",
+  "name": "英语词汇",
+  "short_name": "英语词汇",
   "description": "六级与学术英语高阶词义网络、真题语境辨析与艾宾浩斯抗遗忘自测系统",
   "lang": "zh-CN",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
   "orientation": "any",
-  "background_color": "#f2f5f2",
-  "theme_color": "#2d6a4f",
+  "background_color": "#f8faf9",
+  "theme_color": "#1e5235",
   "icons": [
     {
       "src": "icons/icon-180.png",
