@@ -280,6 +280,7 @@
                 <span class="text-xs md:text-sm opacity-80 font-mono">(Space) ▾</span>
               </button>
               <span class="text-xs text-[var(--text-muted)]">先在大脑中回忆释义与用法，再展开验证，学习效率大幅提升</span>
+              <span class="text-[11px] text-[var(--text-muted)] opacity-75">💡 提示：若 iPhone 听不到声音，请检查手机左侧是否开启了静音模式（侧边静音开关）</span>
             </div>
 
           </div>
@@ -1641,30 +1642,116 @@
 
 
     // ==========================================
-    // 🔊 原生真人语音朗读功能 (Web Speech API 适配 iOS/iPad Safari & PWA)
+    // 🔊 双引擎原声发音系统 (真人 MP3 优先 + 离线 Web Speech 兜底，专为 iOS PWA 优化)
     // ==========================================
-    function speakText(text, e) {
-      if (e) e.stopPropagation();
-      if (!('speechSynthesis' in window)) {
-        alert("当前浏览器或系统不支持原生语音朗读功能。");
-        return;
+    let currentAudioInstance = null;
+
+    // 清理英文文本，移除中文注解与特殊符号，确保发音纯正
+    function cleanPronounceText(raw) {
+      if (!raw) return "";
+      let cleaned = raw
+        .replace(/[\u4e00-\u9fa5\+]+/g, " ") // 去除汉字和加号 (例如: "介词 + whom" -> "whom")
+        .replace(/\.{3,}/g, " ")             // 去除 "..." (例如: "take ... for granted" -> "take for granted")
+        .replace(/[•\(\)（）/]/g, " ")       // 去除特殊标点
+        .replace(/\s+/g, " ")                // 合并空格
+        .trim();
+      return cleaned || raw;
+    }
+
+    // 引擎 1：播放高清原生真人美音 MP3 (通过 HTML5 Media Audio，音质纯正无机械感)
+    function playHumanMp3(cleanText, onFallback) {
+      try {
+        if (currentAudioInstance) {
+          currentAudioInstance.pause();
+          currentAudioInstance.currentTime = 0;
+          currentAudioInstance = null;
+        }
+
+        const audioUrl = "https://dict.youdao.com/dictvoice?audio=" + encodeURIComponent(cleanText) + "&type=2";
+        const audio = new Audio(audioUrl);
+        currentAudioInstance = audio;
+
+        let hasFallenBack = false;
+        const triggerFallback = () => {
+          if (!hasFallenBack) {
+            hasFallenBack = true;
+            if (onFallback) onFallback();
+          }
+        };
+
+        audio.onerror = () => {
+          triggerFallback();
+        };
+
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+          playPromise.catch((err) => {
+            console.warn("[Audio Engine] MP3 播放受限或网络离线，自动无缝切至离线合成:", err);
+            triggerFallback();
+          });
+        }
+      } catch (err) {
+        if (onFallback) onFallback();
       }
-      window.speechSynthesis.cancel();
-      if (window.speechSynthesis.paused) {
-        window.speechSynthesis.resume();
-      }
-      const u = new SpeechSynthesisUtterance(text);
-      u.lang = 'en-US';
+    }
+
+    // 引擎 2：本地离线 Web Speech API 兜底 (修复 iOS WebKit 挂起锁死 bug)
+    function playWebSpeech(cleanText) {
+      if (!("speechSynthesis" in window)) return;
+      try {
+        if (window.speechSynthesis.paused) {
+          window.speechSynthesis.resume();
+        }
+        // 注意：iOS 上不要在没有 speaking 时随意调 cancel()，以防杀死排队的 utterance
+        if (window.speechSynthesis.speaking) {
+          window.speechSynthesis.cancel();
+        }
+      } catch (e) {}
+
+      const u = new SpeechSynthesisUtterance(cleanText);
+      u.lang = "en-US";
       u.rate = 0.88;
 
-      // 自动匹配系统英语音色 (兼容 iOS Siri 英文发音)
+      // 匹配本地美式发音
       const voices = window.speechSynthesis.getVoices();
       if (voices && voices.length > 0) {
-        const enVoice = voices.find(v => v.lang.startsWith('en-US') || v.lang.startsWith('en'));
+        const enVoice = voices.find(v => (v.lang === "en-US" || v.lang === "en_US") && v.localService) ||
+                        voices.find(v => v.lang.startsWith("en"));
         if (enVoice) u.voice = enVoice;
       }
 
-      window.speechSynthesis.speak(u);
+      setTimeout(() => {
+        window.speechSynthesis.speak(u);
+      }, 10);
+    }
+
+    // 统一发音入口
+    function speakText(rawText, e) {
+      if (e) {
+        e.stopPropagation();
+        // 视觉微交互反馈 (点击发音时图标微弹跳，明确告知用户已触发)
+        const btn = e.currentTarget || (e.target && e.target.closest("button"));
+        if (btn) {
+          btn.classList.add("scale-125", "text-[var(--accent)]");
+          setTimeout(() => {
+            btn.classList.remove("scale-125", "text-[var(--accent)]");
+          }, 350);
+        }
+      }
+
+      const cleanText = cleanPronounceText(rawText);
+      if (!cleanText) return;
+
+      const words = cleanText.split(/\s+/).filter(Boolean);
+
+      // 单词与短语（<= 6 词）优先享受高清真人原声 MP3；离线或长句自动切离线 TTS
+      if (words.length <= 6 && navigator.onLine) {
+        playHumanMp3(cleanText, () => {
+          playWebSpeech(cleanText);
+        });
+      } else {
+        playWebSpeech(cleanText);
+      }
     }
 
     function speakCurrent(e) {
@@ -2700,11 +2787,16 @@
       window.location.href = window.location.pathname + '?t=' + Date.now();
     }
 
-    // iOS Safari 首次触控唤醒音频引擎，确保后续朗读即点即播
+    // iOS Safari 首次触控唤醒音频与语音引擎 (解除 WebKit 音频上下文挂起)
     window.addEventListener('touchstart', function initAudioSpeech() {
       if ('speechSynthesis' in window) {
         window.speechSynthesis.getVoices();
       }
+      try {
+        const dummy = new Audio();
+        dummy.src = "data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA";
+        dummy.play().catch(() => {});
+      } catch (e) {}
       window.removeEventListener('touchstart', initAudioSpeech);
     }, { passive: true, once: true });
   </script>
