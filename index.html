@@ -26,54 +26,69 @@
   <link rel="icon" type="image/svg+xml" href="icons/icon.svg">
 
   <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
-  <style>
-    /* iOS Safe Area 安全区域变量定义 */
+    <style>
+    /* ==================================================
+       DESIGN SYSTEM (长期可用级别 · 护眼鼠尾草绿 + 奶玉白 + 深森林绿)
+       ================================================== */
     :root {
+      /* 1. iOS Safe Area 布局系统 */
       --sat: env(safe-area-inset-top, 0px);
       --sab: env(safe-area-inset-bottom, 0px);
       --sal: env(safe-area-inset-left, 0px);
       --sar: env(safe-area-inset-right, 0px);
 
-      /* 护眼鼠尾草绿色彩系统 (Sage Green Environment & 3-Level Hierarchy) */
-      --bg: #DCEDE5;
-      
-      /* Level 3: 核心内容卡片 (纯白底色，墨绿阴影与鼠尾草边框，清晰层级) */
-      --card: #FFFFFF;
-      --card-sub: rgba(244, 248, 245, 0.88);
-      --card-hover: #FFFFFF;
-      --card-border: #D3E4DB;
-      --card-shadow: 0 4px 14px rgba(27, 67, 50, 0.06);
+      /* 2. Color System: 页面基底环境 (温润浅玉绿纸张感渐变) */
+      --bg: #E8F3EE;
+      --bg-gradient: linear-gradient(180deg, #E8F3EE 0%, #EDF6F1 100%);
 
-      /* Level 2: 轻微毛玻璃质感 (导航、搜索框、Tab、胶囊) */
-      --glass-bg: rgba(255, 255, 255, 0.62);
-      --glass-border: rgba(255, 255, 255, 0.65);
-      --glass-shadow: 0 4px 16px rgba(35, 80, 60, 0.06);
+      /* 3. Card System: 奶玉白 Warm Card (坚决杜绝大白板与荧光白) */
+      --card: #F8FBF9;
+      --card-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, #F8FBF9 100%);
+      --card-sub: #E6F1EB;
+      --subtle-green: #E6F1EB;
+      --card-border: rgba(45, 106, 79, 0.10);
+      --card-shadow: 0 8px 24px rgba(27, 67, 50, 0.045);
 
-      /* 高对比度护眼文字规范 (Section Eleven) */
-      --text-main: #17382B;  /* 主要文字 */
-      --text-body: #1E293B;  /* 英文正文 */
-      --text-sub: #334155;   /* 次要文字/释义 */
-      --text-muted: #456457; /* 辅助信息/未选中文字 */
+      /* 4. Navigation & Floating System */
+      --glass-bg: rgba(230, 241, 235, 0.75);
+      --glass-border: rgba(45, 106, 79, 0.08);
+      --glass-shadow: 0 4px 16px rgba(27, 67, 50, 0.05);
 
-      /* 森林绿与品牌强调色 (Section Eight, Twelve, Fourteen) */
-      --accent: #2D6A4F;       /* 深森林绿 */
-      --accent-dark: #1B4332;  /* 选中文字/深墨绿 */
+      /* 5. Typography System: 高对比度护眼文字规范 */
+      --text-main: #17382B;     /* 主要文字 / 单词 / 重要标题 */
+      --text-body: #1E293B;     /* 英文正文 / 例句正文 */
+      --text-sub: #40584D;      /* 次级文字 / 核心释义 / 译文 */
+      --text-muted: #688074;    /* 辅助文字 / 未选中文字 / 标签 */
+      --text-tertiary: #688074; /* 补充说明 */
+
+      /* 6. Brand / Forest Green Accent */
+      --accent: #2D6A4F;        /* Primary Forest Green */
+      --accent-dark: #1B4332;   /* Deep Forest */
       --accent-hover: #1B4332;
-      --accent-soft: rgba(45, 106, 79, 0.10);
-      --border: #D3E4DB;
-      --border-sub: #E2ECE6;
-      --border-hover: #C5DCD0;
+      --accent-soft: rgba(45, 106, 79, 0.08);
 
-      /* 自测评分色彩 (轻透温和) */
+      /* 7. Border & Divider System */
+      --border: rgba(45, 106, 79, 0.10);
+      --border-sub: rgba(45, 106, 79, 0.06);
+      --border-hover: rgba(45, 106, 79, 0.20);
+      --divider: rgba(45, 106, 79, 0.08);
+
+      /* 8. Corner Radius System */
+      --radius-card: 24px;      /* 22px ~ 26px 主卡片 */
+      --radius-search: 22px;    /* 搜索框 */
+      --radius-pill: 9999px;    /* 胶囊 / 按钮 / 导航项 */
+      --radius-inner: 16px;     /* 内嵌区块 */
+
+      /* 9. Self-test Score System (温和自测评分色彩) */
       --score-red-bg: rgba(254, 242, 242, 0.85);
-      --score-red-text: #B91C1C;
-      --score-red-border: rgba(254, 202, 202, 0.80);
+      --score-red-text: #991B1B;
+      --score-red-border: rgba(254, 202, 202, 0.70);
       --score-yellow-bg: rgba(254, 252, 232, 0.85);
-      --score-yellow-text: #A16207;
-      --score-yellow-border: rgba(254, 240, 138, 0.80);
+      --score-yellow-text: #854D0E;
+      --score-yellow-border: rgba(254, 240, 138, 0.70);
       --score-green-bg: rgba(240, 253, 244, 0.85);
-      --score-green-text: #15803D;
-      --score-green-border: rgba(187, 247, 208, 0.80);
+      --score-green-text: #166534;
+      --score-green-border: rgba(187, 247, 208, 0.70);
     }
 
     *, *::before, *::after {
@@ -88,13 +103,12 @@
       -webkit-touch-callout: none;
     }
 
-    /* 二、背景必须是明显的护眼鼠尾草浅绿色 */
+    /* 页面基底环境：温润浅玉绿纸张感渐变 (用户不应明显感觉自己在看粗劣渐变，而是自然的护眼环境) */
     body {
       background: linear-gradient(
         180deg,
-        #DCEDE5 0%,
-        #E6F2EB 45%,
-        #EAF5EF 100%
+        #E8F3EE 0%,
+        #EDF6F1 100%
       );
       background-attachment: fixed;
       color: var(--text-body);
@@ -104,41 +118,38 @@
       line-height: 1.65;
       padding-top: 0;
       padding-bottom: max(2.5rem, calc(var(--sab) + 2rem));
-      padding-left: max(0.85rem, calc(var(--sal) + 0.35rem));
-      padding-right: max(0.85rem, calc(var(--sar) + 0.35rem));
+      padding-left: max(16px, calc(var(--sal) + 16px));
+      padding-right: max(16px, calc(var(--sar) + 16px));
       min-height: 100vh;
     }
 
-    /* Level 3: 核心内容卡片 (纯白底色，墨绿阴影与鼠尾草边框，清晰层级) */
+    /* 核心内容卡片 (Card System: 奶玉白 Warm Card，微绿温和阴影，24px Squircle) */
     .theme-card {
-      border-radius: 20px !important;
-      background: #FFFFFF !important;
-      border: 1px solid #D3E4DB !important;
-      box-shadow: 0 4px 14px rgba(27, 67, 50, 0.06) !important;
+      border-radius: 24px !important;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, #F8FBF9 100%) !important;
+      border: 1px solid rgba(45, 106, 79, 0.10) !important;
+      box-shadow: 0 8px 24px rgba(27, 67, 50, 0.045) !important;
       transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
       box-sizing: border-box;
       position: relative;
     }
 
-    /* Level 2: 统一高频搭配大玻璃卡片 (合并碎片化小框) */
+    /* 内部高频搭配列表组件 (移除重框，采用温和底色与淡分割线) */
     .collocation-glass-box {
-      background: rgba(246, 250, 248, 0.75);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border: 1px solid #DCE8E1;
+      background: rgba(230, 241, 235, 0.38);
       border-radius: 16px;
-      box-shadow: 0 1px 4px rgba(27, 67, 50, 0.02);
+      border: 1px solid rgba(45, 106, 79, 0.06);
     }
 
-    /* Level 2: Liquid Glass Navigation Dock (主导航长条椭圆胶囊底槽 Track) */
+    /* 顶部导航长条椭圆胶囊底槽 (Tab System) */
     .glass-nav-container {
-      background: rgba(255, 255, 255, 0.62) !important;
+      background: rgba(230, 241, 235, 0.70) !important;
       backdrop-filter: blur(20px) !important;
       -webkit-backdrop-filter: blur(20px) !important;
-      border: 1px solid rgba(255, 255, 255, 0.65) !important;
-      box-shadow: 0 4px 16px rgba(35, 80, 60, 0.06) !important;
+      border: 1px solid rgba(45, 106, 79, 0.08) !important;
+      box-shadow: 0 2px 10px rgba(27, 67, 50, 0.03) !important;
       border-radius: 9999px !important;
-      padding: 5px !important;
+      padding: 4px !important;
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
       touch-action: pan-x;
@@ -165,12 +176,12 @@
     }
 
     .glass-status-pill {
-      background: rgba(255, 255, 255, 0.62);
+      background: rgba(230, 241, 235, 0.65);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.65);
+      border: 1px solid rgba(45, 106, 79, 0.08);
       border-radius: 9999px;
-      box-shadow: 0 2px 10px rgba(35, 80, 60, 0.04);
+      box-shadow: 0 2px 8px rgba(27, 67, 50, 0.02);
     }
 
     .nav-capsule-item {
@@ -185,15 +196,15 @@
       justify-content: center;
     }
 
-    /* 顶部导航选中的悬浮玻璃胶囊 (Section Eight: 半透明白色高亮胶囊，文字 #1B4332) */
+    /* 顶部导航选中的奶玉白浮层胶囊 (温和高亮，文字深墨绿 #1B4332) */
     .nav-capsule-active {
-      background: rgba(255, 255, 255, 0.92) !important;
+      background: #F8FBF9 !important;
       backdrop-filter: blur(16px) !important;
       -webkit-backdrop-filter: blur(16px) !important;
       color: #1B4332 !important;
       font-weight: 700 !important;
-      border: 1px solid rgba(255, 255, 255, 0.95) !important;
-      box-shadow: 0 3px 10px rgba(27, 67, 50, 0.08) !important;
+      border: 1px solid rgba(45, 106, 79, 0.08) !important;
+      box-shadow: 0 2px 8px rgba(27, 67, 50, 0.06) !important;
       border-radius: 9999px !important;
       transform: none !important;
       transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
@@ -201,7 +212,7 @@
 
     .nav-capsule-inactive {
       background: transparent !important;
-      color: #456457 !important;
+      color: #40584D !important;
       font-weight: 500 !important;
       border: 1px solid transparent !important;
       box-shadow: none !important;
@@ -213,40 +224,38 @@
       .nav-capsule-inactive:hover {
         opacity: 1;
         color: #1B4332;
-        background: rgba(255, 255, 255, 0.35) !important;
+        background: rgba(255, 255, 255, 0.40) !important;
       }
     }
     .nav-capsule-inactive:active {
       transform: scale(0.96);
-      background: rgba(255, 255, 255, 0.50) !important;
+      background: rgba(255, 255, 255, 0.55) !important;
     }
 
-    /* 导航胶囊拖动与悬停反馈 (Section Nine: 浮起、轻微放大、阴影增强) */
+    /* 导航胶囊拖动与悬停反馈 (浮起、轻微放大、阴影增强) */
     .nav-capsule-dragging {
-      transform: scale(1.06) translateY(-2px) !important;
-      box-shadow: 0 8px 20px rgba(27, 67, 50, 0.15) !important;
+      transform: scale(1.05) translateY(-1px) !important;
+      box-shadow: 0 6px 18px rgba(27, 67, 50, 0.12) !important;
       backdrop-filter: blur(24px) !important;
       -webkit-backdrop-filter: blur(24px) !important;
-      background: rgba(255, 255, 255, 0.96) !important;
+      background: #F8FBF9 !important;
       z-index: 30;
       transition: transform 0.15s ease, box-shadow 0.15s ease !important;
     }
     .nav-capsule-hover-target {
-      background: rgba(45, 106, 79, 0.14) !important;
-      border: 1px solid rgba(45, 106, 79, 0.35) !important;
-      transform: scale(1.04) !important;
+      background: rgba(45, 106, 79, 0.10) !important;
+      border: 1px solid rgba(45, 106, 79, 0.25) !important;
+      transform: scale(1.03) !important;
       transition: all 0.15s ease !important;
     }
 
     /* 兼容老 class */
     .btn-tab-active {
-      background: rgba(255, 255, 255, 0.92) !important;
-      backdrop-filter: blur(16px) !important;
-      -webkit-backdrop-filter: blur(16px) !important;
+      background: #F8FBF9 !important;
       color: #1B4332 !important;
       font-weight: 700 !important;
-      border: 1px solid rgba(255, 255, 255, 0.95) !important;
-      box-shadow: 0 3px 10px rgba(27, 67, 50, 0.08) !important;
+      border: 1px solid rgba(45, 106, 79, 0.08) !important;
+      box-shadow: 0 2px 8px rgba(27, 67, 50, 0.06) !important;
       border-radius: 9999px !important;
     }
 
@@ -254,69 +263,64 @@
       white-space: nowrap;
       transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
       min-height: 44px;
-      color: #456457;
+      color: #40584D;
       border: 1px solid transparent;
       border-radius: 9999px;
     }
 
-    /* 分类标签高光与微磨砂胶囊 */
+    /* 分类标签高光与微磨砂胶囊 (Tag/Badge System) */
     .cat-pill-active {
       background: #2D6A4F !important;
       color: #ffffff !important;
       font-weight: 600 !important;
       border: 1px solid #2D6A4F !important;
-      box-shadow: 0 3px 10px rgba(45, 106, 79, 0.25) !important;
+      box-shadow: 0 2px 8px rgba(45, 106, 79, 0.20) !important;
       border-radius: 9999px !important;
       transform: scale(1.02);
       transition: all 0.2s ease;
     }
     .cat-pill-inactive {
-      background: rgba(255, 255, 255, 0.55) !important;
-      backdrop-filter: blur(14px) !important;
-      -webkit-backdrop-filter: blur(14px) !important;
-      color: #456457 !important;
+      background: rgba(248, 251, 249, 0.80) !important;
+      color: #40584D !important;
       font-weight: 500 !important;
-      border: 1px solid rgba(255, 255, 255, 0.65) !important;
-      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.02) !important;
+      border: 1px solid rgba(45, 106, 79, 0.10) !important;
+      box-shadow: 0 1px 4px rgba(27, 67, 50, 0.02) !important;
       border-radius: 9999px !important;
       transition: all 0.2s ease;
     }
 
-    /* 内部卡片嵌套玻璃层 (Nested Inner Glass) */
+    /* 核心含义与原句轻量化 (拒绝重框套框，仅保留左侧强调色与柔和底色) */
     .glass-inner-core {
-      background: rgba(246, 250, 248, 0.75);
-      border: 1px solid #DCE8E1;
+      background: rgba(230, 241, 235, 0.40);
       border-radius: 14px;
     }
     .glass-inner-quote, .reading-quote-box {
-      background: rgba(244, 248, 245, 0.85);
-      border: 1px solid #D8E6DE;
+      background: rgba(230, 241, 235, 0.45);
       border-left: 3px solid #2D6A4F !important;
-      border-radius: 14px;
-      box-shadow: 0 1px 4px rgba(27, 67, 50, 0.02);
+      border-radius: 0 14px 14px 0;
+      border-top: none !important;
+      border-right: none !important;
+      border-bottom: none !important;
     }
 
-    /* 玻璃胶囊通用按钮 (同步按钮、重置胶囊) */
+    /* 胶囊通用按钮 (Button System: 44px+ 触控面积，温和奶玉白) */
     .glass-btn-capsule, .glass-btn-secondary {
-      background: rgba(255, 255, 255, 0.65);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.75);
-      border-top: 1px solid rgba(255, 255, 255, 0.95);
+      background: rgba(248, 251, 249, 0.85);
+      border: 1px solid rgba(45, 106, 79, 0.12);
       border-radius: 9999px;
       color: #1B4332;
-      box-shadow: 0 2px 10px rgba(35, 80, 60, 0.05);
+      box-shadow: 0 2px 8px rgba(27, 67, 50, 0.04);
       transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
       touch-action: manipulation;
     }
     .glass-btn-capsule:hover, .glass-btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.85);
-      box-shadow: 0 4px 14px rgba(35, 80, 60, 0.08);
+      background: rgba(255, 255, 255, 0.95);
+      box-shadow: 0 4px 12px rgba(27, 67, 50, 0.07);
       transform: translateY(-1px);
     }
     .glass-btn-capsule:active, .glass-btn-secondary:active {
-      transform: scale(0.95);
-      background: rgba(255, 255, 255, 0.95);
+      transform: scale(0.96);
+      background: rgba(230, 241, 235, 0.90);
     }
 
     /* 屏蔽 WebKit / iOS Safari 自带的粗糙原生清除与搜索按钮 */
@@ -329,56 +333,54 @@
       display: none !important;
     }
 
-    /* 搜索框专用轻微透光玻璃胶囊 (Section Ten: 18~22px圆角，轻微背景模糊) */
+    /* 搜索框专用奶玉白胶囊 (Input/Search System: 22px圆角，48px高度) */
     .search-input-field {
-      height: 50px;
-      min-height: 50px;
-      border-radius: 20px !important;
-      background: rgba(255, 255, 255, 0.62) !important;
-      backdrop-filter: blur(20px) saturate(160%);
-      -webkit-backdrop-filter: blur(20px) saturate(160%);
-      border: 1px solid rgba(255, 255, 255, 0.70) !important;
-      box-shadow: 0 4px 14px rgba(27, 67, 50, 0.04) !important;
+      height: 48px;
+      min-height: 48px;
+      border-radius: 22px !important;
+      background: rgba(248, 251, 249, 0.88) !important;
+      border: 1px solid rgba(45, 106, 79, 0.12) !important;
+      box-shadow: 0 2px 8px rgba(27, 67, 50, 0.03) !important;
       color: #17382B !important;
       font-size: 14px;
       transition: all 0.2s ease;
     }
     .search-input-field:focus {
-      background: rgba(255, 255, 255, 0.88) !important;
-      border-color: rgba(45, 106, 79, 0.45) !important;
-      box-shadow: 0 4px 16px rgba(45, 106, 79, 0.10), 0 0 0 2px rgba(45, 106, 79, 0.15) !important;
+      background: #FFFFFF !important;
+      border-color: rgba(45, 106, 79, 0.40) !important;
+      box-shadow: 0 0 0 3px rgba(45, 106, 79, 0.08) !important;
     }
 
-    /* 移动端悬浮透光导航头 (护眼绿调透光 + Safe Area 保护) */
+    /* 移动端悬浮导航头 (Safe Area 保护与温润浅绿融底) */
     @media (max-width: 768px) {
       .mobile-sticky-header {
         position: sticky;
         top: 0;
         z-index: 40;
-        margin-left: -0.85rem;
-        margin-right: -0.85rem;
-        padding-left: max(0.85rem, calc(var(--sal) + 0.35rem));
-        padding-right: max(0.85rem, calc(var(--sar) + 0.35rem));
-        padding-top: max(20px, calc(var(--sat) + 14px));
+        margin-left: -16px;
+        margin-right: -16px;
+        padding-left: max(16px, calc(var(--sal) + 16px));
+        padding-right: max(16px, calc(var(--sar) + 16px));
+        padding-top: max(16px, calc(var(--sat) + 12px));
         padding-bottom: 12px;
         margin-top: 0 !important;
-        background: rgba(220, 237, 229, 0.78);
+        background: rgba(232, 243, 238, 0.88);
         backdrop-filter: blur(20px) saturate(180%);
         -webkit-backdrop-filter: blur(20px) saturate(180%);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.60);
-        box-shadow: 0 2px 10px -2px rgba(27, 67, 50, 0.04);
+        border-bottom: 1px solid rgba(45, 106, 79, 0.08);
+        box-shadow: 0 2px 10px -2px rgba(27, 67, 50, 0.03);
         transition: background 0.25s ease, backdrop-filter 0.25s ease, box-shadow 0.25s ease;
       }
       .mobile-sticky-header.scrolled {
-        background: rgba(220, 237, 229, 0.92);
+        background: rgba(232, 243, 238, 0.95);
         backdrop-filter: blur(24px) saturate(190%);
         -webkit-backdrop-filter: blur(24px) saturate(190%);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.70);
-        box-shadow: 0 4px 16px -2px rgba(27, 67, 50, 0.06);
+        border-bottom: 1px solid rgba(45, 106, 79, 0.12);
+        box-shadow: 0 4px 14px -2px rgba(27, 67, 50, 0.05);
       }
     }
 
-    /* 桌面端布局协调：保持通透毛玻璃质感与舒适间距 */
+    /* 桌面端布局协调 */
     @media (min-width: 769px) {
       body {
         padding-top: 1.5rem !important;
@@ -389,7 +391,7 @@
         backdrop-filter: none !important;
         -webkit-backdrop-filter: none !important;
         box-shadow: none !important;
-        border-bottom: 1px solid var(--border-sub) !important;
+        border-bottom: 1px solid rgba(45, 106, 79, 0.08) !important;
         margin-left: 0 !important;
         margin-right: 0 !important;
         padding-left: 0 !important;
@@ -429,23 +431,21 @@
       max-width: 100%;
     }
 
-    /* 统一高保真 SVG 朗读按钮规范：微型圆形毛玻璃按钮 (size: 34px，微弱投影与点击缩放反馈) */
+    /* 统一高保真 SVG 朗读按钮 (Audio Button System: 36px 圆形微磨砂) */
     .audio-speaker-btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-width: 34px !important;
-      min-height: 34px !important;
-      width: 34px !important;
-      height: 34px !important;
+      min-width: 36px !important;
+      min-height: 36px !important;
+      width: 36px !important;
+      height: 36px !important;
       padding: 0;
       border-radius: 9999px;
       color: #2D6A4F;
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.90);
-      box-shadow: 0 2px 6px rgba(27, 67, 50, 0.06), inset 0 1px 1px #ffffff;
+      background: rgba(248, 251, 249, 0.90);
+      border: 1px solid rgba(45, 106, 79, 0.12);
+      box-shadow: 0 2px 6px rgba(27, 67, 50, 0.04);
       transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
       touch-action: manipulation;
       cursor: pointer;
@@ -453,13 +453,13 @@
     }
     .audio-speaker-btn:hover {
       color: var(--accent);
-      background: rgba(255, 255, 255, 0.95);
-      box-shadow: 0 4px 10px -2px rgba(0, 0, 0, 0.07);
+      background: #FFFFFF;
+      box-shadow: 0 4px 10px -2px rgba(27, 67, 50, 0.08);
       transform: scale(1.05);
     }
     .audio-speaker-btn:active {
       transform: scale(0.92);
-      background: rgba(241, 245, 249, 0.9);
+      background: rgba(230, 241, 235, 0.9);
     }
     .audio-playing svg {
       animation: audioPulse 0.9s ease-in-out infinite;
@@ -475,23 +475,21 @@
       100% { transform: scale(1); }
     }
 
-    /* 折叠面板 (展开深入解析)：内嵌半透明胶囊卡片，微光白边，系统 Chevron 图标缓动 */
+    /* 折叠面板 (展开深入解析)：内嵌半透明胶囊，系统 Chevron 图标缓动 */
     details.glass-details summary {
-      background: rgba(255, 255, 255, 0.55);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.75);
+      background: rgba(230, 241, 235, 0.45);
+      border: 1px solid rgba(45, 106, 79, 0.08);
       border-radius: 9999px;
       padding: 9px 16px;
       transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-      box-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.02);
+      box-shadow: 0 1px 4px rgba(27, 67, 50, 0.02);
     }
     details.glass-details summary:hover {
-      background: rgba(255, 255, 255, 0.80);
-      box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.04);
+      background: rgba(230, 241, 235, 0.70);
+      box-shadow: 0 2px 8px rgba(27, 67, 50, 0.04);
     }
     details.glass-details[open] summary {
-      background: rgba(255, 255, 255, 0.75);
+      background: rgba(230, 241, 235, 0.60);
       margin-bottom: 12px;
     }
     details.glass-details .chevron-icon {
@@ -508,7 +506,7 @@
       100% { opacity: 1; transform: translateY(0); }
     }
 
-    /* 安全防撑破换行：正常单词间断行，超长生词/URL 不撑开容器 */
+    /* 安全防撑破换行 */
     .text-wrap-safe {
       overflow-wrap: break-word;
       word-break: normal;
@@ -520,7 +518,7 @@
       display: none;
     }
 
-    /* 统一 Card Layout 规范 (严格等高网格与内部模块对齐) */
+    /* 统一 Card Layout 规范 */
     .card-layout {
       display: flex;
       flex-direction: column;
@@ -657,7 +655,7 @@
         </div>
 
         <!-- 主学习卡片主体 (20px Squircle 平滑圆角，纯白内容层) -->
-        <div id="eb-card-box" class="theme-card rounded-[20px] p-6 sm:p-8 md:p-10 shadow-sm border border-[var(--border)] bg-[var(--card)] transition-all min-h-[320px] flex flex-col justify-center">
+        <div id="eb-card-box" class="theme-card rounded-[24px] p-6 sm:p-8 md:p-10 shadow-sm border border-[var(--border)] bg-[var(--card)] transition-all min-h-[320px] flex flex-col justify-center">
           
           <!-- 正面：纯净主动回忆界面 (超大英文核心词，清晰引导，醒目CTA) -->
           <div id="eb-card-front" class="space-y-4 sm:space-y-6 my-auto">
@@ -674,7 +672,7 @@
             </div>
 
             <!-- 核心启发引导 (适度加大字号，行高更舒适) -->
-            <div class="text-xs sm:text-sm md:text-base text-[var(--text-sub)] leading-relaxed bg-[var(--card-sub)] p-4 rounded-2xl border border-[var(--border-sub)] text-wrap-safe" id="eb-card-hint">
+            <div class="text-xs sm:text-sm md:text-base text-[var(--text-sub)] leading-relaxed bg-[#E6F1EB]/50 p-4 rounded-2xl text-wrap-safe" id="eb-card-hint">
               💡 核心引导：在六级阅读中有 4 种典型考法，请在脑海中先回想它接不同宾语时的含义...
             </div>
 
@@ -708,10 +706,10 @@
             </div>
 
             <!-- 1. 核心含义 (默认展示，字号提升) -->
-            <div id="eb-back-core" class="glass-inner-core text-sm md:text-base text-[var(--text-body)] font-medium p-3.5 rounded-2xl border leading-relaxed"></div>
+            <div id="eb-back-core" class="text-sm md:text-base text-[var(--text-main)] font-medium p-3.5 rounded-2xl bg-[#E6F1EB]/40 leading-relaxed"></div>
 
             <!-- 2. 本文真题原句 (默认展示) -->
-            <div id="eb-back-quote" class="glass-inner-quote p-3.5 rounded-2xl space-y-1.5 border"></div>
+            <div id="eb-back-quote" class="p-3.5 rounded-r-2xl border-l-[3px] border-l-[#2D6A4F] bg-[#E6F1EB]/45 space-y-1.5"></div>
 
             <!-- 3. 主要考法 / 搭配 (默认展示) -->
             <div id="eb-back-meanings" class="space-y-1.5 text-xs md:text-sm text-[var(--text-body)]"></div>
@@ -793,8 +791,8 @@
         <span id="quiz-cat-badge" class="px-3 py-1 rounded-full text-xs font-semibold bg-[var(--accent-soft)] text-[var(--accent)] border border-[var(--border-sub)]">分类</span>
       </div>
 
-      <!-- 单层大圆角扁平核心卡片 (rounded-[20px] Squircle，纯白内容层) -->
-      <div id="flashcard" onclick="flipCard()" class="theme-card rounded-[20px] p-6 sm:p-8 md:p-10 text-center min-h-[320px] flex flex-col items-center justify-center cursor-pointer transition-all duration-200 select-none">
+      <!-- 单层大圆角扁平核心卡片 (rounded-[24px] Squircle，纯白内容层) -->
+      <div id="flashcard" onclick="flipCard()" class="theme-card rounded-[24px] p-6 sm:p-8 md:p-10 text-center min-h-[320px] flex flex-col items-center justify-center cursor-pointer transition-all duration-200 select-none">
         
         <div id="card-front" class="space-y-4 my-auto w-full">
           <div class="flex items-center justify-center gap-2">
@@ -814,8 +812,8 @@
             <span class="text-sm font-bold text-[var(--text-main)]">知识结构解析</span>
             <span class="text-xs text-[var(--text-muted)]">再次点击翻回正面</span>
           </div>
-          <div id="card-core" class="glass-inner-core text-xs md:text-sm text-[var(--accent)] font-medium p-3.5 rounded-2xl border text-wrap-safe"></div>
-          <div id="card-quote" class="glass-inner-quote p-3.5 rounded-2xl border text-xs md:text-sm space-y-1.5 text-wrap-safe"></div>
+          <div id="card-core" class="text-xs md:text-sm text-[var(--accent)] font-medium p-3.5 rounded-2xl bg-[#E6F1EB]/40 text-wrap-safe"></div>
+          <div id="card-quote" class="p-3.5 rounded-r-2xl border-l-[3px] border-l-[#2D6A4F] bg-[#E6F1EB]/45 text-xs md:text-sm space-y-1.5 text-wrap-safe"></div>
           <div class="space-y-1.5 text-xs md:text-sm text-[var(--text-body)] text-wrap-safe" id="card-meanings"></div>
           <div class="space-y-1.5 text-xs md:text-sm text-[var(--text-sub)] border-t border-[var(--border-sub)] pt-2.5 text-wrap-safe" id="card-example"></div>
         </div>
@@ -864,7 +862,7 @@
             autocapitalize="off"
             spellcheck="false"
             placeholder="搜索英文词汇、中文释义、高频搭配、例句"
-            class="search-input-field w-full h-[50px] min-h-[50px] rounded-[20px] pl-11 pr-12 text-sm text-[var(--text-main)] placeholder-[var(--text-muted)] focus:outline-none"
+            class="search-input-field w-full h-[50px] min-h-[50px] rounded-[24px] pl-11 pr-12 text-sm text-[var(--text-main)] placeholder-[var(--text-muted)] focus:outline-none"
           >
           <button 
             type="button" 
@@ -905,7 +903,7 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4.5 items-stretch">
         
         <!-- 考点 1：whom vs. who -->
-        <div class="theme-card rounded-[20px] p-5 md:p-6 bg-[var(--card)] border border-[var(--border)] shadow-xs card-layout">
+        <div class="theme-card rounded-[24px] p-5 md:p-6 bg-[var(--card)] border border-[var(--border)] shadow-xs card-layout">
           <!-- 头部标题与分类 -->
           <div class="flex items-center justify-between border-b border-[var(--border-sub)] pb-2.5 mb-3">
             <h3 class="font-bold text-base md:text-lg text-[var(--text-main)] tracking-tight">whom vs. who</h3>
@@ -915,7 +913,7 @@
           <!-- 正文主体 (card-body 弹性伸展) -->
           <div class="card-body space-y-2.5 mb-3">
             <!-- 轻量知识关系指引 -->
-            <div class="bg-[var(--card-sub)] px-3 py-1.5 rounded-xl border border-[var(--border-sub)] text-xs text-[var(--text-sub)] flex items-center gap-1.5 flex-wrap">
+            <div class="bg-[#E6F1EB]/60 px-3.5 py-1.5 rounded-full text-xs text-[var(--text-sub)] flex items-center gap-1.5 flex-wrap">
               <span class="font-bold text-[var(--accent)]">介词前置</span> <span>➔ whom (正式书面)</span>
               <span class="text-[var(--text-muted)] opacity-50">·</span>
               <span class="font-bold text-[var(--text-main)]">介词在后</span> <span>➔ who (日常交流)</span>
@@ -924,25 +922,25 @@
             </div>
 
             <!-- 一句话核心区别 -->
-            <div class="glass-inner-core border-l-3 border-[var(--accent)] p-3 rounded-xl text-xs md:text-sm text-[var(--text-body)] leading-relaxed">
+            <div class="border-l-[3px] border-l-[#2D6A4F] bg-[#E6F1EB]/40 p-3 rounded-r-xl text-xs md:text-sm text-[var(--text-body)] leading-relaxed">
               正式书面语中，介词前置时通常使用 <b>whom</b>；介词留在句末时，现代日常英语常用 <b>who</b>，口语中亦可直接省略关系代词。
             </div>
 
             <!-- 三层直接对照示例 (纵向紧凑排布) -->
             <div class="space-y-2 text-xs md:text-sm">
-              <div class="p-3 rounded-2xl border border-[var(--score-green-border)] bg-[var(--score-green-bg)] space-y-1">
-                <div class="text-xs font-bold text-[var(--score-green-text)] flex items-center justify-between">
+              <div class="p-3 rounded-xl bg-[#E6F1EB]/50 space-y-1">
+                <div class="text-xs font-bold text-[var(--accent)] flex items-center justify-between">
                   <span>① 正式书面语（介词前置）</span>
-                  <span class="text-[10px] text-[var(--score-green-text)] font-semibold">六级/学术阅读标准</span>
+                  <span class="text-[10px] text-[var(--accent)] font-semibold">六级/学术阅读标准</span>
                 </div>
                 <div class="text-[var(--text-main)] font-semibold flex items-center justify-between leading-[1.5]">
                   <span>the person to whom I spoke</span>
                   <button type="button" onclick="speakText('the person to whom I spoke', event)" class="audio-speaker-btn -my-1" title="朗读发音" aria-label="朗读发音"><svg class="w-3.5 h-3.5 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.757 3.63 8.25 4.51 8.25H6.75z" /></svg></button>
                 </div>
-                <div class="text-[#475569] text-[13px] leading-relaxed">↳ 译文：与我交谈的那个人（动词搭配 speak to sb ➔ to whom）</div>
+                <div class="text-[var(--text-sub)] text-[13px] leading-relaxed">↳ 译文：与我交谈的那个人（动词搭配 speak to sb ➔ to whom）</div>
               </div>
 
-              <div class="p-3 rounded-2xl border border-[var(--border-sub)] bg-[var(--card-sub)] space-y-1">
+              <div class="p-3 rounded-xl bg-[#E6F1EB]/25 space-y-1">
                 <div class="text-xs font-bold text-[var(--text-sub)] flex items-center justify-between">
                   <span>② 现代日常英语（介词留在句末）</span>
                   <span class="text-[10px] text-[var(--text-muted)] font-semibold">日常口语高频</span>
@@ -951,10 +949,10 @@
                   <span>the person who I spoke to</span>
                   <button type="button" onclick="speakText('the person who I spoke to', event)" class="audio-speaker-btn -my-1" title="朗读发音" aria-label="朗读发音"><svg class="w-3.5 h-3.5 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.757 3.63 8.25 4.51 8.25H6.75z" /></svg></button>
                 </div>
-                <div class="text-[#475569] text-[13px] leading-relaxed">↳ 译文：跟我说话的那个人</div>
+                <div class="text-[var(--text-sub)] text-[13px] leading-relaxed">↳ 译文：跟我说话的那个人</div>
               </div>
 
-              <div class="p-3 rounded-2xl border border-[var(--border-sub)] bg-[var(--card-sub)] space-y-1">
+              <div class="p-3 rounded-xl bg-[#E6F1EB]/25 space-y-1">
                 <div class="text-xs font-bold text-[var(--text-muted)] flex items-center justify-between">
                   <span>③ 极简口语（省略关系代词）</span>
                   <span class="text-[10px] text-[var(--text-muted)] font-semibold">最简洁地道</span>
@@ -963,7 +961,7 @@
                   <span>the person I spoke to</span>
                   <button type="button" onclick="speakText('the person I spoke to', event)" class="audio-speaker-btn -my-1" title="朗读发音" aria-label="朗读发音"><svg class="w-3.5 h-3.5 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.757 3.63 8.25 4.51 8.25H6.75z" /></svg></button>
                 </div>
-                <div class="text-[#475569] text-[13px] leading-relaxed">↳ 译文：我说话的那个人</div>
+                <div class="text-[var(--text-sub)] text-[13px] leading-relaxed">↳ 译文：我说话的那个人</div>
               </div>
             </div>
           </div>
@@ -976,7 +974,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
               </svg>
             </summary>
-            <div class="mt-2.5 space-y-2 text-xs text-[var(--text-sub)] bg-[var(--card-sub)] p-3 rounded-2xl border border-[var(--border-sub)]">
+            <div class="mt-2.5 space-y-2 text-xs text-[var(--text-sub)] bg-[#E6F1EB]/35 p-3.5 rounded-xl">
               <div><b>💡 介词选择本质：</b>介词绝非随意添加，完全取决于从句中动词的原生固定搭配：</div>
               <div class="pl-2 space-y-1 text-[var(--text-main)] leading-relaxed">
                 <div>• collaborate with sb ➔ the partner <b class="text-[var(--accent)] font-semibold">with whom</b> we collaborate</div>
@@ -991,7 +989,7 @@
         </div>
 
         <!-- 考点 2：entail vs. require vs. involve -->
-        <div class="theme-card rounded-[20px] p-5 md:p-6 bg-[var(--card)] border border-[var(--border)] shadow-xs card-layout">
+        <div class="theme-card rounded-[24px] p-5 md:p-6 bg-[var(--card)] border border-[var(--border)] shadow-xs card-layout">
           <!-- 头部标题与分类 -->
           <div class="flex items-center justify-between border-b border-[var(--border-sub)] pb-2.5 mb-3">
             <h3 class="font-bold text-base md:text-lg text-[var(--text-main)] tracking-tight">entail vs. require vs. involve</h3>
@@ -1001,7 +999,7 @@
           <!-- 正文主体 (card-body 弹性伸展) -->
           <div class="card-body space-y-2.5 mb-3">
             <!-- 轻量知识关系指引 -->
-            <div class="bg-[var(--card-sub)] px-3 py-1.5 rounded-xl border border-[var(--border-sub)] text-xs text-[var(--text-sub)] flex items-center gap-1.5 flex-wrap">
+            <div class="bg-[#E6F1EB]/60 px-3.5 py-1.5 rounded-full text-xs text-[var(--text-sub)] flex items-center gap-1.5 flex-wrap">
               <span class="font-bold text-[var(--accent)]">require</span> <span>➔ 外部硬性准入</span>
               <span class="text-[var(--text-muted)] opacity-50">·</span>
               <span class="font-bold text-[var(--score-green-text)]">entail</span> <span>➔ 内在必然代价</span>
@@ -1010,31 +1008,31 @@
             </div>
 
             <!-- 一句话核心区别 -->
-            <div class="glass-inner-core border-l-3 border-[var(--accent)] p-3 rounded-xl text-xs md:text-sm text-[var(--text-body)] leading-relaxed">
+            <div class="border-l-[3px] border-l-[#2D6A4F] bg-[#E6F1EB]/40 p-3 rounded-r-xl text-xs md:text-sm text-[var(--text-body)] leading-relaxed">
               <b>require</b> 强调外部设定的硬性门槛；<b>entail</b> 强调内在必然绑定、不可分割的代价或结果；<b>involve</b> 中性表示“包含、涉及”，无必然绑定感。
             </div>
 
             <!-- 典型例句对比 -->
             <div class="space-y-2 text-xs md:text-sm">
-              <div class="p-3 rounded-2xl border border-[var(--border-sub)] bg-[var(--card-sub)] space-y-1">
+              <div class="p-3 rounded-xl bg-[#E6F1EB]/25 space-y-1">
                 <div><span class="font-bold text-[var(--accent)]">require</span>：外部设立的硬性条件、准入门槛</div>
                 <div class="text-[var(--text-sub)] text-xs sm:text-sm flex items-center justify-between leading-[1.5]">
                   <span>• The position requires three years of relevant experience.</span>
                   <button type="button" onclick="speakText('The position requires three years of relevant experience.', event)" class="audio-speaker-btn -my-1" title="朗读发音" aria-label="朗读发音"><svg class="w-3.5 h-3.5 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.757 3.63 8.25 4.51 8.25H6.75z" /></svg></button>
                 </div>
-                <div class="text-[#475569] pl-2 text-[13px] leading-relaxed">↳ 翻译：该岗位硬性要求三年相关工作经验。</div>
+                <div class="text-[var(--text-sub)] pl-2 text-[13px] leading-relaxed">↳ 翻译：该岗位硬性要求三年相关工作经验。</div>
               </div>
 
-              <div class="p-3 rounded-2xl border border-[var(--score-green-border)] bg-[var(--score-green-bg)] space-y-1">
+              <div class="p-3 rounded-xl bg-[#E6F1EB]/50 space-y-1">
                 <div><span class="font-bold text-[var(--score-green-text)]">entail</span>：事物内在**不可分割、必然伴随**的代价或结果</div>
                 <div class="text-[var(--text-main)] font-semibold text-xs sm:text-sm flex items-center justify-between leading-[1.5]">
                   <span>• Winning the championship entails immense sacrifice and discipline.</span>
                   <button type="button" onclick="speakText('Winning the championship entails immense sacrifice and discipline.', event)" class="audio-speaker-btn -my-1" title="朗读发音" aria-label="朗读发音"><svg class="w-3.5 h-3.5 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.757 3.63 8.25 4.51 8.25H6.75z" /></svg></button>
                 </div>
-                <div class="text-[#475569] pl-2 text-[13px] leading-relaxed">↳ 翻译：赢得冠军必然伴随着巨大的牺牲与严苛的自律。</div>
+                <div class="text-[var(--text-sub)] pl-2 text-[13px] leading-relaxed">↳ 翻译：赢得冠军必然伴随着巨大的牺牲与严苛的自律。</div>
               </div>
 
-              <div class="p-3 rounded-2xl border border-[var(--border-sub)] bg-[var(--card-sub)] text-xs text-[var(--text-sub)]">
+              <div class="p-3 rounded-xl bg-[#E6F1EB]/25 text-xs text-[var(--text-sub)]">
                 <span class="font-bold text-[#556858]">involve</span>：中性泛指“包含、涉及”（The project involves three international teams. ↳ 项目涉及三个国际团队）。
               </div>
             </div>
@@ -1048,7 +1046,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
               </svg>
             </summary>
-            <div class="mt-2.5 space-y-2 text-xs text-[var(--text-sub)] bg-[var(--card-sub)] p-3 rounded-2xl border border-[var(--border-sub)]">
+            <div class="mt-2.5 space-y-2 text-xs text-[var(--text-sub)] bg-[#E6F1EB]/35 p-3.5 rounded-xl">
               <div><b>📐 语法搭配：</b><code>entail + n.</code> 或 <code>entail doing sth</code>（<i>Investment entails taking risks.</i> 投资必然意味着承担风险）。</div>
               <div class="text-[var(--text-muted)] text-[12px] pt-1.5 border-t border-[var(--border-sub)]">
                 🎯 六级题眼辨析：外部规章、政策门槛用 <b>require</b>；某种职责、历史变革自带的内在代价用 <b>entail</b>。
@@ -1058,7 +1056,7 @@
         </div>
 
         <!-- 考点 3：validate vs. verify -->
-        <div class="theme-card rounded-[20px] p-5 md:p-6 bg-[var(--card)] border border-[var(--border)] shadow-xs card-layout">
+        <div class="theme-card rounded-[24px] p-5 md:p-6 bg-[var(--card)] border border-[var(--border)] shadow-xs card-layout">
           <!-- 头部标题与分类 -->
           <div class="flex items-center justify-between border-b border-[var(--border-sub)] pb-2.5 mb-3">
             <h3 class="font-bold text-base md:text-lg text-[var(--text-main)] tracking-tight">validate vs. verify</h3>
@@ -1068,35 +1066,35 @@
           <!-- 正文主体 (card-body 弹性伸展) -->
           <div class="card-body space-y-2.5 mb-3">
             <!-- 轻量知识关系指引 -->
-            <div class="bg-[var(--card-sub)] px-3 py-1.5 rounded-xl border border-[var(--border-sub)] text-xs text-[var(--text-sub)] flex items-center gap-1.5 flex-wrap">
+            <div class="bg-[#E6F1EB]/60 px-3.5 py-1.5 rounded-full text-xs text-[var(--text-sub)] flex items-center gap-1.5 flex-wrap">
               <span class="font-bold text-[var(--accent)]">verify</span> <span>➔ 客观事实核验 (Is it true?)</span>
               <span class="text-[var(--text-muted)] opacity-50">·</span>
               <span class="font-bold text-[var(--score-green-text)]">validate</span> <span>➔ 有效性确认与合理认可 (Is it valid?)</span>
             </div>
 
             <!-- 一句话核心区别 -->
-            <div class="glass-inner-core border-l-3 border-[var(--accent)] p-3 rounded-xl text-xs md:text-sm text-[var(--text-body)] leading-relaxed">
+            <div class="border-l-[3px] border-l-[#2D6A4F] bg-[#E6F1EB]/40 p-3 rounded-r-xl text-xs md:text-sm text-[var(--text-body)] leading-relaxed">
               <b>verify</b> 侧重“核实客观事实真伪”（是否属实）；<b>validate</b> 侧重“确认合法有效、论证站得住脚”或现代心理学中的“认可情绪/观点的合理性”。
             </div>
 
             <!-- 典型例句对比 -->
             <div class="space-y-2 text-xs md:text-sm">
-              <div class="p-3 rounded-2xl border border-[var(--border-sub)] bg-[var(--card-sub)] space-y-1">
+              <div class="p-3 rounded-xl bg-[#E6F1EB]/25 space-y-1">
                 <div><span class="font-bold text-[var(--accent)]">verify</span>：核验客观真伪与事实依据（True / False）</div>
                 <div class="text-[var(--text-sub)] text-xs sm:text-sm flex items-center justify-between leading-[1.5]">
                   <span>• Please verify your credentials before logging in.</span>
                   <button type="button" onclick="speakText('Please verify your credentials before logging in.', event)" class="audio-speaker-btn -my-1" title="朗读发音" aria-label="朗读发音"><svg class="w-3.5 h-3.5 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.757 3.63 8.25 4.51 8.25H6.75z" /></svg></button>
                 </div>
-                <div class="text-[#475569] pl-2 text-[13px] leading-relaxed">↳ 翻译：登录前请先核验您的身份凭证。</div>
+                <div class="text-[var(--text-sub)] pl-2 text-[13px] leading-relaxed">↳ 翻译：登录前请先核验您的身份凭证。</div>
               </div>
 
-              <div class="p-3 rounded-2xl border border-[var(--score-green-border)] bg-[var(--score-green-bg)] space-y-1">
+              <div class="p-3 rounded-xl bg-[#E6F1EB]/50 space-y-1">
                 <div><span class="font-bold text-[var(--score-green-text)]">validate</span>：证明成立、具备效力或认可合理性（Valid / Invalid）</div>
                 <div class="text-[var(--text-main)] font-semibold text-xs sm:text-sm flex items-center justify-between leading-[1.5]">
                   <span>• Subsequent trials validated the initial hypothesis.</span>
                   <button type="button" onclick="speakText('Subsequent trials validated the initial hypothesis.', event)" class="audio-speaker-btn -my-1" title="朗读发音" aria-label="朗读发音"><svg class="w-3.5 h-3.5 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.757 3.63 8.25 4.51 8.25H6.75z" /></svg></button>
                 </div>
-                <div class="text-[#475569] pl-2 text-[13px] leading-relaxed">↳ 翻译：随后的试验验证了最初的假说（证明其理论成立）。</div>
+                <div class="text-[var(--text-sub)] pl-2 text-[13px] leading-relaxed">↳ 翻译：随后的试验验证了最初的假说（证明其理论成立）。</div>
               </div>
             </div>
           </div>
@@ -1109,7 +1107,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
               </svg>
             </summary>
-            <div class="mt-2.5 space-y-1.5 text-xs text-[var(--text-sub)] bg-[var(--card-sub)] p-3 rounded-2xl border border-[var(--border-sub)]">
+            <div class="mt-2.5 space-y-1.5 text-xs text-[var(--text-sub)] bg-[#E6F1EB]/35 p-3.5 rounded-xl">
               <div><b>1. 科学实证：</b><i>validate a theory / findings</i>（证实理论站得住脚）</div>
               <div><b>2. 法规效力：</b><i>validate a ticket / contract</i>（验票、使合同具有法律效力）</div>
               <div><b>3. 心理共情：</b><i>validate someone's feelings</i>（认可对方的感受合理，而非无理取闹）</div>
@@ -1121,7 +1119,7 @@
         </div>
 
         <!-- 考点 4：autonomy vs. independence -->
-        <div class="theme-card rounded-[20px] p-5 md:p-6 bg-[var(--card)] border border-[var(--border)] shadow-xs card-layout">
+        <div class="theme-card rounded-[24px] p-5 md:p-6 bg-[var(--card)] border border-[var(--border)] shadow-xs card-layout">
           <!-- 头部标题与分类 -->
           <div class="flex items-center justify-between border-b border-[var(--border-sub)] pb-2.5 mb-3">
             <h3 class="font-bold text-base md:text-lg text-[var(--text-main)] tracking-tight">autonomy vs. independence</h3>
@@ -1131,35 +1129,35 @@
           <!-- 正文主体 (card-body 弹性伸展) -->
           <div class="card-body space-y-2.5 mb-3">
             <!-- 轻量知识关系指引 -->
-            <div class="bg-[var(--card-sub)] px-3 py-1.5 rounded-xl border border-[var(--border-sub)] text-xs text-[var(--text-sub)] flex items-center gap-1.5 flex-wrap">
+            <div class="bg-[#E6F1EB]/60 px-3.5 py-1.5 rounded-full text-xs text-[var(--text-sub)] flex items-center gap-1.5 flex-wrap">
               <span class="font-bold text-[var(--accent)]">independence</span> <span>➔ 客观生存不依赖</span>
               <span class="text-[var(--text-muted)] opacity-50">·</span>
               <span class="font-bold text-[var(--score-green-text)]">autonomy</span> <span>➔ 自主决断与自我治理</span>
             </div>
 
             <!-- 一句话核心区别 -->
-            <div class="glass-inner-core border-l-3 border-[var(--accent)] p-3 rounded-xl text-xs md:text-sm text-[var(--text-body)] leading-relaxed">
+            <div class="border-l-[3px] border-l-[#2D6A4F] bg-[#E6F1EB]/40 p-3 rounded-r-xl text-xs md:text-sm text-[var(--text-body)] leading-relaxed">
               <b>independence</b> 是“客观不依附”，强调经济或生活上不依靠外界供养；<b>autonomy</b> 是“主观自主权”，即使身处某一体系中，仍享有自我决断与自治的权利。
             </div>
 
             <!-- 典型例句对比 -->
             <div class="space-y-2 text-xs md:text-sm">
-              <div class="p-3 rounded-2xl border border-[var(--border-sub)] bg-[var(--card-sub)] space-y-1">
+              <div class="p-3 rounded-xl bg-[#E6F1EB]/25 space-y-1">
                 <div><span class="font-bold text-[var(--accent)]">independence</span>：独立、不依赖外界供养（客观生存状态）</div>
                 <div class="text-[var(--text-sub)] text-xs sm:text-sm flex items-center justify-between leading-[1.5]">
                   <span>• Financial independence allows for self-reliant choices.</span>
                   <button type="button" onclick="speakText('Financial independence allows for self-reliant choices.', event)" class="audio-speaker-btn -my-1" title="朗读发音" aria-label="朗读发音"><svg class="w-3.5 h-3.5 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.757 3.63 8.25 4.51 8.25H6.75z" /></svg></button>
                 </div>
-                <div class="text-[#475569] pl-2 text-[13px] leading-relaxed">↳ 翻译：经济独立能让人做出自食其力的生活抉择。</div>
+                <div class="text-[var(--text-sub)] pl-2 text-[13px] leading-relaxed">↳ 翻译：经济独立能让人做出自食其力的生活抉择。</div>
               </div>
 
-              <div class="p-3 rounded-2xl border border-[var(--score-green-border)] bg-[var(--score-green-bg)] space-y-1">
+              <div class="p-3 rounded-xl bg-[#E6F1EB]/50 space-y-1">
                 <div><span class="font-bold text-[var(--score-green-text)]">autonomy</span>：决策与自治权（身处集体中亦可保留自主决断权力）</div>
                 <div class="text-[var(--text-main)] font-semibold text-xs sm:text-sm flex items-center justify-between leading-[1.5]">
                   <span>• Physicians must maintain clinical autonomy in decision-making.</span>
                   <button type="button" onclick="speakText('Physicians must maintain clinical autonomy in decision-making.', event)" class="audio-speaker-btn -my-1" title="朗读发音" aria-label="朗读发音"><svg class="w-3.5 h-3.5 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.757 3.63 8.25 4.51 8.25H6.75z" /></svg></button>
                 </div>
-                <div class="text-[#475569] pl-2 text-[13px] leading-relaxed">↳ 翻译：医生在临床决策中必须保持专业自主权。</div>
+                <div class="text-[var(--text-sub)] pl-2 text-[13px] leading-relaxed">↳ 翻译：医生在临床决策中必须保持专业自主权。</div>
               </div>
             </div>
           </div>
@@ -1172,7 +1170,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
               </svg>
             </summary>
-            <div class="mt-2.5 space-y-1.5 text-xs text-[var(--text-sub)] bg-[var(--card-sub)] p-3 rounded-2xl border border-[var(--border-sub)]">
+            <div class="mt-2.5 space-y-1.5 text-xs text-[var(--text-sub)] bg-[#E6F1EB]/35 p-3.5 rounded-xl">
               <div><b>词源心智模型：</b><code>auto-</code> (自己) + <code>-nomos</code> (法度) ➔ 制定自己的法则、自己做主。</div>
               <div><b>典型语境对比：</b>一个国家脱离殖民宣示 <b>independence</b>；一个学术机构享有 <b>academic autonomy</b>（学术自治权）。</div>
               <div class="text-[var(--text-muted)] text-[12px] pt-1.5 border-t border-[var(--border-sub)]">
@@ -1183,7 +1181,7 @@
         </div>
 
         <!-- 考点 5：take on vs. take up -->
-        <div class="theme-card rounded-[20px] p-5 md:p-6 bg-[var(--card)] border border-[var(--border)] shadow-xs card-layout">
+        <div class="theme-card rounded-[24px] p-5 md:p-6 bg-[var(--card)] border border-[var(--border)] shadow-xs card-layout">
           <!-- 头部标题与分类 -->
           <div class="flex items-center justify-between border-b border-[var(--border-sub)] pb-2.5 mb-3">
             <h3 class="font-bold text-base md:text-lg text-[var(--text-main)] tracking-tight">take on vs. take up</h3>
@@ -1193,35 +1191,35 @@
           <!-- 正文主体 (card-body 弹性伸展) -->
           <div class="card-body space-y-2.5 mb-3">
             <!-- 轻量知识关系指引 -->
-            <div class="bg-[var(--card-sub)] px-3 py-1.5 rounded-xl border border-[var(--border-sub)] text-xs text-[var(--text-sub)] flex items-center gap-1.5 flex-wrap">
+            <div class="bg-[#E6F1EB]/60 px-3.5 py-1.5 rounded-full text-xs text-[var(--text-sub)] flex items-center gap-1.5 flex-wrap">
               <span class="font-bold text-[var(--score-green-text)]">take on</span> <span>➔ 呈现 / 承担 / 招聘 / 迎战</span>
               <span class="text-[var(--text-muted)] opacity-50">·</span>
               <span class="font-bold text-[var(--accent)]">take up</span> <span>➔ 从事 / 占据 / 接受 / 探讨</span>
             </div>
 
             <!-- 一句话核心区别 -->
-            <div class="glass-inner-core border-l-3 border-[var(--accent)] p-3 rounded-xl text-xs md:text-sm text-[var(--text-body)] leading-relaxed">
+            <div class="border-l-[3px] border-l-[#2D6A4F] bg-[#E6F1EB]/40 p-3 rounded-r-xl text-xs md:text-sm text-[var(--text-body)] leading-relaxed">
               <b>take on</b> 核心动作是“迎向并接纳”（呈现新面貌、挑起重担、纳新、应战）；<b>take up</b> 核心动作是“拿起来、占住”（开启新爱好、填满时空、接受职位）。
             </div>
 
             <!-- 典型例句对比 -->
             <div class="space-y-2 text-xs md:text-sm">
-              <div class="p-3 rounded-2xl border border-[var(--score-green-border)] bg-[var(--score-green-bg)] space-y-1">
+              <div class="p-3 rounded-xl bg-[#E6F1EB]/50 space-y-1">
                 <div><span class="font-bold text-[var(--score-green-text)]">take on</span>：呈现（特质）、承担（重任）、招聘、迎战</div>
                 <div class="text-[var(--text-main)] font-semibold text-xs sm:text-sm flex items-center justify-between leading-[1.5]">
                   <span>• The debate has taken on an increasingly complex character.</span>
                   <button type="button" onclick="speakText('The debate has taken on an increasingly complex character.', event)" class="audio-speaker-btn -my-1" title="朗读发音" aria-label="朗读发音"><svg class="w-3.5 h-3.5 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.757 3.63 8.25 4.51 8.25H6.75z" /></svg></button>
                 </div>
-                <div class="text-[#475569] pl-2 text-[13px] leading-relaxed">↳ 翻译：辩论呈现出日益复杂的特征（六级阅读真题用法）。</div>
+                <div class="text-[var(--text-sub)] pl-2 text-[13px] leading-relaxed">↳ 翻译：辩论呈现出日益复杂的特征（六级阅读真题用法）。</div>
               </div>
 
-              <div class="p-3 rounded-2xl border border-[var(--border-sub)] bg-[var(--card-sub)] space-y-1">
+              <div class="p-3 rounded-xl bg-[#E6F1EB]/25 space-y-1">
                 <div><span class="font-bold text-[var(--accent)]">take up</span>：开始从事（新事物）、占据（时空）、接受提议</div>
                 <div class="text-[var(--text-sub)] text-xs sm:text-sm flex items-center justify-between leading-[1.5]">
                   <span>• She decided to take up photography in her spare time.</span>
                   <button type="button" onclick="speakText('She decided to take up photography in her spare time.', event)" class="audio-speaker-btn -my-1" title="朗读发音" aria-label="朗读发音"><svg class="w-3.5 h-3.5 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.757 3.63 8.25 4.51 8.25H6.75z" /></svg></button>
                 </div>
-                <div class="text-[#475569] pl-2 text-[13px] leading-relaxed">↳ 翻译：她决定在业余时间开始学习摄影。</div>
+                <div class="text-[var(--text-sub)] pl-2 text-[13px] leading-relaxed">↳ 翻译：她决定在业余时间开始学习摄影。</div>
               </div>
             </div>
           </div>
@@ -1234,7 +1232,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
               </svg>
             </summary>
-            <div class="mt-2.5 space-y-2 text-xs text-[var(--text-sub)] bg-[var(--card-sub)] p-3 rounded-2xl border border-[var(--border-sub)]">
+            <div class="mt-2.5 space-y-2 text-xs text-[var(--text-sub)] bg-[#E6F1EB]/35 p-3.5 rounded-xl">
               <div>
                 <b class="text-[var(--text-main)]">📌 take on 四大高频用法：</b>
                 <div class="pl-2 space-y-1 mt-1 leading-relaxed">
@@ -1258,7 +1256,7 @@
         </div>
 
         <!-- 考点 6：underlying vs. surface -->
-        <div class="theme-card rounded-[20px] p-5 md:p-6 bg-[var(--card)] border border-[var(--border)] shadow-xs card-layout">
+        <div class="theme-card rounded-[24px] p-5 md:p-6 bg-[var(--card)] border border-[var(--border)] shadow-xs card-layout">
           <!-- 头部标题与分类 -->
           <div class="flex items-center justify-between border-b border-[var(--border-sub)] pb-2.5 mb-3">
             <h3 class="font-bold text-base md:text-lg text-[var(--text-main)] tracking-tight">underlying vs. surface</h3>
@@ -1268,35 +1266,35 @@
           <!-- 正文主体 (card-body 弹性伸展) -->
           <div class="card-body space-y-2.5 mb-3">
             <!-- 轻量知识关系指引 -->
-            <div class="bg-[var(--card-sub)] px-3 py-1.5 rounded-xl border border-[var(--border-sub)] text-xs text-[var(--text-sub)] flex items-center gap-1.5 flex-wrap">
+            <div class="bg-[#E6F1EB]/60 px-3.5 py-1.5 rounded-full text-xs text-[var(--text-sub)] flex items-center gap-1.5 flex-wrap">
               <span class="font-bold text-[var(--score-green-text)]">underlying</span> <span>➔ 深层机制与本质根本</span>
               <span class="text-[var(--text-muted)] opacity-50">·</span>
               <span class="font-bold text-[#556858]">surface</span> <span>➔ 浅表表象与外在症状</span>
             </div>
 
             <!-- 一句话核心区别 -->
-            <div class="glass-inner-core border-l-3 border-[var(--accent)] p-3 rounded-xl text-xs md:text-sm text-[var(--text-body)] leading-relaxed">
+            <div class="border-l-[3px] border-l-[#2D6A4F] bg-[#E6F1EB]/40 p-3 rounded-r-xl text-xs md:text-sm text-[var(--text-body)] leading-relaxed">
               <b>surface</b> 是浮于水面、转瞬即逝的表象或浅层症状；<b>underlying</b> 是深埋在表面之下、支撑并驱动全局的根本原因与潜在机制。
             </div>
 
             <!-- 典型例句对比 -->
             <div class="space-y-2 text-xs md:text-sm">
-              <div class="p-3 rounded-2xl border border-[var(--score-green-border)] bg-[var(--score-green-bg)] space-y-1">
+              <div class="p-3 rounded-xl bg-[#E6F1EB]/50 space-y-1">
                 <div><span class="font-bold text-[var(--score-green-text)]">underlying</span>：深埋地下的根本动因与底层机制</div>
                 <div class="text-[var(--text-main)] font-semibold text-xs sm:text-sm flex items-center justify-between leading-[1.5]">
                   <span>• Researchers investigate the underlying causes of inflation.</span>
                   <button type="button" onclick="speakText('Researchers investigate the underlying causes of inflation.', event)" class="audio-speaker-btn -my-1" title="朗读发音" aria-label="朗读发音"><svg class="w-3.5 h-3.5 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.757 3.63 8.25 4.51 8.25H6.75z" /></svg></button>
                 </div>
-                <div class="text-[#475569] pl-2 text-[13px] leading-relaxed">↳ 翻译：研究人员正在探究通货膨胀背后的深层根本原因。</div>
+                <div class="text-[var(--text-sub)] pl-2 text-[13px] leading-relaxed">↳ 翻译：研究人员正在探究通货膨胀背后的深层根本原因。</div>
               </div>
 
-              <div class="p-3 rounded-2xl border border-[var(--border-sub)] bg-[var(--card-sub)] space-y-1">
+              <div class="p-3 rounded-xl bg-[#E6F1EB]/25 space-y-1">
                 <div><span class="font-bold text-[#556858]">surface</span>：表层、浅表症状（往往掩盖本质问题）</div>
                 <div class="text-[var(--text-sub)] text-xs sm:text-sm flex items-center justify-between leading-[1.5]">
                   <span>• Treating only surface symptoms cannot resolve the crisis.</span>
                   <button type="button" onclick="speakText('Treating only surface symptoms cannot resolve the crisis.', event)" class="audio-speaker-btn -my-1" title="朗读发音" aria-label="朗读发音"><svg class="w-3.5 h-3.5 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.757 3.63 8.25 4.51 8.25H6.75z" /></svg></button>
                 </div>
-                <div class="text-[#475569] pl-2 text-[13px] leading-relaxed">↳ 翻译：仅针对浅表症状进行治疗无法从根本上化解危机。</div>
+                <div class="text-[var(--text-sub)] pl-2 text-[13px] leading-relaxed">↳ 翻译：仅针对浅表症状进行治疗无法从根本上化解危机。</div>
               </div>
             </div>
           </div>
@@ -1309,7 +1307,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
               </svg>
             </summary>
-            <div class="mt-2.5 space-y-1.5 text-xs text-[var(--text-sub)] bg-[var(--card-sub)] p-3 rounded-2xl border border-[var(--border-sub)]">
+            <div class="mt-2.5 space-y-1.5 text-xs text-[var(--text-sub)] bg-[#E6F1EB]/35 p-3.5 rounded-xl">
               <div><b>六级高频学术搭配：</b></div>
               <div class="pl-2 space-y-1 mt-1 leading-relaxed">
                 <div>• <i class="text-[var(--text-main)]">underlying causes / factors</i>（根本原因 / 深层诱因）</div>
@@ -1333,7 +1331,7 @@
     <main id="view-stats" class="hidden max-w-[880px] mx-auto space-y-5">
       
       <!-- 【第一层】今日复习核心行动 (首屏第一视觉焦点：明确“今日该做什么”) -->
-      <section class="theme-card rounded-[20px] p-5 md:p-6 bg-[var(--card)] shadow-xs border border-[var(--border)] space-y-4">
+      <section class="theme-card rounded-[24px] p-5 md:p-6 bg-[var(--card)] shadow-xs border border-[var(--border)] space-y-4">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[var(--border-sub)]">
           <div class="space-y-1.5">
             <div class="flex items-center gap-2">
@@ -1359,7 +1357,7 @@
 
         <!-- 3 个真正具备学习意义的核心指标 -->
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-1">
-          <div class="bg-[var(--card-sub)] rounded-2xl p-4 border border-[var(--border-sub)] space-y-1">
+          <div class="bg-[#E6F1EB]/45 rounded-2xl p-4 space-y-1">
             <div class="text-xs text-[var(--text-muted)] font-medium">总词汇量</div>
             <div class="flex items-baseline gap-1.5">
               <span class="text-2xl md:text-3xl font-black font-mono text-[var(--text-main)]" id="stats-total-num">12</span>
@@ -1368,7 +1366,7 @@
             <div class="text-xs text-[var(--text-muted)]">已建立系统化词义网络</div>
           </div>
 
-          <div class="bg-[var(--card-sub)] rounded-2xl p-4 border border-[var(--border-sub)] space-y-1">
+          <div class="bg-[#E6F1EB]/45 rounded-2xl p-4 space-y-1">
             <div class="text-xs text-[var(--text-muted)] font-medium">今日待复习</div>
             <div class="flex items-baseline gap-1.5">
               <span class="text-2xl md:text-3xl font-black font-mono text-[var(--accent)]" id="stats-today-pending-card">10</span>
@@ -1377,7 +1375,7 @@
             <div class="text-xs text-[var(--text-muted)]" id="stats-today-pending-sub">每日精选 10 词强化记忆</div>
           </div>
 
-          <div class="bg-[var(--card-sub)] rounded-2xl p-4 border border-[var(--border-sub)] space-y-1">
+          <div class="bg-[#E6F1EB]/45 rounded-2xl p-4 space-y-1">
             <div class="text-xs text-[var(--text-muted)] font-medium">已进入巩固阶段</div>
             <div class="flex items-baseline gap-1.5">
               <span class="text-2xl md:text-3xl font-black font-mono text-[var(--score-green-text)]" id="stats-consolidated-num">0</span>
@@ -1389,7 +1387,7 @@
       </section>
 
       <!-- 【第二层】艾宾浩斯阶段进度 (时间轴式排布，紧凑清晰，拒绝 Excel 厚条) -->
-      <section class="theme-card rounded-[20px] p-5 md:p-6 bg-[var(--card)] space-y-4 border border-[var(--border)] shadow-xs">
+      <section class="theme-card rounded-[24px] p-5 md:p-6 bg-[var(--card)] space-y-4 border border-[var(--border)] shadow-xs">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2 border-b border-[var(--border-sub)]">
           <div>
             <h3 class="font-bold text-sm md:text-base text-[var(--text-main)] flex items-center gap-2">
@@ -1400,7 +1398,7 @@
             </p>
           </div>
           <!-- 紧凑时间轴微览 -->
-          <div class="hidden sm:flex items-center text-xs font-mono text-[var(--text-sub)] bg-[var(--card-sub)] px-3 py-1.5 rounded-full border border-[var(--border-sub)]">
+          <div class="hidden sm:flex items-center text-xs font-mono text-[var(--text-sub)] bg-[#E6F1EB]/50 px-3.5 py-1.5 rounded-full">
             <span class="font-semibold text-[var(--accent)]">Day 0</span>
             <span class="mx-1 text-[var(--text-muted)]">→</span>
             <span>Day 1</span>
@@ -1425,7 +1423,7 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         
         <!-- 知识网络 -->
-        <section class="theme-card rounded-[20px] p-5 bg-[var(--card)] space-y-3.5 border border-[var(--border)] shadow-xs flex flex-col justify-between">
+        <section class="theme-card rounded-[24px] p-5 bg-[var(--card)] space-y-3.5 border border-[var(--border)] shadow-xs flex flex-col justify-between">
           <div class="space-y-3">
             <div class="flex items-center justify-between">
               <h3 class="font-bold text-sm md:text-base text-[var(--text-main)] flex items-center gap-2">
@@ -1453,7 +1451,7 @@
         </section>
 
         <!-- 真实学习统计 -->
-        <section class="theme-card rounded-[20px] p-5 bg-[var(--card)] space-y-3.5 border border-[var(--border)] shadow-xs flex flex-col justify-between">
+        <section class="theme-card rounded-[24px] p-5 bg-[var(--card)] space-y-3.5 border border-[var(--border)] shadow-xs flex flex-col justify-between">
           <div class="space-y-3">
             <div class="flex items-center justify-between">
               <h3 class="font-bold text-sm md:text-base text-[var(--text-main)] flex items-center gap-2">
@@ -1463,25 +1461,25 @@
             </div>
 
             <div class="grid grid-cols-2 gap-2.5 pt-1">
-              <div class="bg-[var(--card-sub)] p-3 rounded-xl border border-[var(--border-sub)] space-y-0.5">
+              <div class="bg-[#E6F1EB]/45 p-3 rounded-xl space-y-0.5">
                 <div class="text-xs text-[var(--text-muted)]">累计自测打卡</div>
                 <div class="text-lg md:text-xl font-black font-mono text-[var(--text-main)]" id="stats-total-reviews">0 次</div>
                 <div class="text-xs text-[var(--text-muted)]">主动回忆测试</div>
               </div>
 
-              <div class="bg-[var(--card-sub)] p-3 rounded-xl border border-[var(--border-sub)] space-y-0.5">
+              <div class="bg-[#E6F1EB]/45 p-3 rounded-xl space-y-0.5">
                 <div class="text-xs text-[var(--text-muted)]">已巩固词数</div>
                 <div class="text-lg md:text-xl font-black font-mono text-[var(--score-green-text)]" id="stats-consolidated-words">0 词</div>
                 <div class="text-xs text-[var(--text-muted)]">达到阶段 1 以上</div>
               </div>
 
-              <div class="bg-[var(--card-sub)] p-3 rounded-xl border border-[var(--border-sub)] space-y-0.5">
+              <div class="bg-[#E6F1EB]/45 p-3 rounded-xl space-y-0.5">
                 <div class="text-xs text-[var(--text-muted)]">当前最高阶段</div>
                 <div class="text-sm md:text-base font-bold text-[var(--accent)] truncate" id="stats-highest-stage">Day 0 初始</div>
                 <div class="text-xs text-[var(--text-muted)]">最深掌握层级</div>
               </div>
 
-              <div class="bg-[var(--card-sub)] p-3 rounded-xl border border-[var(--border-sub)] space-y-0.5">
+              <div class="bg-[#E6F1EB]/45 p-3 rounded-xl space-y-0.5">
                 <div class="text-xs text-[var(--text-muted)]">记忆留存效率</div>
                 <div class="text-base md:text-lg font-bold font-mono text-[var(--text-main)]" id="stats-retention-rate">尚未测量</div>
                 <div class="text-xs text-[var(--text-muted)]" id="stats-retention-sub">首轮自测后计算</div>
@@ -1520,7 +1518,7 @@
 
   <script>
     // 唯一版本构建指纹 (供 PWA 全自动嗅探更新)
-    const APP_BUILD_ID = 'english-build-v1790274245';
+    const APP_BUILD_ID = 'english-build-v1790274886';
 
     // ==========================================
     // 词汇数据库（8大知识结构体系，精选实用例句与直接对照）
@@ -2407,19 +2405,19 @@
       const items = collocations.map((c) => {
         const highlighted = highlightCollocationKeywords(c, term);
         return `
-          <div class="py-2.5 first:pt-1 last:pb-1 flex items-start gap-2.5 text-xs sm:text-[13px] md:text-sm text-[#1E293B] leading-relaxed">
-            <span class="w-1.5 h-1.5 rounded-full bg-[#2D6A4F]/50 flex-shrink-0 mt-2"></span>
+          <div class="py-2.5 first:pt-0.5 last:pb-0.5 flex items-start gap-2.5 text-xs sm:text-[13px] md:text-sm text-[#1E293B] leading-relaxed">
+            <span class="w-1.5 h-1.5 rounded-full bg-[#2D6A4F]/60 flex-shrink-0 mt-2"></span>
             <div class="flex-1 min-w-0 text-wrap-safe">${highlighted}</div>
           </div>
         `;
       }).join("");
 
       return `
-        <div class="collocation-glass-box p-3.5 sm:p-4 my-2.5">
+        <div class="p-3.5 sm:p-4 my-2.5 rounded-2xl bg-[#E6F1EB]/35">
           <div class="text-xs font-bold text-[#2D6A4F] mb-2 flex items-center gap-1.5">
             <span>🔗 核心高频搭配</span>
           </div>
-          <div class="divide-y divide-[#F0F5F2]">
+          <div class="divide-y divide-[rgba(45,106,79,0.08)]">
             ${items}
           </div>
         </div>
@@ -2491,7 +2489,7 @@
           ${getAudioButtonHtml(item.articleUsage.quote)}
         </div>
         <div class="text-sm sm:text-base text-[var(--text-main)] font-normal leading-[1.5]">"${item.articleUsage.quote}"</div>
-        <div class="text-[13px] text-[#475569] mt-1 leading-relaxed">↳ 译文：${item.articleUsage.translation}</div>
+        <div class="text-[13px] text-[var(--text-sub)] mt-1 leading-relaxed">↳ 译文：${item.articleUsage.translation}</div>
       `;
 
       // 3. 主要考法 / 搭配 (默认展示)
@@ -2510,20 +2508,20 @@
       // 4. 常见搭配 (收纳到一个统一大玻璃卡片内 · 移除碎片化小框)
       document.getElementById("eb-back-collocations").innerHTML = renderCollocationListHtml(item.collocations, item.term);
 
-      // 5. 精选例句 (深入解析折叠区内 · Apple 原生无衬线字体)
+      // 5. 精选例句 (深入解析折叠区内 · 去除厚框，采用典雅列表线)
       document.getElementById("eb-back-examples").innerHTML = `
         <div class="font-bold text-xs md:text-sm text-[var(--text-main)] mb-1.5">📝 精选阅读例句：</div>
         <div class="space-y-2">
           ${item.examples.map(ex => `
-            <div class="text-xs md:text-sm bg-[var(--card-sub)] p-3 rounded-2xl border border-[var(--border-sub)] space-y-1 group">
+            <div class="py-2.5 border-b border-[rgba(45,106,79,0.08)] last:border-b-0 space-y-1 group">
               <div class="flex items-center justify-between text-xs text-[var(--accent)] font-semibold mb-0.5">
                 <span>${ex.type === "快速记忆" ? "⚡ 快速记忆例句" : "🎯 六级真题迁移例句"}</span>
               </div>
-              <div class="text-[var(--text-main)] flex items-center justify-between text-xs sm:text-sm font-normal leading-[1.5]">
+              <div class="text-[var(--text-main)] flex items-center justify-between text-xs sm:text-sm font-medium leading-[1.5]">
                 <span>• ${ex.en}</span>
                 ${getAudioButtonHtml(ex.en)}
               </div>
-              <div class="text-[#475569] pl-2 text-[13px] leading-relaxed">↳ ${ex.cn}</div>
+              <div class="text-[var(--text-sub)] pl-2 text-[13px] leading-relaxed">↳ ${ex.cn}</div>
             </div>
           `).join("")}
         </div>
@@ -2535,9 +2533,9 @@
         let structsHtml = "";
         if (item.distinction.structures) {
           structsHtml = `
-            <div class="grid grid-cols-1 gap-2 text-xs sm:text-[13px] bg-[var(--card)] p-3 rounded-2xl border border-[var(--border-sub)] mt-2">
+            <div class="grid grid-cols-1 gap-1.5 text-xs sm:text-[13px] pt-2 border-t border-[rgba(45,106,79,0.08)] mt-2">
               ${item.distinction.structures.map(s => `
-                <div class="text-[var(--text-main)] flex items-baseline justify-between">
+                <div class="text-[var(--text-main)] flex items-baseline justify-between py-0.5">
                   <span>${s.label}: <b class="font-semibold text-[var(--accent)]">${s.text}</b></span>
                   ${getAudioButtonHtml(s.text)}
                 </div>
@@ -2547,11 +2545,11 @@
         }
 
         distEl.innerHTML = `
-          <div class="p-3.5 rounded-2xl bg-[var(--card-sub)] border border-[var(--border)] text-xs md:text-sm space-y-1.5">
+          <div class="p-3.5 rounded-2xl bg-[#E6F1EB]/40 text-xs md:text-sm space-y-2">
             <div class="font-bold text-[var(--accent)] flex items-center gap-1">
               <span>⚖️ 易混辨析：${item.distinction.title}</span>
             </div>
-            <div class="text-[var(--text-body)] text-xs leading-relaxed">${item.distinction.desc}</div>
+            <div class="text-[var(--text-sub)] text-xs leading-relaxed">${item.distinction.desc}</div>
             ${structsHtml}
           </div>
         `;
@@ -2564,7 +2562,7 @@
       const gramEl = document.getElementById("eb-back-grammar");
       if (item.grammar) {
         gramEl.innerHTML = `
-          <div class="text-xs text-[var(--text-sub)] bg-[var(--card-sub)] p-3 rounded-2xl border border-[var(--border-sub)] leading-relaxed">
+          <div class="text-xs text-[var(--text-sub)] bg-[#E6F1EB]/45 p-3.5 rounded-xl leading-relaxed">
             <span class="font-bold text-[var(--accent)]">📐 语法要点：</span>${item.grammar}
           </div>
         `;
@@ -2678,7 +2676,7 @@
           ${getAudioButtonHtml(item.articleUsage.quote)}
         </div>
         <div class="text-sm sm:text-base text-[var(--text-main)] font-normal leading-[1.5]">"${item.articleUsage.quote}"</div>
-        <div class="text-[13px] text-[#475569] mt-1 leading-relaxed">↳ 译文：${item.articleUsage.translation}</div>
+        <div class="text-[13px] text-[var(--text-sub)] mt-1 leading-relaxed">↳ 译文：${item.articleUsage.translation}</div>
       `;
 
       document.getElementById("card-meanings").innerHTML = `
@@ -2694,7 +2692,7 @@
         <div class="font-bold text-xs md:text-sm text-[var(--text-main)] mb-1">精选例句：</div>
         ${item.examples.slice(0, 1).map(ex => `
           <div class="text-[var(--text-main)] text-xs sm:text-sm font-normal leading-[1.5]">${ex.en}</div>
-          <div class="text-[#475569] text-[13px] pl-1 leading-relaxed">↳ ${ex.cn}</div>
+          <div class="text-[var(--text-sub)] text-[13px] pl-1 leading-relaxed">↳ ${ex.cn}</div>
         `).join("")}
       `;
     }
@@ -2729,7 +2727,7 @@
 
     function createCardElement(item) {
       const card = document.createElement("div");
-      card.className = "theme-card rounded-[20px] p-5 md:p-6 bg-[var(--card)] border border-[var(--border)] shadow-xs card-layout";
+      card.className = "theme-card rounded-[24px] p-5 md:p-6 bg-[var(--card)] border border-[var(--border)] shadow-xs card-layout";
 
       const usagesHtml = item.mainUsages.map(u => `
         <div class="flex items-start gap-2 text-xs md:text-sm leading-snug">
@@ -2742,15 +2740,15 @@
       `).join("");
 
       const examplesHtml = item.examples.map(ex => `
-        <div class="text-xs md:text-sm bg-[var(--card-sub)] p-3 rounded-2xl border border-[var(--border-sub)] space-y-1 group">
+        <div class="py-2.5 border-b border-[rgba(45,106,79,0.08)] last:border-b-0 space-y-1 group">
           <div class="flex items-center justify-between text-xs text-[var(--accent)] font-semibold mb-0.5">
             <span>${ex.type === "快速记忆" ? "⚡ 快速记忆例句" : "🎯 六级真题迁移例句"}</span>
           </div>
-          <div class="text-[var(--text-main)] flex items-center justify-between text-xs sm:text-sm font-normal leading-[1.5]">
+          <div class="text-[var(--text-main)] flex items-center justify-between text-xs sm:text-sm font-medium leading-[1.5]">
             <span>• ${ex.en}</span>
             ${getAudioButtonHtml(ex.en)}
           </div>
-          <div class="text-[#475569] pl-2 text-[13px] leading-relaxed">↳ ${ex.cn}</div>
+          <div class="text-[var(--text-sub)] pl-2 text-[13px] leading-relaxed">↳ ${ex.cn}</div>
         </div>
       `).join("");
 
@@ -2759,9 +2757,9 @@
         let structs = "";
         if (item.distinction.structures) {
           structs = `
-            <div class="grid grid-cols-1 gap-2 text-xs sm:text-[13px] bg-[var(--card)] p-3 rounded-2xl border border-[var(--border-sub)] mt-2">
+            <div class="grid grid-cols-1 gap-1.5 text-xs sm:text-[13px] pt-2 border-t border-[rgba(45,106,79,0.08)] mt-2">
               ${item.distinction.structures.map(s => `
-                <div class="text-[var(--text-main)] flex items-baseline justify-between">
+                <div class="text-[var(--text-main)] flex items-baseline justify-between py-0.5">
                   <span>${s.label}: <b class="font-semibold text-[var(--accent)]">${s.text}</b></span>
                   ${getAudioButtonHtml(s.text)}
                 </div>
@@ -2770,11 +2768,11 @@
           `;
         }
         distinctionHtml = `
-          <div class="p-3.5 rounded-2xl bg-[var(--card-sub)] border border-[var(--border)] text-xs md:text-sm space-y-1.5">
+          <div class="p-3.5 rounded-2xl bg-[#E6F1EB]/40 text-xs md:text-sm space-y-2">
             <div class="font-bold text-[var(--accent)] flex items-center gap-1">
               <span>⚖️ 易混辨析：${item.distinction.title}</span>
             </div>
-            <div class="text-[var(--text-body)] text-xs leading-relaxed">${item.distinction.desc}</div>
+            <div class="text-[var(--text-sub)] text-xs leading-relaxed">${item.distinction.desc}</div>
             ${structs}
           </div>
         `;
@@ -2799,13 +2797,13 @@
               </div>
             </div>
 
-            <div class="glass-inner-core text-xs md:text-sm text-[var(--text-body)] font-medium mt-2 leading-relaxed px-3.5 py-2.5 rounded-xl border">
+            <div class="text-xs md:text-sm text-[var(--text-main)] font-medium mt-2 leading-relaxed px-3.5 py-2.5 rounded-xl bg-[#E6F1EB]/40">
               <span class="text-[var(--accent)] font-bold">【核心含义】</span>${item.coreMeaning}
             </div>
           </div>
 
-          <!-- 默认展示区域 2：本文真题原句 (无衬线 Apple 规范排版) -->
-          <div class="glass-inner-quote p-3.5 rounded-2xl border-l-[3px] border-l-[#2D6A4F] space-y-1.5 border">
+          <!-- 默认展示区域 2：本文真题原句 (无衬线 Apple 规范排版 · 仅左强调线) -->
+          <div class="p-3.5 rounded-r-xl border-l-[3px] border-l-[#2D6A4F] bg-[#E6F1EB]/45 space-y-1.5">
             <div class="flex items-center justify-between text-xs text-[var(--accent)] font-semibold mb-0.5">
               <span>📖 本文真题原句</span>
               ${getAudioButtonHtml(item.articleUsage.quote)}
@@ -2813,7 +2811,7 @@
             <div class="text-sm sm:text-base text-[var(--text-main)] font-normal leading-[1.5]">
               "${item.articleUsage.quote}"
             </div>
-            <div class="text-[13px] text-[#475569] leading-relaxed">
+            <div class="text-[13px] text-[var(--text-sub)] leading-relaxed">
               ↳ 译文：${item.articleUsage.translation}
             </div>
           </div>
@@ -2835,7 +2833,7 @@
           
           <div class="mt-3 space-y-3">
             <!-- 主要考法 / 介词搭配 -->
-            <div class="space-y-1 text-xs md:text-sm glass-inner-core p-3.5 rounded-2xl border">
+            <div class="space-y-1 text-xs md:text-sm p-3.5 rounded-xl bg-[#E6F1EB]/30">
               <div class="text-xs md:text-sm font-bold text-[var(--text-main)] flex items-center gap-1.5 mb-1.5">
                 <span class="w-1.5 h-1.5 rounded-full bg-[var(--accent)]"></span>${item.usageTitle || "主要高频用法"}
               </div>
@@ -2857,7 +2855,7 @@
 
             <!-- 7. 语法要点 (按需展示) -->
             ${item.grammar ? `
-              <div class="text-xs text-[var(--text-sub)] bg-[var(--card-sub)] p-3 rounded-2xl border border-[var(--border-sub)] leading-relaxed">
+              <div class="text-xs text-[var(--text-sub)] bg-[#E6F1EB]/45 p-3.5 rounded-xl leading-relaxed">
                 <span class="font-bold text-[var(--accent)]">📐 语法要点：</span>${item.grammar}
               </div>
             ` : ""}
@@ -3171,7 +3169,7 @@
         netCatContainer.innerHTML = Object.keys(catMap).map(k => {
           const item = catMap[k];
           return `
-            <div class="bg-[var(--card-sub)] p-2.5 rounded-xl border border-[var(--border-sub)] flex items-center justify-between">
+            <div class="bg-[#E6F1EB]/40 p-2.5 rounded-xl flex items-center justify-between">
               <div class="flex items-center gap-1.5">
                 <span class="text-sm">${item.icon}</span>
                 <span class="text-xs font-semibold text-[var(--text-main)]">${item.name}</span>
