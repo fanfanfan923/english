@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>英语高阶词义网络与复习工作台</title>
+  <title>英语词汇</title>
 
   <!-- PWA & iOS Safari 原生化配置 -->
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -34,23 +34,23 @@
       --sal: env(safe-area-inset-left, 0px);
       --sar: env(safe-area-inset-right, 0px);
 
-      /* 专一纯净的豆沙柔绿护眼学术调色系统 (高对比度深松绿) */
-      --bg: #f2f7f4;
-      --card: rgba(255, 255, 255, 0.62);
-      --card-sub: rgba(244, 250, 245, 0.58);
-      --card-hover: rgba(255, 255, 255, 0.75);
-      --text-main: #0a1c10;
-      --text-body: #162f1c;
-      --text-sub: #334e39;
-      --text-muted: #56725c;
+      /* 统一 iOS 低饱和清新柔和学术绿色调色系统 (Design Tokens) */
+      --bg: #f1f6f3;
+      --card: rgba(255, 255, 255, 0.65);
+      --card-sub: rgba(246, 251, 248, 0.60);
+      --card-hover: rgba(255, 255, 255, 0.78);
+      --text-main: #14281a;
+      --text-body: #203a27;
+      --text-sub: #3c5643;
+      --text-muted: #5e7a66;
       --border: rgba(255, 255, 255, 0.75);
-      --border-sub: rgba(215, 232, 220, 0.65);
+      --border-sub: rgba(215, 230, 220, 0.65);
       --border-hover: rgba(173, 195, 175, 0.85);
-      --accent: #1e5c3e;
-      --accent-hover: #15452e;
-      --accent-soft: rgba(225, 243, 231, 0.75);
-      --badge-bg: rgba(218, 238, 224, 0.75);
-      --badge-text: #174227;
+      --accent: #2d6a4f;
+      --accent-hover: #1b4933;
+      --accent-soft: rgba(220, 238, 227, 0.75);
+      --badge-bg: rgba(225, 240, 230, 0.72);
+      --badge-text: #1e5235;
       
       /* 自测评分色彩 (带微磨砂通透感) */
       --score-red-bg: rgba(250, 239, 238, 0.72);
@@ -60,7 +60,7 @@
       --score-yellow-text: #87621a;
       --score-yellow-border: rgba(250, 228, 181, 0.75);
       --score-green-bg: rgba(235, 245, 238, 0.72);
-      --score-green-text: #1a5c2c;
+      --score-green-text: #1e5235;
       --score-green-border: rgba(199, 227, 205, 0.75);
     }
 
@@ -90,8 +90,8 @@
       -moz-osx-font-smoothing: grayscale;
       line-height: 1.55;
       /* 严格避开 iPhone 刘海/灵动岛与底部小黑条 (Home Indicator) */
-      padding-top: max(0.75rem, calc(var(--sat) + 0.4rem));
-      padding-bottom: max(1.75rem, calc(var(--sab) + 1.25rem));
+      padding-top: 0;
+      padding-bottom: max(2rem, calc(var(--sab) + 1.5rem));
       padding-left: max(0.85rem, calc(var(--sal) + 0.35rem));
       padding-right: max(0.85rem, calc(var(--sar) + 0.35rem));
     }
@@ -258,20 +258,23 @@
         margin-right: -0.85rem;
         padding-left: max(0.85rem, calc(var(--sal) + 0.35rem));
         padding-right: max(0.85rem, calc(var(--sar) + 0.35rem));
-        padding-top: max(0.75rem, calc(var(--sat) + 0.4rem));
-        margin-top: calc(-1 * max(0.75rem, calc(var(--sat) + 0.4rem)));
-        background: rgba(242, 247, 244, 0.65);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
+        /* 充沛安全的顶部间距：严格避开 Dynamic Island / 状态栏 */
+        padding-top: max(16px, calc(var(--sat) + 12px));
+        padding-bottom: 10px;
+        margin-top: 0 !important;
+        background: rgba(241, 247, 243, 0.72);
+        backdrop-filter: blur(20px) saturate(140%);
+        -webkit-backdrop-filter: blur(20px) saturate(140%);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.7);
+        box-shadow: 0 1px 4px rgba(20, 50, 30, 0.03);
         transition: background 0.25s ease, backdrop-filter 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.5);
       }
       .mobile-sticky-header.scrolled {
-        background: rgba(238, 246, 241, 0.82);
-        backdrop-filter: blur(24px) saturate(150%);
-        -webkit-backdrop-filter: blur(24px) saturate(150%);
+        background: rgba(236, 245, 239, 0.86);
+        backdrop-filter: blur(24px) saturate(155%);
+        -webkit-backdrop-filter: blur(24px) saturate(155%);
         border-bottom: 1px solid rgba(255, 255, 255, 0.85);
-        box-shadow: 0 4px 20px rgba(20, 50, 30, 0.08);
+        box-shadow: 0 4px 20px rgba(20, 50, 30, 0.06);
       }
     }
 
@@ -280,11 +283,14 @@
       :root {
         --card: #ffffff;
       }
+      body {
+        padding-top: 1.5rem !important;
+      }
       .theme-card {
         background: #ffffff !important;
         backdrop-filter: none !important;
         -webkit-backdrop-filter: none !important;
-        border: 1px solid var(--border) !important;
+        border: 1px solid var(--border-sub) !important;
         box-shadow: 0 1px 3px rgba(20, 50, 30, 0.04) !important;
       }
       .mobile-sticky-header {
@@ -293,13 +299,14 @@
         backdrop-filter: none !important;
         -webkit-backdrop-filter: none !important;
         box-shadow: none !important;
-        border-bottom: 1px solid var(--border) !important;
+        border-bottom: 1px solid var(--border-sub) !important;
         margin-left: 0 !important;
         margin-right: 0 !important;
         padding-left: 0 !important;
         padding-right: 0 !important;
         margin-top: 0 !important;
         padding-top: 0 !important;
+        padding-bottom: 0.75rem !important;
       }
       .glass-inner-core {
         background: #f4f7f4 !important;
@@ -446,36 +453,28 @@
   <div class="max-w-5xl mx-auto space-y-4 md:space-y-5">
 
     <!-- ========================================== -->
-    <!-- 【层级 3】紧凑 Header (内容保留，上下空间紧致) -->
+    <!-- 顶部 App Header (简洁原生风格) -->
     <!-- ========================================== -->
     <header id="app-header" class="mobile-sticky-header border-b border-[var(--border)] pb-2.5">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+      <div class="flex items-center justify-between gap-2.5">
         <div>
-          <div class="flex items-center gap-2 flex-wrap">
-            <h1 class="text-[17px] sm:text-xl md:text-2xl font-black text-[#0f2214] tracking-tight antialiased">
-              英语高阶词义网络与复习工作台
-            </h1>
-            <span class="text-[11px] sm:text-xs font-mono font-semibold text-[var(--accent)] bg-[var(--accent-soft)] px-2.5 py-0.5 rounded-full border border-[#c6dccb]">
-              六级/考研阅读
-            </span>
-          </div>
-          <p class="text-xs text-[#3d5743] font-medium mt-0.5 hidden sm:block">
-            温和护眼 • 结构化词网 • 艾宾浩斯主动回忆抗遗忘闭环
-          </p>
+          <h1 class="text-lg sm:text-xl font-bold text-[var(--text-main)] tracking-tight antialiased">
+            英语词汇
+          </h1>
         </div>
 
-        <!-- 紧凑状态栏 + 二级按钮 (手机端紧凑一栏，桌面端舒展展示) -->
-        <div class="flex items-center justify-between sm:justify-end gap-2 text-xs font-mono w-full sm:w-auto">
-          <div class="glass-status-pill flex items-center gap-2 px-3 py-2 text-xs font-mono text-[#38523f] flex-1 sm:flex-initial justify-center sm:justify-start whitespace-nowrap">
+        <!-- 紧凑状态栏 + 二级按钮 (同步) -->
+        <div class="flex items-center justify-end gap-2 text-xs font-mono">
+          <div class="glass-status-pill flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 text-xs font-mono text-[var(--text-sub)] whitespace-nowrap">
             <span>📅 09-23</span>
             <span class="opacity-40">·</span>
-            <span>词库: <b class="text-[#0f2214] font-bold" id="header-total-badge">15</b></span>
+            <span>词库: <b class="text-[var(--text-main)] font-bold" id="header-total-badge">15</b></span>
             <span class="opacity-40">·</span>
-            <span class="text-[#1e6333] font-semibold" id="header-mastered-badge">已掌握: 0</span>
+            <span class="text-[var(--accent)] font-semibold" id="header-mastered-badge">已掌握: 0</span>
           </div>
           
           <button onclick="forceSyncLatest()" 
-                  class="glass-btn-secondary flex-shrink-0 min-h-[44px] min-w-[44px] px-3.5 py-2 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 cursor-pointer select-none" 
+                  class="glass-btn-secondary flex-shrink-0 min-h-[44px] min-w-[44px] px-3 sm:px-3.5 py-1.5 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 cursor-pointer select-none" 
                   title="点击立即强制同步云端最新词库">
             <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
@@ -751,9 +750,12 @@
       <!-- 搜索与分类过滤栏 -->
       <div class="flex flex-col gap-2.5">
         <div class="search-box relative w-full flex items-center">
-          <svg class="search-icon absolute left-3.5 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-[#58735e] pointer-events-none z-10" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-          </svg>
+          <!-- 搜索图标 (确保持久显示，尺寸适中，获得焦点时保持显示) -->
+          <div class="absolute left-3.5 top-1/2 -translate-y-1/2 flex items-center justify-center pointer-events-none z-10 text-[var(--text-muted)]" style="width: 20px; height: 20px;">
+            <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+            </svg>
+          </div>
           <input 
             type="search"
             id="search-input" 
@@ -761,8 +763,8 @@
             autocorrect="off"
             autocapitalize="off"
             spellcheck="false"
-            placeholder="搜索词汇、中文释义或搭配"
-            class="search-input-field w-full h-[52px] min-h-[52px] rounded-2xl pl-11 pr-12 text-sm text-[var(--text-main)] placeholder-[#6c8672] focus:outline-none"
+            placeholder="搜索英文词汇、中文核心含义、高频搭配、例句"
+            class="search-input-field w-full h-[52px] min-h-[52px] rounded-2xl pl-11 pr-12 text-sm text-[var(--text-main)] placeholder-[var(--text-muted)] focus:outline-none"
           >
           <button 
             type="button" 
@@ -770,8 +772,8 @@
             class="search-clear-btn hidden absolute right-1 top-1/2 -translate-y-1/2 w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center cursor-pointer select-none text-[var(--text-muted)] hover:text-[var(--accent)] active:scale-90 transition z-10"
             title="清空搜索"
             aria-label="清除搜索">
-            <span class="w-5 h-5 rounded-full bg-[rgba(24,71,48,0.12)] flex items-center justify-center text-[var(--accent)] hover:bg-[rgba(24,71,48,0.22)] active:scale-90 transition">
-              <svg class="w-3 h-3 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <span class="w-5 h-5 rounded-full bg-[rgba(45,106,79,0.12)] flex items-center justify-center text-[var(--accent)] hover:bg-[rgba(45,106,79,0.22)] active:scale-90 transition" style="width: 20px; height: 20px;">
+              <svg style="width: 12px; height: 12px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </span>
@@ -1406,7 +1408,7 @@
 
   <script>
     // 唯一版本构建指纹 (供 PWA 全自动嗅探更新)
-    const APP_BUILD_ID = 'english-build-v1790270978';
+    const APP_BUILD_ID = 'english-build-v1790271326';
 
     // ==========================================
     // 词汇数据库（8大知识结构体系，精选实用例句与直接对照）
