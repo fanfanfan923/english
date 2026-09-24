@@ -35,33 +35,33 @@
       --sar: env(safe-area-inset-right, 0px);
 
       /* 专一纯净的豆沙柔绿护眼学术调色系统 (高对比度深松绿) */
-      --bg: #eff4f0;
-      --card: rgba(255, 255, 255, 0.88);
-      --card-sub: rgba(248, 252, 248, 0.85);
-      --card-hover: rgba(245, 250, 245, 0.95);
-      --text-main: #0f2214;
-      --text-body: #1c3322;
-      --text-sub: #3d5743;
-      --text-muted: #627b68;
-      --border: #d4e0d4;
-      --border-sub: #e2ebe2;
-      --border-hover: #adc3af;
-      --accent: #23583f;
-      --accent-hover: #18432f;
-      --accent-soft: #e5f1e8;
-      --badge-bg: #dbebe0;
-      --badge-text: #1d4029;
+      --bg: #f2f7f4;
+      --card: rgba(255, 255, 255, 0.62);
+      --card-sub: rgba(244, 250, 245, 0.58);
+      --card-hover: rgba(255, 255, 255, 0.75);
+      --text-main: #0a1c10;
+      --text-body: #162f1c;
+      --text-sub: #334e39;
+      --text-muted: #56725c;
+      --border: rgba(255, 255, 255, 0.75);
+      --border-sub: rgba(215, 232, 220, 0.65);
+      --border-hover: rgba(173, 195, 175, 0.85);
+      --accent: #1e5c3e;
+      --accent-hover: #15452e;
+      --accent-soft: rgba(225, 243, 231, 0.75);
+      --badge-bg: rgba(218, 238, 224, 0.75);
+      --badge-text: #174227;
       
-      /* 自测评分色彩 */
-      --score-red-bg: #faefee;
+      /* 自测评分色彩 (带微磨砂通透感) */
+      --score-red-bg: rgba(250, 239, 238, 0.72);
       --score-red-text: #9a3b2e;
-      --score-red-border: #f2d2ce;
-      --score-yellow-bg: #fbf6e8;
+      --score-red-border: rgba(242, 210, 206, 0.75);
+      --score-yellow-bg: rgba(251, 246, 232, 0.72);
       --score-yellow-text: #87621a;
-      --score-yellow-border: #fae4b5;
-      --score-green-bg: #ebf5ee;
-      --score-green-text: #215e30;
-      --score-green-border: #c7e3cd;
+      --score-yellow-border: rgba(250, 228, 181, 0.75);
+      --score-green-bg: rgba(235, 245, 238, 0.72);
+      --score-green-text: #1a5c2c;
+      --score-green-border: rgba(199, 227, 205, 0.75);
     }
 
     *, *::before, *::after {
@@ -78,7 +78,11 @@
 
     body {
       background-color: var(--bg);
-      background-image: radial-gradient(circle at 50% 0%, #f7faf7 0%, #edf3ee 65%, #e6ede7 100%);
+      background-image: 
+        radial-gradient(circle at 12% 10%, rgba(162, 218, 185, 0.45) 0%, transparent 45%),
+        radial-gradient(circle at 88% 25%, rgba(188, 236, 212, 0.42) 0%, transparent 48%),
+        radial-gradient(circle at 18% 62%, rgba(170, 225, 195, 0.38) 0%, transparent 46%),
+        radial-gradient(circle at 85% 85%, rgba(180, 232, 206, 0.42) 0%, transparent 50%);
       background-attachment: fixed;
       color: var(--text-body);
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
@@ -95,41 +99,48 @@
     /* iOS 27 Liquid Glass 三层透光设计系统 */
     /* Level 1: Subtle Translucent Glass (主卡片容器) */
     .theme-card {
-      background-color: var(--card);
-      backdrop-filter: blur(18px) saturate(140%);
-      -webkit-backdrop-filter: blur(18px) saturate(140%);
-      border: 1px solid rgba(255, 255, 255, 0.85);
-      box-shadow: 0 4px 20px -2px rgba(20, 50, 30, 0.05), 0 1px 3px rgba(20, 50, 30, 0.03);
-      transition: all 0.18s ease;
+      background: rgba(255, 255, 255, 0.62);
+      backdrop-filter: blur(22px) saturate(140%);
+      -webkit-backdrop-filter: blur(22px) saturate(140%);
+      border: 1px solid rgba(255, 255, 255, 0.75);
+      border-top: 1px solid rgba(255, 255, 255, 0.95);
+      box-shadow: 0 8px 32px 0 rgba(20, 50, 30, 0.06), 0 2px 6px 0 rgba(20, 50, 30, 0.03), inset 0 1px 1px 0 rgba(255, 255, 255, 0.9);
+      transition: all 0.2s ease;
       box-sizing: border-box;
+      position: relative;
     }
 
     /* Level 2: Medium Translucent Glass (主导航外框、状态胶囊) */
     .glass-nav-container {
-      background: rgba(228, 238, 230, 0.75);
-      backdrop-filter: blur(20px) saturate(160%);
-      -webkit-backdrop-filter: blur(20px) saturate(160%);
+      background: rgba(225, 239, 230, 0.62);
+      backdrop-filter: blur(20px) saturate(150%);
+      -webkit-backdrop-filter: blur(20px) saturate(150%);
       border: 1px solid rgba(255, 255, 255, 0.8);
-      box-shadow: 0 2px 10px rgba(20, 50, 30, 0.05);
+      border-top: 1px solid rgba(255, 255, 255, 0.95);
+      box-shadow: 0 2px 10px rgba(20, 50, 30, 0.05), inset 0 1px 1px rgba(255, 255, 255, 0.9);
       border-radius: 14px;
     }
 
     .glass-status-pill {
-      background: rgba(232, 242, 234, 0.72);
+      background: rgba(232, 244, 236, 0.68);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid rgba(255, 255, 255, 0.85);
+      border-top: 1px solid rgba(255, 255, 255, 0.95);
       border-radius: 9999px;
-      box-shadow: 0 1px 4px rgba(20, 50, 30, 0.04);
+      box-shadow: 0 1px 4px rgba(20, 50, 30, 0.04), inset 0 1px 1px rgba(255, 255, 255, 0.85);
     }
 
-    /* Level 3: White Glass Highlight (激活选项卡、选中分类胶囊、轻量毛玻璃按钮) */
+    /* Level 3: White Glass Highlight (激活选项卡、轻量毛玻璃按钮) */
     .btn-tab-active {
-      background: rgba(255, 255, 255, 0.92) !important;
+      background: rgba(255, 255, 255, 0.78) !important;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       color: #133e29 !important;
       font-weight: 700 !important;
-      border: 1px solid rgba(255, 255, 255, 0.95);
-      box-shadow: 0 2px 8px rgba(20, 50, 30, 0.08), 0 1px 2px rgba(20, 50, 30, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.9) !important;
+      border-top: 1px solid #ffffff !important;
+      box-shadow: 0 2px 8px rgba(20, 50, 30, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.9) !important;
       border-radius: 10px;
     }
 
@@ -137,45 +148,73 @@
       white-space: nowrap;
       transition: all 0.15s ease;
       min-height: 44px;
-      color: #3d5743;
+      color: #334e39;
       border: 1px solid transparent;
       border-radius: 10px;
     }
     .btn-tab:hover {
-      color: #0f2214;
+      color: #0a1c10;
     }
 
-    /* 分类标签高光与微磨砂 */
+    /* 分类标签高光与微磨砂 (未选中白玻璃，选中翡翠绿玻璃) */
     .cat-pill-active {
-      background: rgba(255, 255, 255, 0.92) !important;
-      color: #133e29 !important;
+      background: rgba(30, 92, 62, 0.82) !important;
+      backdrop-filter: blur(16px) saturate(135%) !important;
+      -webkit-backdrop-filter: blur(16px) saturate(135%) !important;
+      color: #ffffff !important;
       font-weight: 700 !important;
-      border: 1px solid rgba(255, 255, 255, 0.95) !important;
-      box-shadow: 0 2px 8px rgba(20, 50, 30, 0.08) !important;
+      border: 1px solid rgba(255, 255, 255, 0.35) !important;
+      border-top: 1px solid rgba(255, 255, 255, 0.55) !important;
+      box-shadow: 0 2px 10px rgba(20, 65, 40, 0.22), inset 0 1px 1px rgba(255, 255, 255, 0.4) !important;
     }
     .cat-pill-inactive {
-      background: rgba(255, 255, 255, 0.55);
-      color: #3d5743;
+      background: rgba(255, 255, 255, 0.45);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      color: #334e39;
       border: 1px solid rgba(255, 255, 255, 0.7);
+      border-top: 1px solid rgba(255, 255, 255, 0.9);
+      box-shadow: 0 1px 3px rgba(20, 50, 30, 0.03);
+    }
+
+    /* 内部卡片嵌套玻璃层 (Nested Inner Glass) */
+    .glass-inner-core {
+      background: rgba(235, 245, 238, 0.55);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.75);
+      border-top: 1px solid rgba(255, 255, 255, 0.9);
+      border-radius: 12px;
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.8), 0 1px 3px rgba(20, 50, 30, 0.03);
+    }
+    .glass-inner-quote {
+      background: rgba(255, 255, 255, 0.65);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      border-left: 3.5px solid var(--accent);
+      border-radius: 12px;
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.85), 0 1px 3px rgba(20, 50, 30, 0.03);
     }
 
     /* 次级操作轻量毛玻璃按钮 (同步按钮) */
     .glass-btn-secondary {
-      background: rgba(255, 255, 255, 0.85);
+      background: rgba(255, 255, 255, 0.72);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.9);
-      color: #184730;
-      box-shadow: 0 1px 4px rgba(20, 50, 30, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.85);
+      border-top: 1px solid rgba(255, 255, 255, 0.95);
+      color: #15452e;
+      box-shadow: 0 1px 4px rgba(20, 50, 30, 0.05), inset 0 1px 1px rgba(255, 255, 255, 0.85);
       transition: all 0.15s ease;
     }
     .glass-btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.96);
+      background: rgba(255, 255, 255, 0.88);
       box-shadow: 0 2px 8px rgba(20, 50, 30, 0.09);
     }
     .glass-btn-secondary:active {
       transform: scale(0.95);
-      background: rgba(240, 248, 242, 0.9);
+      background: rgba(240, 248, 242, 0.8);
     }
 
     /* 屏蔽 WebKit / iOS Safari 自带的粗糙原生清除与搜索按钮 */
@@ -193,19 +232,85 @@
       height: 52px;
       min-height: 52px;
       border-radius: 16px;
-      background: rgba(255, 255, 255, 0.82);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.9);
-      box-shadow: 0 1px 3px rgba(20, 50, 30, 0.04);
-      color: #0f2214;
+      background: rgba(255, 255, 255, 0.52);
+      backdrop-filter: blur(18px) saturate(135%);
+      -webkit-backdrop-filter: blur(18px) saturate(135%);
+      border: 1px solid rgba(255, 255, 255, 0.85);
+      border-top: 1px solid rgba(255, 255, 255, 0.98);
+      box-shadow: 0 1px 4px rgba(20, 50, 30, 0.04), inset 0 1px 1px rgba(255, 255, 255, 0.8);
+      color: #0a1c10;
       font-size: 14px;
-      transition: all 0.18s ease;
+      transition: all 0.2s ease;
     }
     .search-input-field:focus {
-      background: rgba(255, 255, 255, 0.98);
-      border-color: #23583f;
-      box-shadow: 0 0 0 3px rgba(35, 88, 63, 0.15);
+      background: rgba(255, 255, 255, 0.82);
+      border-color: rgba(30, 92, 62, 0.6);
+      box-shadow: 0 0 0 3px rgba(30, 92, 62, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.9);
+    }
+
+    /* 移动端悬浮透光导航头 (滚动时增加折射密度) */
+    @media (max-width: 768px) {
+      .mobile-sticky-header {
+        position: sticky;
+        top: 0;
+        z-index: 40;
+        margin-left: -0.85rem;
+        margin-right: -0.85rem;
+        padding-left: max(0.85rem, calc(var(--sal) + 0.35rem));
+        padding-right: max(0.85rem, calc(var(--sar) + 0.35rem));
+        padding-top: max(0.75rem, calc(var(--sat) + 0.4rem));
+        margin-top: calc(-1 * max(0.75rem, calc(var(--sat) + 0.4rem)));
+        background: rgba(242, 247, 244, 0.65);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        transition: background 0.25s ease, backdrop-filter 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+      }
+      .mobile-sticky-header.scrolled {
+        background: rgba(238, 246, 241, 0.82);
+        backdrop-filter: blur(24px) saturate(150%);
+        -webkit-backdrop-filter: blur(24px) saturate(150%);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.85);
+        box-shadow: 0 4px 20px rgba(20, 50, 30, 0.08);
+      }
+    }
+
+    /* 桌面端隔离保护：桌面端保持不透明白卡片与经典布局，绝不产生毛玻璃性能损耗 */
+    @media (min-width: 769px) {
+      :root {
+        --card: #ffffff;
+      }
+      .theme-card {
+        background: #ffffff !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        border: 1px solid var(--border) !important;
+        box-shadow: 0 1px 3px rgba(20, 50, 30, 0.04) !important;
+      }
+      .mobile-sticky-header {
+        position: static !important;
+        background: transparent !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        box-shadow: none !important;
+        border-bottom: 1px solid var(--border) !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+      }
+      .glass-inner-core {
+        background: #f4f7f4 !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+      }
+      .glass-inner-quote {
+        background: #ffffff !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+      }
     }
 
     /* 移动端触摸反馈与消除误触 */
@@ -343,7 +448,7 @@
     <!-- ========================================== -->
     <!-- 【层级 3】紧凑 Header (内容保留，上下空间紧致) -->
     <!-- ========================================== -->
-    <header class="border-b border-[var(--border)] pb-2.5">
+    <header id="app-header" class="mobile-sticky-header border-b border-[var(--border)] pb-2.5">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
         <div>
           <div class="flex items-center gap-2 flex-wrap">
@@ -505,10 +610,10 @@
             </div>
 
             <!-- 1. 核心含义 (默认展示，字号提升) -->
-            <div id="eb-back-core" class="text-sm md:text-base text-[var(--text-body)] font-medium bg-[#f4f7f4] p-3.5 rounded-xl border border-[var(--border-sub)] leading-relaxed"></div>
+            <div id="eb-back-core" class="glass-inner-core text-sm md:text-base text-[var(--text-body)] font-medium p-3.5 rounded-xl border leading-relaxed"></div>
 
             <!-- 2. 本文真题原句 (默认展示) -->
-            <div id="eb-back-quote" class="p-3.5 rounded-xl bg-[var(--card)] border-l-3 border-[var(--accent)] space-y-1.5 border border-[var(--border-sub)]"></div>
+            <div id="eb-back-quote" class="glass-inner-quote p-3.5 rounded-xl space-y-1.5 border"></div>
 
             <!-- 3. 主要考法 / 搭配 (默认展示) -->
             <div id="eb-back-meanings" class="space-y-1.5 text-xs md:text-sm text-[var(--text-body)]"></div>
@@ -610,8 +715,8 @@
               <span class="text-sm font-bold text-[var(--text-main)]">知识结构解析</span>
               <span class="text-xs text-[var(--text-muted)]">再次点击折叠</span>
             </div>
-            <div id="card-core" class="text-xs md:text-sm text-[var(--accent)] font-medium bg-[#f4f7f4] p-3 rounded-lg border border-[var(--border-sub)] text-wrap-safe"></div>
-            <div id="card-quote" class="p-2.5 rounded-lg bg-[var(--card)] border-l-2 border-[var(--accent)] border border-[var(--border-sub)] text-xs md:text-sm space-y-0.5 text-wrap-safe"></div>
+            <div id="card-core" class="glass-inner-core text-xs md:text-sm text-[var(--accent)] font-medium p-3 rounded-lg border text-wrap-safe"></div>
+            <div id="card-quote" class="glass-inner-quote p-2.5 rounded-lg border-l-2 border-[var(--accent)] border text-xs md:text-sm space-y-0.5 text-wrap-safe"></div>
             <div class="space-y-1.5 text-xs md:text-sm text-[var(--text-body)] text-wrap-safe" id="card-meanings"></div>
             <div class="space-y-1.5 text-xs md:text-sm text-[var(--text-sub)] border-t border-[var(--border-sub)] pt-2.5 text-wrap-safe" id="card-example"></div>
           </div>
@@ -1301,7 +1406,7 @@
 
   <script>
     // 唯一版本构建指纹 (供 PWA 全自动嗅探更新)
-    const APP_BUILD_ID = 'english-build-v1790270522';
+    const APP_BUILD_ID = 'english-build-v1790270978';
 
     // ==========================================
     // 词汇数据库（8大知识结构体系，精选实用例句与直接对照）
@@ -2560,13 +2665,13 @@
               </div>
             </div>
 
-            <div class="text-xs md:text-sm text-[var(--text-body)] font-medium mt-2 leading-relaxed bg-[#f4f7f4] px-3 py-2 rounded-lg border border-[var(--border-sub)]">
+            <div class="glass-inner-core text-xs md:text-sm text-[var(--text-body)] font-medium mt-2 leading-relaxed px-3 py-2 rounded-lg border">
               <span class="text-[var(--accent)] font-bold">【核心含义】</span>${item.coreMeaning}
             </div>
           </div>
 
           <!-- 默认展示区域 2：本文真题原句 -->
-          <div class="p-3 rounded-xl bg-[var(--card)] border-l-3 border-[var(--accent)] space-y-1 border border-[var(--border-sub)]">
+          <div class="glass-inner-quote p-3 rounded-xl border-l-3 border-[var(--accent)] space-y-1 border">
             <div class="flex items-center justify-between text-xs text-[var(--accent)] font-semibold">
               <span>📖 本文真题原句</span>
               ${getAudioButtonHtml(item.articleUsage.quote, "w-7 h-7 min-w-[28px] min-h-[28px] text-[var(--accent)] hover:bg-[var(--accent-soft)]")}
@@ -2601,7 +2706,7 @@
           
           <div class="mt-3 space-y-3">
             <!-- 主要考法 / 介词搭配 -->
-            <div class="space-y-1 text-xs md:text-sm bg-[#f4f7f4] p-3 rounded-xl border border-[var(--border-sub)]">
+            <div class="space-y-1 text-xs md:text-sm glass-inner-core p-3 rounded-xl border">
               <div class="text-xs md:text-sm font-bold text-[var(--text-main)] flex items-center gap-1.5 mb-1.5">
                 <span class="w-1.5 h-1.5 rounded-full bg-[var(--accent)]"></span>${item.usageTitle || "主要高频用法"}
               </div>
@@ -3298,6 +3403,18 @@
       } catch (e) {}
       window.removeEventListener('touchstart', initAudioSpeech);
     }, { passive: true, once: true });
+
+    // 监听移动端滚动，驱动 iOS 27 Liquid Glass 吸顶导航头密度渐变与内容透光
+    window.addEventListener('scroll', () => {
+      const header = document.getElementById('app-header');
+      if (header) {
+        if (window.scrollY > 15) {
+          header.classList.add('scrolled');
+        } else {
+          header.classList.remove('scrolled');
+        }
+      }
+    }, { passive: true });
   </script>
 </body>
 </html>
