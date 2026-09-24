@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>英语词网</title>
+  <title>英语词汇</title>
 
   <!-- PWA & iOS Safari 原生化配置 -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="英语词网">
-  <meta name="application-name" content="英语词网">
-  <meta name="theme-color" content="#2d6a4f">
+  <meta name="apple-mobile-web-app-title" content="英语词汇">
+  <meta name="application-name" content="英语词汇">
+  <meta name="theme-color" content="#1e5235">
   <meta name="format-detection" content="telephone=no">
   <meta name="mobile-web-app-capable" content="yes">
 
@@ -34,34 +34,34 @@
       --sal: env(safe-area-inset-left, 0px);
       --sar: env(safe-area-inset-right, 0px);
 
-      /* 统一 iOS 低饱和清新柔和学术绿色调色系统 (Design Tokens) */
-      --bg: #f1f6f3;
-      --card: rgba(255, 255, 255, 0.65);
-      --card-sub: rgba(246, 251, 248, 0.60);
-      --card-hover: rgba(255, 255, 255, 0.78);
-      --text-main: #14281a;
-      --text-body: #203a27;
-      --text-sub: #3c5643;
-      --text-muted: #5e7a66;
-      --border: rgba(255, 255, 255, 0.75);
-      --border-sub: rgba(215, 230, 220, 0.65);
-      --border-hover: rgba(173, 195, 175, 0.85);
-      --accent: #2d6a4f;
-      --accent-hover: #1b4933;
-      --accent-soft: rgba(220, 238, 227, 0.75);
-      --badge-bg: rgba(225, 240, 230, 0.72);
+      /* 统一 iOS 27 Liquid Glass 色调系统：70% 清爽米白/中性白 + 20% 通透白玻璃 + 10% 典雅深森林绿 */
+      --bg: #f8faf9;
+      --card: rgba(255, 255, 255, 0.82);
+      --card-sub: rgba(244, 248, 245, 0.75);
+      --card-hover: rgba(255, 255, 255, 0.92);
+      --text-main: #132719;
+      --text-body: #1e3825;
+      --text-sub: #3d5644;
+      --text-muted: #607968;
+      --border: rgba(255, 255, 255, 0.88);
+      --border-sub: rgba(215, 230, 222, 0.70);
+      --border-hover: rgba(170, 195, 175, 0.85);
+      --accent: #1e5235;
+      --accent-hover: #143b25;
+      --accent-soft: rgba(218, 238, 226, 0.75);
+      --badge-bg: rgba(226, 242, 232, 0.75);
       --badge-text: #1e5235;
       
       /* 自测评分色彩 (带微磨砂通透感) */
-      --score-red-bg: rgba(250, 239, 238, 0.72);
+      --score-red-bg: rgba(253, 242, 241, 0.80);
       --score-red-text: #9a3b2e;
-      --score-red-border: rgba(242, 210, 206, 0.75);
-      --score-yellow-bg: rgba(251, 246, 232, 0.72);
+      --score-red-border: rgba(242, 210, 206, 0.80);
+      --score-yellow-bg: rgba(253, 248, 235, 0.80);
       --score-yellow-text: #87621a;
-      --score-yellow-border: rgba(250, 228, 181, 0.75);
-      --score-green-bg: rgba(235, 245, 238, 0.72);
+      --score-yellow-border: rgba(250, 228, 181, 0.80);
+      --score-green-bg: rgba(238, 247, 240, 0.80);
       --score-green-text: #1e5235;
-      --score-green-border: rgba(199, 227, 205, 0.75);
+      --score-green-border: rgba(199, 227, 205, 0.80);
     }
 
     *, *::before, *::after {
@@ -79,10 +79,10 @@
     body {
       background-color: var(--bg);
       background-image: 
-        radial-gradient(circle at 12% 10%, rgba(162, 218, 185, 0.45) 0%, transparent 45%),
-        radial-gradient(circle at 88% 25%, rgba(188, 236, 212, 0.42) 0%, transparent 48%),
-        radial-gradient(circle at 18% 62%, rgba(170, 225, 195, 0.38) 0%, transparent 46%),
-        radial-gradient(circle at 85% 85%, rgba(180, 232, 206, 0.42) 0%, transparent 50%);
+        radial-gradient(circle at 15% 12%, rgba(185, 228, 202, 0.26) 0%, transparent 45%),
+        radial-gradient(circle at 85% 25%, rgba(200, 236, 218, 0.20) 0%, transparent 48%),
+        radial-gradient(circle at 20% 65%, rgba(190, 230, 208, 0.18) 0%, transparent 46%),
+        radial-gradient(circle at 80% 85%, rgba(195, 232, 212, 0.22) 0%, transparent 50%);
       background-attachment: fixed;
       color: var(--text-body);
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
@@ -97,29 +97,30 @@
     }
 
     /* iOS 27 Liquid Glass 三层透光设计系统 */
-    /* Level 1: Clean Card (主卡片容器：保持通透但底色干净，确保文字极度易读) */
+    /* Level 1: Clean Card (主卡片容器：28px大圆角，通透轻盈，底色干净，确保文字极度易读) */
     .theme-card {
-      background: rgba(255, 255, 255, 0.75);
-      backdrop-filter: blur(20px) saturate(135%);
-      -webkit-backdrop-filter: blur(20px) saturate(135%);
-      border: 1px solid rgba(255, 255, 255, 0.85);
+      border-radius: 28px !important;
+      background: rgba(255, 255, 255, 0.80);
+      backdrop-filter: blur(24px) saturate(140%);
+      -webkit-backdrop-filter: blur(24px) saturate(140%);
+      border: 1px solid rgba(255, 255, 255, 0.88);
       border-top: 1px solid #ffffff;
-      box-shadow: 0 4px 20px 0 rgba(20, 50, 30, 0.05), 0 1px 3px 0 rgba(20, 50, 30, 0.02), inset 0 1px 1px 0 #ffffff;
-      transition: all 0.2s ease;
+      box-shadow: 0 4px 24px 0 rgba(20, 50, 30, 0.05), 0 1px 3px 0 rgba(20, 50, 30, 0.02), inset 0 1px 1px 0 #ffffff;
+      transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1);
       box-sizing: border-box;
       position: relative;
     }
 
     /* Level 2: Liquid Glass Navigation Dock (主导航长条椭圆胶囊外框) */
     .glass-nav-container {
-      background: rgba(226, 241, 232, 0.68);
+      background: rgba(232, 244, 237, 0.72);
       backdrop-filter: blur(24px) saturate(150%);
       -webkit-backdrop-filter: blur(24px) saturate(150%);
-      border: 1px solid rgba(255, 255, 255, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.88);
       border-top: 1px solid rgba(255, 255, 255, 0.98);
       box-shadow: 0 4px 18px rgba(20, 50, 30, 0.05), inset 0 1px 1.5px rgba(255, 255, 255, 0.9);
       border-radius: 9999px;
-      padding: 4px;
+      padding: 5px;
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
       touch-action: pan-x;
@@ -129,23 +130,23 @@
     }
 
     .glass-status-pill {
-      background: rgba(232, 244, 236, 0.72);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.85);
-      border-top: 1px solid rgba(255, 255, 255, 0.95);
+      background: rgba(235, 246, 239, 0.78);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid rgba(255, 255, 255, 0.88);
+      border-top: 1px solid rgba(255, 255, 255, 0.98);
       border-radius: 9999px;
-      box-shadow: 0 1px 4px rgba(20, 50, 30, 0.04), inset 0 1px 1px rgba(255, 255, 255, 0.85);
+      box-shadow: 0 2px 8px rgba(20, 50, 30, 0.04), inset 0 1px 1px rgba(255, 255, 255, 0.9);
     }
 
     /* 顶部导航选中的悬浮玻璃胶囊 (Liquid Glass Active Capsule) */
     .nav-capsule-active {
-      background: rgba(255, 255, 255, 0.92) !important;
+      background: rgba(255, 255, 255, 0.95) !important;
       backdrop-filter: blur(20px) saturate(160%) !important;
       -webkit-backdrop-filter: blur(20px) saturate(160%) !important;
       color: #123821 !important;
       font-weight: 700 !important;
-      border: 1px solid rgba(255, 255, 255, 0.95) !important;
+      border: 1px solid rgba(255, 255, 255, 0.98) !important;
       border-top: 1px solid #ffffff !important;
       box-shadow: 0 3px 12px rgba(20, 55, 30, 0.09), 0 1px 3px rgba(20, 50, 30, 0.04), inset 0 1px 1px #ffffff !important;
       border-radius: 9999px !important;
@@ -155,23 +156,37 @@
 
     .nav-capsule-inactive {
       background: transparent !important;
-      color: #42634d !important;
+      color: #3f604b !important;
       font-weight: 500 !important;
       border: 1px solid transparent !important;
       border-radius: 9999px !important;
-      opacity: 0.88;
+      opacity: 0.90;
       transition: all 0.2s ease;
     }
     .nav-capsule-inactive:hover {
       opacity: 1;
       color: #143522;
-      background: rgba(255, 255, 255, 0.4) !important;
+      background: rgba(255, 255, 255, 0.45) !important;
     }
     .nav-capsule-inactive:active {
       transform: scale(0.96);
-      background: rgba(255, 255, 255, 0.55) !important;
+      background: rgba(255, 255, 255, 0.6) !important;
     }
 
+    /* 导航胶囊拖动与悬停反馈 (单点+长按拖拽体验) */
+    .nav-capsule-dragging {
+      transform: scale(1.08) translateY(-2px) !important;
+      box-shadow: 0 8px 24px rgba(20, 50, 30, 0.16), 0 2px 6px rgba(20, 50, 30, 0.08) !important;
+      backdrop-filter: blur(28px) saturate(180%) !important;
+      -webkit-backdrop-filter: blur(28px) saturate(180%) !important;
+      z-index: 30;
+      transition: transform 0.15s ease, box-shadow 0.15s ease !important;
+    }
+    .nav-capsule-hover-target {
+      background: rgba(30, 82, 53, 0.16) !important;
+      border: 1px solid rgba(30, 82, 53, 0.4) !important;
+      transform: scale(1.04) !important;
+      transition: all 0.15s ease !important;
     /* 兼容老 class */
     .btn-tab-active {
       background: rgba(255, 255, 255, 0.92) !important;
@@ -505,40 +520,40 @@
   <div class="max-w-5xl mx-auto space-y-4 md:space-y-5">
 
     <!-- ========================================== -->
-    <!-- 顶部 App Header (简洁原生风格) -->
+    <!-- 顶部 App Header (iOS 27 原生极简 Liquid Glass 风格) -->
     <!-- ========================================== -->
     <header id="app-header" class="mobile-sticky-header border-b border-[var(--border)] pb-2.5">
-      <div class="flex items-center justify-between gap-2">
-        <div class="min-w-0">
-          <h1 class="text-xl sm:text-2xl font-bold text-[var(--text-main)] tracking-tight antialiased truncate">
-            英语词网
-          </h1>
-          <p class="text-[11px] sm:text-xs text-[var(--text-muted)] font-medium mt-0.5 truncate">结构化词汇 · 高效复习</p>
-        </div>
+      <!-- 第一行：主标题 + ↻ 同步按钮 -->
+      <div class="flex items-center justify-between gap-3">
+        <h1 class="text-2xl sm:text-3xl font-black text-[var(--accent)] tracking-tight antialiased whitespace-nowrap select-none" style="white-space: nowrap !important;">
+          英语词汇
+        </h1>
 
-        <!-- 紧凑状态栏 + 二级按钮 (↻ 同步) -->
-        <div class="flex items-center justify-end gap-1.5 sm:gap-2 text-xs font-mono flex-shrink-0">
-          <div class="glass-status-pill flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 text-xs font-mono text-[var(--text-sub)] whitespace-nowrap">
-            <span class="hidden sm:inline">📅 09-23 · </span>
-            <span>词库: <b class="text-[var(--text-main)] font-bold" id="header-total-badge">15</b></span>
-            <span class="opacity-40 hidden sm:inline">·</span>
-            <span class="text-[var(--accent)] font-semibold hidden sm:inline" id="header-mastered-badge">已掌握: 0</span>
-          </div>
-          
-          <button onclick="forceSyncLatest()" 
-                  class="glass-btn-capsule flex-shrink-0 min-h-[44px] min-w-[44px] px-3.5 sm:px-4 py-2 rounded-full text-xs font-semibold flex items-center justify-center gap-1.5 cursor-pointer select-none" 
-                  title="点击立即强制同步云端最新词库">
-            <svg class="w-4 h-4 flex-shrink-0 text-[var(--accent)]" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
-            </svg>
-            <span class="whitespace-nowrap font-medium text-[var(--accent)]">↻ 同步</span>
-          </button>
+        <!-- 二级操作：↻ 同步 (胶囊玻璃按钮，44px+触控面积) -->
+        <button onclick="forceSyncLatest()" 
+                class="glass-btn-capsule flex-shrink-0 min-h-[44px] px-4 py-2 rounded-full text-xs font-semibold flex items-center justify-center gap-1.5 cursor-pointer select-none text-[var(--accent)] active:scale-95" 
+                title="点击立即强制同步云端最新词库">
+          <svg class="w-4 h-4 flex-shrink-0 text-[var(--accent)]" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+          </svg>
+          <span class="whitespace-nowrap font-medium text-[var(--accent)]">↻ 同步</span>
+        </button>
+      </div>
+
+      <!-- 第二行：独立水平状态胶囊栏 (永不挤压标题，居左自适应) -->
+      <div class="flex items-center mt-2">
+        <div class="glass-status-pill inline-flex items-center gap-2 px-3.5 py-1.5 text-xs font-mono text-[var(--text-sub)] whitespace-nowrap">
+          <span>📅 09-23</span>
+          <span class="opacity-40">·</span>
+          <span>词库: <b class="text-[var(--text-main)] font-bold" id="header-total-badge">15</b></span>
+          <span class="opacity-40">·</span>
+          <span class="text-[var(--accent)] font-semibold" id="header-mastered-badge">已掌握: 0</span>
         </div>
       </div>
 
-      <!-- Segmented Navigation (移动端单行横向滚动/拖动，桌面端 5 列自适应平铺) -->
+      <!-- 第三行：Segmented Navigation Dock (移动端单行横向滚动/长按拖动，桌面端 5 列自适应平铺) -->
       <div class="scroll-hint-wrapper nav-scroll-hint mt-2.5">
-        <nav id="main-nav-bar" class="glass-nav-container flex sm:grid sm:grid-cols-5 items-center gap-1 p-1 overflow-x-auto sm:overflow-x-visible no-scrollbar text-xs md:text-sm">
+        <nav id="main-nav-bar" class="glass-nav-container flex sm:grid sm:grid-cols-5 items-center gap-1.5 p-1 overflow-x-auto sm:overflow-x-visible no-scrollbar text-xs md:text-sm">
           <button id="tab-ebbinghaus-btn" onclick="switchTab('ebbinghaus')" class="nav-capsule-item flex-shrink-0 px-4 py-2.5 min-h-[44px] rounded-full nav-capsule-active text-center cursor-pointer flex items-center justify-center gap-1.5 select-none" data-tab="ebbinghaus">
             <span class="text-sm">⏳</span><span class="font-bold">今日复习</span>
           </button>
@@ -609,14 +624,14 @@
           </div>
         </div>
 
-        <!-- 主学习卡片主体 (宽度放大、上下Padding加大、大号字、质感沉稳) -->
-        <div id="eb-card-box" class="theme-card rounded-2xl p-5 sm:p-7 md:p-9 shadow-sm border border-[var(--border)] bg-[var(--card)] transition-all min-h-[300px] flex flex-col justify-center">
+        <!-- 主学习卡片主体 (28px 大圆角，宽度放大、上下Padding加大、核心词汇大号居中显示) -->
+        <div id="eb-card-box" class="theme-card rounded-[28px] p-6 sm:p-8 md:p-10 shadow-sm border border-[var(--border)] bg-[var(--card)] transition-all min-h-[320px] flex flex-col justify-center">
           
           <!-- 正面：纯净主动回忆界面 (超大英文核心词，清晰引导，醒目CTA) -->
           <div id="eb-card-front" class="space-y-4 sm:space-y-6 my-auto">
             
             <div class="flex items-center justify-between gap-3 pt-1">
-              <h2 id="eb-card-term" class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black font-mono tracking-tight text-[var(--text-main)] leading-tight text-wrap-safe min-w-0 flex-1">
+              <h2 id="eb-card-term" class="text-3xl sm:text-4xl md:text-5xl font-black font-mono tracking-tight text-[var(--text-main)] leading-tight text-wrap-safe min-w-0 flex-1">
                 take on
               </h2>
               <button onclick="speakCurrent(event)" class="audio-speaker-btn border border-[var(--border-sub)] bg-white/70 shadow-2xs hover:bg-[var(--accent-soft)]" title="朗读发音" aria-label="朗读发音">
@@ -627,13 +642,13 @@
             </div>
 
             <!-- 核心启发引导 (适度加大字号，行高更舒适) -->
-            <div class="text-xs sm:text-sm md:text-base text-[var(--text-sub)] leading-relaxed bg-[#f6f9f6] p-3.5 sm:p-4 rounded-xl border border-[var(--border-sub)] text-wrap-safe" id="eb-card-hint">
+            <div class="text-xs sm:text-sm md:text-base text-[var(--text-sub)] leading-relaxed bg-[var(--card-sub)] p-4 rounded-2xl border border-[var(--border-sub)] text-wrap-safe" id="eb-card-hint">
               💡 核心引导：在六级阅读中有 4 种典型考法，请在脑海中先回想它接不同宾语时的含义...
             </div>
 
             <!-- 核心交互 CTA 按钮 (大圆角胶囊形，高度与视觉重量适度提升，形成第一行动力) -->
             <div class="pt-1 flex flex-col items-center gap-2">
-              <button onclick="toggleEbAnswer()" class="w-full py-3.5 md:py-4 px-6 rounded-full font-bold text-base md:text-lg transition-all duration-150 flex items-center justify-center gap-2 text-white bg-[var(--accent)] hover:bg-[var(--accent-hover)] shadow-sm active:scale-[0.98] cursor-pointer min-h-[48px]">
+              <button onclick="toggleEbAnswer()" class="w-full py-4 px-6 rounded-full font-bold text-base md:text-lg transition-all duration-150 flex items-center justify-center gap-2 text-white bg-[var(--accent)] hover:bg-[var(--accent-hover)] shadow-sm active:scale-[0.98] cursor-pointer min-h-[50px]">
                 <span>🤔 我已主动回忆，查看解析</span>
                 <span class="text-xs md:text-sm opacity-80 font-mono hidden sm:inline">(Space) ▾</span>
               </button>
@@ -661,10 +676,10 @@
             </div>
 
             <!-- 1. 核心含义 (默认展示，字号提升) -->
-            <div id="eb-back-core" class="glass-inner-core text-sm md:text-base text-[var(--text-body)] font-medium p-3.5 rounded-xl border leading-relaxed"></div>
+            <div id="eb-back-core" class="glass-inner-core text-sm md:text-base text-[var(--text-body)] font-medium p-3.5 rounded-2xl border leading-relaxed"></div>
 
             <!-- 2. 本文真题原句 (默认展示) -->
-            <div id="eb-back-quote" class="glass-inner-quote p-3.5 rounded-xl space-y-1.5 border"></div>
+            <div id="eb-back-quote" class="glass-inner-quote p-3.5 rounded-2xl space-y-1.5 border"></div>
 
             <!-- 3. 主要考法 / 搭配 (默认展示) -->
             <div id="eb-back-meanings" class="space-y-1.5 text-xs md:text-sm text-[var(--text-body)]"></div>
@@ -736,61 +751,62 @@
 
 
     <!-- ========================================== -->
-    <!-- 视图 2：自由翻转自测 (全量词库随时抽测) -->
+    <!-- 视图 2：自由翻转自测 (单层扁平大卡片，以中央核心词为绝对重心) -->
     <!-- ========================================== -->
-    <main id="view-quiz" class="hidden">
-      <div class="theme-card rounded-2xl p-6 md:p-8 max-w-[880px] mx-auto text-center space-y-5 shadow-sm bg-[var(--card)]">
+    <main id="view-quiz" class="hidden max-w-[880px] mx-auto space-y-4">
+      
+      <!-- 顶部信息栏 -->
+      <div class="flex items-center justify-between text-xs md:text-sm text-[var(--text-sub)] px-1">
+        <span id="quiz-progress" class="font-mono font-bold text-[var(--accent)] text-sm md:text-base">卡片 1 / 15</span>
+        <span id="quiz-cat-badge" class="px-3 py-1 rounded-full text-xs font-semibold bg-[#e4ede5] text-[var(--accent)] border border-[var(--border-sub)]">分类</span>
+      </div>
+
+      <!-- 单层大圆角扁平核心卡片 (rounded-[28px]，消除内部嵌套) -->
+      <div id="flashcard" onclick="flipCard()" class="theme-card rounded-[28px] p-6 sm:p-8 md:p-10 text-center min-h-[320px] flex flex-col items-center justify-center cursor-pointer transition-all duration-200 select-none">
         
-        <div class="flex items-center justify-between text-xs md:text-sm text-[var(--text-sub)]">
-          <span id="quiz-progress" class="font-mono font-bold text-[var(--accent)] text-sm">卡片 1 / 12</span>
-          <span id="quiz-cat-badge" class="px-2.5 py-0.5 rounded text-xs font-semibold bg-[#e4ede5] text-[var(--accent)]">分类</span>
-        </div>
-
-        <div id="flashcard" onclick="flipCard()" class="min-h-[280px] flex flex-col items-center justify-center p-6 md:p-8 rounded-xl border border-[var(--border)] hover:border-[var(--accent)] cursor-pointer transition select-none bg-[var(--card-sub)]">
-          
-          <div id="card-front" class="space-y-3">
-            <div class="flex items-center justify-center gap-2">
-              <span class="text-xs md:text-sm text-[var(--text-muted)]">点击卡片翻转答案 👆</span>
-              <button onclick="speakQuizCurrent(event)" class="audio-speaker-btn w-9 h-9 min-w-[36px] min-h-[36px] border border-[var(--border-sub)] bg-white/70" title="发音朗读" aria-label="发音朗读">
-                <svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.757 3.63 8.25 4.51 8.25H6.75z" />
-                </svg>
-              </button>
-            </div>
-            <h2 id="card-term" class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black font-mono text-[var(--text-main)] tracking-tight text-wrap-safe">take on</h2>
-            <p id="card-hint" class="text-xs md:text-sm text-[var(--text-sub)] max-w-md mx-auto text-wrap-safe">提示：核心词义与真题语境</p>
+        <div id="card-front" class="space-y-4 my-auto w-full">
+          <div class="flex items-center justify-center gap-2">
+            <span class="text-xs md:text-sm text-[var(--text-muted)] font-medium">点击卡片翻转答案 👆</span>
+            <button onclick="speakQuizCurrent(event)" class="audio-speaker-btn w-9 h-9 min-w-[36px] min-h-[36px] border border-[var(--border-sub)] bg-white/70" title="发音朗读" aria-label="发音朗读">
+              <svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.757 3.63 8.25 4.51 8.25H6.75z" />
+              </svg>
+            </button>
           </div>
+          <h2 id="card-term" class="text-3xl sm:text-4xl md:text-5xl font-black font-mono text-[var(--text-main)] tracking-tight text-wrap-safe">take on</h2>
+          <p id="card-hint" class="text-xs sm:text-sm text-[var(--text-sub)] max-w-md mx-auto text-wrap-safe leading-relaxed">提示：核心词义与真题语境</p>
+        </div>
 
-          <div id="card-back" class="hidden text-left space-y-3.5 w-full">
-            <div class="flex items-center justify-between border-b border-[var(--border)] pb-2">
-              <span class="text-sm font-bold text-[var(--text-main)]">知识结构解析</span>
-              <span class="text-xs text-[var(--text-muted)]">再次点击折叠</span>
-            </div>
-            <div id="card-core" class="glass-inner-core text-xs md:text-sm text-[var(--accent)] font-medium p-3 rounded-lg border text-wrap-safe"></div>
-            <div id="card-quote" class="glass-inner-quote p-2.5 rounded-lg border-l-2 border-[var(--accent)] border text-xs md:text-sm space-y-0.5 text-wrap-safe"></div>
-            <div class="space-y-1.5 text-xs md:text-sm text-[var(--text-body)] text-wrap-safe" id="card-meanings"></div>
-            <div class="space-y-1.5 text-xs md:text-sm text-[var(--text-sub)] border-t border-[var(--border-sub)] pt-2.5 text-wrap-safe" id="card-example"></div>
+        <div id="card-back" class="hidden text-left space-y-3.5 w-full my-auto">
+          <div class="flex items-center justify-between border-b border-[var(--border)] pb-2.5">
+            <span class="text-sm font-bold text-[var(--text-main)]">知识结构解析</span>
+            <span class="text-xs text-[var(--text-muted)]">再次点击翻回正面</span>
           </div>
-
-        </div>
-
-        <div class="flex items-center justify-center gap-2.5 pt-1">
-          <button onclick="prevCard()" class="glass-btn-capsule px-4 py-2.5 min-h-[44px] text-xs md:text-sm font-medium rounded-full border border-[var(--border)] bg-[var(--card)] hover:bg-[var(--accent-soft)] active:scale-95 text-[var(--text-body)] transition cursor-pointer flex items-center justify-center select-none">
-            ← 上一个
-          </button>
-          <button onclick="flipCard()" class="px-5 py-2.5 min-h-[44px] text-xs md:text-sm font-bold rounded-full text-white transition shadow-xs active:scale-95 cursor-pointer flex items-center justify-center select-none" style="background-color: var(--accent);">
-            🔄 翻转卡片
-          </button>
-          <button onclick="nextCard()" class="glass-btn-capsule px-4 py-2.5 min-h-[44px] text-xs md:text-sm font-medium rounded-full border border-[var(--border)] bg-[var(--card)] hover:bg-[var(--accent-soft)] active:scale-95 text-[var(--text-body)] transition cursor-pointer flex items-center justify-center select-none">
-            下一个 →
-          </button>
-        </div>
-
-        <div class="text-xs text-[var(--text-muted)]">
-          提示：按键盘 <kbd class="px-1.5 py-0.5 rounded border border-[var(--border)] bg-[#e8efe8] font-mono">空格键</kbd> 翻转，<kbd class="px-1.5 py-0.5 rounded border border-[var(--border)] bg-[#e8efe8] font-mono">←</kbd> 和 <kbd class="px-1.5 py-0.5 rounded border border-[var(--border)] bg-[#e8efe8] font-mono">→</kbd> 方向键切换。
+          <div id="card-core" class="glass-inner-core text-xs md:text-sm text-[var(--accent)] font-medium p-3.5 rounded-2xl border text-wrap-safe"></div>
+          <div id="card-quote" class="glass-inner-quote p-3 rounded-2xl border text-xs md:text-sm space-y-1 text-wrap-safe"></div>
+          <div class="space-y-1.5 text-xs md:text-sm text-[var(--text-body)] text-wrap-safe" id="card-meanings"></div>
+          <div class="space-y-1.5 text-xs md:text-sm text-[var(--text-sub)] border-t border-[var(--border-sub)] pt-2.5 text-wrap-safe" id="card-example"></div>
         </div>
 
       </div>
+
+      <!-- 底部控制按钮 (大胶囊形，最小44px触控) -->
+      <div class="flex items-center justify-center gap-3 pt-2">
+        <button onclick="prevCard()" class="glass-btn-capsule px-5 py-2.5 min-h-[44px] text-xs sm:text-sm font-semibold rounded-full cursor-pointer flex items-center justify-center select-none active:scale-95">
+          ← 上一个
+        </button>
+        <button onclick="flipCard()" class="px-6 py-2.5 min-h-[44px] text-xs sm:text-sm font-bold rounded-full text-white transition shadow-sm active:scale-95 cursor-pointer flex items-center justify-center select-none bg-[var(--accent)] hover:bg-[var(--accent-hover)]">
+          🔄 翻转卡片
+        </button>
+        <button onclick="nextCard()" class="glass-btn-capsule px-5 py-2.5 min-h-[44px] text-xs sm:text-sm font-semibold rounded-full cursor-pointer flex items-center justify-center select-none active:scale-95">
+          下一个 →
+        </button>
+      </div>
+
+      <div class="text-xs text-[var(--text-muted)] text-center">
+        提示：按键盘 <kbd class="px-1.5 py-0.5 rounded border border-[var(--border)] bg-[#e8efe8] font-mono">空格键</kbd> 翻转，<kbd class="px-1.5 py-0.5 rounded border border-[var(--border)] bg-[#e8efe8] font-mono">←</kbd> 和 <kbd class="px-1.5 py-0.5 rounded border border-[var(--border)] bg-[#e8efe8] font-mono">→</kbd> 方向键切换。
+      </div>
+
     </main>
 
 
@@ -815,7 +831,7 @@
             autocorrect="off"
             autocapitalize="off"
             spellcheck="false"
-            placeholder="搜索英文词汇、中文释义或搭配"
+            placeholder="搜索英文词汇、中文释义、高频搭配、例句"
             class="search-input-field w-full h-[52px] min-h-[52px] rounded-full pl-11 pr-12 text-sm text-[var(--text-main)] placeholder-[var(--text-muted)] focus:outline-none"
           >
           <button 
@@ -1290,7 +1306,7 @@
             </div>
           </div>
           <div>
-            <button onclick="switchTab('ebbinghaus')" id="stats-start-btn" class="btn-tab w-full sm:w-auto px-6 py-3.5 rounded-xl font-bold text-base text-white transition-all shadow-xs flex items-center justify-center gap-2 hover:opacity-95 active:scale-[0.99] cursor-pointer" style="background-color: var(--accent);">
+            <button onclick="switchTab('ebbinghaus')" id="stats-start-btn" class="btn-tab w-full sm:w-auto px-7 py-3.5 rounded-full font-bold text-base text-white transition-all shadow-xs flex items-center justify-center gap-2 hover:opacity-95 active:scale-[0.98] cursor-pointer min-h-[48px]" style="background-color: var(--accent);">
               <span>开始今日复习</span>
               <span class="font-mono text-sm">→</span>
             </button>
@@ -1299,7 +1315,7 @@
 
         <!-- 3 个真正具备学习意义的核心指标 -->
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-1">
-          <div class="bg-[var(--card-sub)] rounded-xl p-4 border border-[var(--border-sub)] space-y-1">
+          <div class="bg-[var(--card-sub)] rounded-2xl p-4 border border-[var(--border-sub)] space-y-1">
             <div class="text-xs text-[var(--text-muted)] font-medium">总词汇量</div>
             <div class="flex items-baseline gap-1.5">
               <span class="text-2xl md:text-3xl font-black font-mono text-[var(--text-main)]" id="stats-total-num">12</span>
@@ -1308,7 +1324,7 @@
             <div class="text-xs text-[var(--text-muted)]">已建立系统化词义网络</div>
           </div>
 
-          <div class="bg-[var(--card-sub)] rounded-xl p-4 border border-[var(--border-sub)] space-y-1">
+          <div class="bg-[var(--card-sub)] rounded-2xl p-4 border border-[var(--border-sub)] space-y-1">
             <div class="text-xs text-[var(--text-muted)] font-medium">今日待复习</div>
             <div class="flex items-baseline gap-1.5">
               <span class="text-2xl md:text-3xl font-black font-mono text-[var(--accent)]" id="stats-today-pending-card">10</span>
@@ -1317,7 +1333,7 @@
             <div class="text-xs text-[var(--text-muted)]" id="stats-today-pending-sub">每日精选 10 词强化记忆</div>
           </div>
 
-          <div class="bg-[var(--card-sub)] rounded-xl p-4 border border-[var(--border-sub)] space-y-1">
+          <div class="bg-[var(--card-sub)] rounded-2xl p-4 border border-[var(--border-sub)] space-y-1">
             <div class="text-xs text-[var(--text-muted)] font-medium">已进入巩固阶段</div>
             <div class="flex items-baseline gap-1.5">
               <span class="text-2xl md:text-3xl font-black font-mono text-[var(--score-green-text)]" id="stats-consolidated-num">0</span>
@@ -1329,7 +1345,7 @@
       </section>
 
       <!-- 【第二层】艾宾浩斯阶段进度 (时间轴式排布，紧凑清晰，拒绝 Excel 厚条) -->
-      <section class="theme-card rounded-2xl p-5 md:p-6 bg-[var(--card)] space-y-4 border border-[var(--border)] shadow-xs">
+      <section class="theme-card rounded-[28px] p-5 md:p-6 bg-[var(--card)] space-y-4 border border-[var(--border)] shadow-xs">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2 border-b border-[var(--border-sub)]">
           <div>
             <h3 class="font-bold text-sm md:text-base text-[var(--text-main)] flex items-center gap-2">
@@ -1340,7 +1356,7 @@
             </p>
           </div>
           <!-- 紧凑时间轴微览 -->
-          <div class="hidden sm:flex items-center text-xs font-mono text-[var(--text-sub)] bg-[var(--card-sub)] px-3 py-1.5 rounded-lg border border-[var(--border-sub)]">
+          <div class="hidden sm:flex items-center text-xs font-mono text-[var(--text-sub)] bg-[var(--card-sub)] px-3 py-1.5 rounded-full border border-[var(--border-sub)]">
             <span class="font-semibold text-[var(--accent)]">Day 0</span>
             <span class="mx-1 text-[var(--text-muted)]">→</span>
             <span>Day 1</span>
@@ -1365,7 +1381,7 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         
         <!-- 知识网络 -->
-        <section class="theme-card rounded-2xl p-5 bg-[var(--card)] space-y-3.5 border border-[var(--border)] shadow-xs flex flex-col justify-between">
+        <section class="theme-card rounded-[28px] p-5 bg-[var(--card)] space-y-3.5 border border-[var(--border)] shadow-xs flex flex-col justify-between">
           <div class="space-y-3">
             <div class="flex items-center justify-between">
               <h3 class="font-bold text-sm md:text-base text-[var(--text-main)] flex items-center gap-2">
@@ -1386,7 +1402,7 @@
           </div>
 
           <div class="pt-2">
-            <button onclick="switchTab('list')" class="w-full py-2.5 px-3 text-xs md:text-sm font-semibold rounded-xl border border-[var(--border)] bg-[var(--card)] hover:bg-[var(--accent-soft)] text-[var(--accent)] transition cursor-pointer flex items-center justify-center gap-1.5 shadow-xs">
+            <button onclick="switchTab('list')" class="w-full py-2.5 px-4 min-h-[44px] text-xs md:text-sm font-semibold rounded-full border border-[var(--border)] bg-[var(--card)] hover:bg-[var(--accent-soft)] text-[var(--accent)] transition cursor-pointer flex items-center justify-center gap-1.5 shadow-xs">
               <span>查看全景词网 →</span>
             </button>
           </div>
@@ -1460,7 +1476,7 @@
 
   <script>
     // 唯一版本构建指纹 (供 PWA 全自动嗅探更新)
-    const APP_BUILD_ID = 'english-build-v1790271974';
+    const APP_BUILD_ID = 'english-build-v1790272360';
 
     // ==========================================
     // 词汇数据库（8大知识结构体系，精选实用例句与直接对照）
@@ -2639,7 +2655,7 @@
 
     function createCardElement(item) {
       const card = document.createElement("div");
-      card.className = "theme-card rounded-2xl p-5 md:p-6 bg-[var(--card)] border border-[var(--border)] shadow-xs card-layout";
+      card.className = "theme-card rounded-[28px] p-5 md:p-6 bg-[var(--card)] border border-[var(--border)] shadow-xs card-layout";
 
       const usagesHtml = item.mainUsages.map(u => `
         <div class="flex items-start gap-2 text-xs md:text-sm leading-snug">
@@ -3246,45 +3262,114 @@
       }, 40);
     }
 
-    // 顶部导航与分类栏拖拽手势支持（单点切换，左右按住自由拖动，松手自然停靠）
+    // 顶部导航双重交互系统 (单点即切 + 长按悬浮拖拽探测切换 + iOS 触感反馈)
     function initNavGesture() {
       const nav = document.getElementById("main-nav-bar");
       if (!nav) return;
 
-      let isDown = false;
+      let isPressing = false;
+      let isDragging = false;
+      let pressTimer = null;
       let startX = 0;
-      let scrollStart = 0;
-      let hasDragged = false;
+      let startY = 0;
+      let draggedBtn = null;
+      let currentHoverBtn = null;
 
-      nav.addEventListener("mousedown", (e) => {
-        isDown = true;
-        hasDragged = false;
-        startX = e.pageX - nav.offsetLeft;
-        scrollStart = nav.scrollLeft;
+      function clearDragState() {
+        if (pressTimer) {
+          clearTimeout(pressTimer);
+          pressTimer = null;
+        }
+        if (draggedBtn) {
+          draggedBtn.classList.remove("nav-capsule-dragging");
+          draggedBtn = null;
+        }
+        if (currentHoverBtn) {
+          currentHoverBtn.classList.remove("nav-capsule-hover-target");
+          currentHoverBtn = null;
+        }
+        isPressing = false;
+        isDragging = false;
+      }
+
+      nav.addEventListener("pointerdown", (e) => {
+        if (e.button !== 0 && e.pointerType === "mouse") return;
+        const btn = e.target.closest(".nav-capsule-item");
+        if (!btn) return;
+
+        isPressing = true;
+        isDragging = false;
+        startX = e.clientX;
+        startY = e.clientY;
+        draggedBtn = btn;
+
+        // 长按 160ms 激活悬浮升起拖拽模式
+        pressTimer = setTimeout(() => {
+          if (isPressing && draggedBtn) {
+            isDragging = true;
+            draggedBtn.classList.add("nav-capsule-dragging");
+            if (navigator.vibrate) {
+              try { navigator.vibrate(15); } catch (err) {}
+            }
+          }
+        }, 160);
       });
 
-      window.addEventListener("mouseup", () => {
-        isDown = false;
-        setTimeout(() => { hasDragged = false; }, 30);
-      });
+      window.addEventListener("pointermove", (e) => {
+        if (!isPressing || !draggedBtn) return;
+        const dx = e.clientX - startX;
+        const dy = e.clientY - startY;
 
-      nav.addEventListener("mousemove", (e) => {
-        if (!isDown) return;
-        const x = e.pageX - nav.offsetLeft;
-        const dist = x - startX;
-        if (Math.abs(dist) > 5) {
-          hasDragged = true;
-          e.preventDefault();
-          nav.scrollLeft = scrollStart - dist;
+        // 如果用户手指移动超过 8px，提前进入拖拽判定
+        if (!isDragging && (Math.abs(dx) > 8 || Math.abs(dy) > 8)) {
+          isDragging = true;
+          if (pressTimer) {
+            clearTimeout(pressTimer);
+            pressTimer = null;
+          }
+          draggedBtn.classList.add("nav-capsule-dragging");
+        }
+
+        if (isDragging) {
+          // 实时嗅探手指或指针下方的导航选项卡
+          const hitElement = document.elementFromPoint(e.clientX, e.clientY);
+          const hoverBtn = hitElement ? hitElement.closest(".nav-capsule-item") : null;
+
+          if (hoverBtn !== currentHoverBtn) {
+            if (currentHoverBtn) {
+              currentHoverBtn.classList.remove("nav-capsule-hover-target");
+            }
+            currentHoverBtn = hoverBtn;
+            if (currentHoverBtn && currentHoverBtn !== draggedBtn) {
+              currentHoverBtn.classList.add("nav-capsule-hover-target");
+              if (navigator.vibrate) {
+                try { navigator.vibrate(10); } catch (err) {}
+              }
+            }
+          }
+        }
+      }, { passive: true });
+
+      window.addEventListener("pointerup", (e) => {
+        if (!isPressing) return;
+
+        if (isDragging) {
+          const targetTab = currentHoverBtn ? currentHoverBtn.getAttribute("data-tab") : null;
+          clearDragState();
+          if (targetTab && targetTab !== currentTab) {
+            switchTab(targetTab);
+            if (navigator.vibrate) {
+              try { navigator.vibrate(12); } catch (err) {}
+            }
+          }
+        } else {
+          clearDragState();
         }
       });
 
-      nav.addEventListener("click", (e) => {
-        if (hasDragged) {
-          e.preventDefault();
-          e.stopImmediatePropagation();
-        }
-      }, true);
+      window.addEventListener("pointercancel", () => {
+        clearDragState();
+      });
     }
 
     // 全局快捷键监听
