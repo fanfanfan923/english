@@ -604,24 +604,21 @@
     <!-- ========================================== -->
     <main id="view-ebbinghaus" class="space-y-4 md:space-y-5">
       
-      <!-- 【层级 1 & 2】今日复习任务与进度区 (4层信息系统：任务明确、进度清晰、不显花哨) -->
+      <!-- 【层级 1 & 2】今日复习任务与进度区 (降噪瘦身：去除多余副标题与说教式节律文案) -->
       <section class="max-w-[880px] mx-auto px-1 space-y-2.5">
         <div class="flex items-center justify-between gap-3">
-          <!-- 第一层：今天的学习任务 -->
-          <div class="flex items-baseline gap-2.5 min-w-0">
-            <h2 class="text-base sm:text-lg font-bold text-[var(--text-main)] tracking-tight">今日复习</h2>
-            <span class="text-xs text-[var(--text-muted)] font-medium truncate">抗遗忘智能排程</span>
-          </div>
+          <!-- 第一层：今天的学习任务 (仅保留“今日复习”，删除多余副标题) -->
+          <h2 class="text-base sm:text-lg font-bold text-[var(--text-main)] tracking-tight">今日复习</h2>
           <!-- 快捷操作：重置今天 -->
-          <button onclick="resetDailyReview()" class="glass-btn-capsule flex-shrink-0 min-h-[34px] px-3.5 py-1 text-xs text-[var(--text-sub)] hover:text-[var(--text-main)] rounded-full transition cursor-pointer select-none">
+          <button onclick="resetDailyReview()" class="glass-btn-capsule flex-shrink-0 h-[32px] px-3.5 py-1 text-xs text-[var(--text-sub)] hover:text-[var(--text-main)] rounded-full transition cursor-pointer select-none">
             重置今天
           </button>
         </div>
 
-        <!-- 第二层：三列统计卡片与进度状态条 (标准 3 列 Grid，大号数值+下方单行浅灰标签，彻底消除折行与错位) -->
+        <!-- 第二层：三列统计卡片与进度状态条 (标准 3 列 Grid，上大数值、下单行浅灰标签：已完成 / 熟练度 / 待测词) -->
         <div class="bg-[rgba(255,255,255,0.78)] backdrop-blur-md rounded-[18px] p-3.5 sm:p-4 border border-[rgba(45,106,79,0.08)] shadow-[0_4px_16px_rgba(27,67,50,0.035)] space-y-2.5 sm:space-y-3">
           
-          <!-- 标准三列网格布局：已完成 / 熟练度 / 待测词数 -->
+          <!-- 标准三列网格布局：已完成 / 熟练度 / 待测词 -->
           <div class="grid grid-cols-3 divide-x divide-[rgba(45,106,79,0.08)] text-center py-0.5">
             <!-- 第 1 列：已完成 -->
             <div class="flex flex-col items-center justify-center px-1 min-w-0">
@@ -635,22 +632,16 @@
               <span class="text-[11px] sm:text-xs text-[var(--text-sub)] font-medium mt-1 whitespace-nowrap select-none">熟练度</span>
             </div>
             
-            <!-- 第 3 列：待测词数 -->
+            <!-- 第 3 列：待测词 -->
             <div class="flex flex-col items-center justify-center px-1 min-w-0">
               <span id="stat-queue-status" class="font-mono text-base sm:text-xl font-black text-[var(--text-main)] tracking-tight leading-tight whitespace-nowrap">10</span>
-              <span class="text-[11px] sm:text-xs text-[var(--text-sub)] font-medium mt-1 whitespace-nowrap select-none">待测词数</span>
+              <span class="text-[11px] sm:text-xs text-[var(--text-sub)] font-medium mt-1 whitespace-nowrap select-none">待测词</span>
             </div>
           </div>
 
-          <!-- 6px 护眼绿色平滑进度条 -->
+          <!-- 6px 护眼绿色平滑进度条 (已删除冗余的下方节律说明) -->
           <div class="w-full bg-[#E2ECE5] h-2 rounded-full overflow-hidden">
             <div id="progress-bar" class="h-full w-0 transition-all duration-300 rounded-full" style="background-color: var(--accent);"></div>
-          </div>
-
-          <!-- 科学抗遗忘节律与周期驱动说明 (高对比度灰绿色，不浅不晃眼，小屏弹性排版) -->
-          <div class="flex items-center justify-between text-[11px] sm:text-xs text-[var(--text-sub)] pt-0.5 gap-2">
-            <span class="truncate">抗遗忘节律：Day 0 → 1 → 3 → 7 → 15 → 30</span>
-            <span class="whitespace-nowrap flex-shrink-0 text-[var(--accent)] font-medium">评分驱动</span>
           </div>
         </div>
       </section>
@@ -692,7 +683,7 @@
             </div>
 
             <!-- 核心交互 CTA 按钮 (18px平滑大圆角，标准 SVG 眼睛图标，垂直居中对齐，无 Emoji) -->
-            <div class="pt-1 flex flex-col items-center gap-2.5">
+            <div class="pt-1 flex flex-col items-center gap-2">
               <button onclick="toggleEbAnswer()" class="w-full py-3.5 sm:py-4 px-6 rounded-[18px] font-bold text-base md:text-lg transition-all duration-150 flex items-center justify-center gap-2 text-white bg-[var(--accent)] hover:bg-[var(--accent-hover)] shadow-sm active:scale-[0.97] cursor-pointer min-h-[50px]">
                 <svg class="w-5 h-5 flex-shrink-0 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
@@ -701,9 +692,9 @@
                 <span>查看记忆解析</span>
                 <span class="text-xs md:text-sm opacity-80 font-mono hidden sm:inline">(Space) ▾</span>
               </button>
-              <!-- 辅助文案：弹性自然换行，杜绝孤字换行问题 -->
-              <p class="text-xs text-[var(--text-sub)] text-center leading-relaxed max-w-[340px] sm:max-w-none mx-auto px-1 font-medium">
-                <span class="inline-block">先在大脑中回忆释义与用法，</span><span class="inline-block">再展开验证提升学习效率</span>
+              <!-- 精炼单行回忆提示：居中单行显示，杜绝孤字换行 -->
+              <p class="text-xs text-[var(--text-sub)] text-center font-medium whitespace-nowrap overflow-hidden text-ellipsis px-1">
+                先在脑中自主回忆，再展开验证
               </p>
             </div>
 
@@ -1539,7 +1530,7 @@
 
   <script>
     // 唯一版本构建指纹 (供 PWA 全自动嗅探更新)
-    const APP_BUILD_ID = 'english-build-v1790309823';
+    const APP_BUILD_ID = 'english-build-v1790309950';
 
     // ==========================================
     // 词汇数据库（8大知识结构体系，精选实用例句与直接对照）
