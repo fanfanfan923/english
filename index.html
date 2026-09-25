@@ -141,105 +141,134 @@
       border: 1px solid rgba(45, 106, 79, 0.06);
     }
 
-    /* 顶部导航长条椭圆胶囊底槽 (Tab System) */
-    .glass-nav-container {
-      background: rgba(230, 241, 235, 0.70) !important;
-      backdrop-filter: blur(20px) !important;
-      -webkit-backdrop-filter: blur(20px) !important;
-      border: 1px solid rgba(45, 106, 79, 0.08) !important;
-      box-shadow: 0 2px 10px rgba(27, 67, 50, 0.03) !important;
-      border-radius: 9999px !important;
-      padding: 4px !important;
-      overflow-x: auto !important;
-      -webkit-overflow-scrolling: touch !important;
-      white-space: nowrap !important;
-      scrollbar-width: none !important;
-      -ms-overflow-style: none !important;
-      box-sizing: border-box !important;
-      width: 100%;
-      scroll-behavior: smooth;
-    }
-    .glass-nav-container::-webkit-scrollbar {
-      display: none !important;
-      width: 0 !important;
-      height: 0 !important;
-      background: transparent !important;
-    }
-
-    .glass-status-pill {
-      background: rgba(230, 241, 235, 0.65);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(45, 106, 79, 0.08);
-      border-radius: 9999px;
-      box-shadow: 0 2px 8px rgba(27, 67, 50, 0.02);
-    }
-
-    .nav-capsule-item {
-      outline: none !important;
-      -webkit-tap-highlight-color: transparent !important;
-      user-select: none !important;
-      box-sizing: border-box !important;
-      height: 38px;
-      min-height: 38px;
+    /* ========================================== */
+    /* 顶部极简圆形同步按钮 (Liquid Glass Circular Button) */
+    /* ========================================== */
+    .sync-button {
+      width: 36px;
+      height: 36px;
+      min-width: 36px;
+      min-height: 36px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      flex: 0 0 auto !important;
-      white-space: nowrap !important;
-    }
-
-    /* 顶部导航选中的奶玉白浮层胶囊 (温和高亮，文字深墨绿 #1B4332) */
-    .nav-capsule-active {
-      background: #F8FBF9 !important;
-      backdrop-filter: blur(16px) !important;
-      -webkit-backdrop-filter: blur(16px) !important;
-      color: #1B4332 !important;
-      font-weight: 700 !important;
-      border: 1px solid rgba(45, 106, 79, 0.08) !important;
-      box-shadow: 0 2px 8px rgba(27, 67, 50, 0.06) !important;
-      border-radius: 9999px !important;
-      transform: none !important;
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .nav-capsule-inactive {
-      background: transparent !important;
-      color: #40584D !important;
-      font-weight: 500 !important;
-      border: 1px solid transparent !important;
-      box-shadow: none !important;
-      border-radius: 9999px !important;
-      opacity: 0.90;
-      transition: all 0.2s ease;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.65);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 2px 8px rgba(27, 67, 50, 0.04);
+      cursor: pointer;
+      color: var(--accent);
+      transition: background-color 180ms ease, transform 120ms ease, box-shadow 180ms ease, color 180ms ease;
+      flex-shrink: 0;
+      user-select: none;
+      outline: none;
+      -webkit-tap-highlight-color: transparent;
     }
     @media (hover: hover) {
-      .nav-capsule-inactive:hover {
-        opacity: 1;
-        color: #1B4332;
-        background: rgba(255, 255, 255, 0.40) !important;
+      .sync-button:hover {
+        background: rgba(255, 255, 255, 0.75);
+        color: #1b4332;
+        box-shadow: 0 4px 12px rgba(27, 67, 50, 0.08);
       }
     }
-    .nav-capsule-inactive:active {
-      transform: scale(0.96);
-      background: rgba(255, 255, 255, 0.55) !important;
+    .sync-button:active {
+      transform: scale(0.92);
+      background: rgba(255, 255, 255, 0.90);
     }
 
-    /* 导航胶囊拖动与悬停反馈 (浮起、轻微放大、阴影增强) */
-    .nav-capsule-dragging {
-      transform: scale(1.05) translateY(-1px) !important;
-      box-shadow: 0 6px 18px rgba(27, 67, 50, 0.12) !important;
-      backdrop-filter: blur(24px) !important;
-      -webkit-backdrop-filter: blur(24px) !important;
-      background: #F8FBF9 !important;
-      z-index: 30;
-      transition: transform 0.15s ease, box-shadow 0.15s ease !important;
+    /* ========================================== */
+    /* 悬浮毛玻璃 Dock 导航底座 (Glassmorphism Floating Bar) */
+    /* ========================================== */
+    .glass-dock {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 4px;
+      background: rgba(255, 255, 255, 0.45);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.70);
+      border-radius: 9999px;
+      box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05), inset 0 1px 1px rgba(255, 255, 255, 0.85);
+      padding: 4px 6px;
+      margin-inline: auto;
+      max-width: calc(100% - 24px);
+      width: fit-content;
+      box-sizing: border-box;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+      scroll-behavior: smooth;
     }
-    .nav-capsule-hover-target {
-      background: rgba(45, 106, 79, 0.10) !important;
-      border: 1px solid rgba(45, 106, 79, 0.25) !important;
-      transform: scale(1.03) !important;
-      transition: all 0.15s ease !important;
+    .glass-dock::-webkit-scrollbar {
+      display: none !important;
+      width: 0 !important;
+      height: 0 !important;
+    }
+    /* 顶部弱物理高光内切边 */
+    .glass-dock::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0) 100%);
+    }
+
+    /* Dock 子项（默认非选中态：透明融入底座，无边框、无阴影） */
+    .dock-item {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 6px 12px;
+      min-height: 34px;
+      border-radius: 9999px;
+      background: transparent;
+      border: 1px solid transparent;
+      color: rgba(55, 75, 65, 0.70);
+      font-size: 13px;
+      font-weight: 500;
+      white-space: nowrap;
+      cursor: pointer;
+      user-select: none;
+      outline: none;
+      -webkit-tap-highlight-color: transparent;
+      flex: 0 0 auto;
+      transition: background-color 180ms ease, color 180ms ease, box-shadow 180ms ease, transform 120ms ease;
+    }
+    @media (min-width: 640px) {
+      .glass-dock {
+        justify-content: center;
+      }
+      .dock-item {
+        flex: 1 1 0;
+      }
+    }
+    @media (hover: hover) {
+      .dock-item:hover {
+        background: rgba(255, 255, 255, 0.28);
+        color: #1b4332;
+      }
+    }
+    .dock-item:active {
+      transform: scale(0.97);
+    }
+
+    /* Active Tab：纯白悬浮胶囊高亮态 */
+    .dock-item.active {
+      background: #ffffff !important;
+      border-radius: 9999px !important;
+      color: #234c3b !important;
+      font-weight: 600 !important;
+      border: 1px solid rgba(255, 255, 255, 0.85) !important;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+      transform: none !important;
     }
 
     /* 兼容老 class */
@@ -545,56 +574,48 @@
     <!-- ========================================== -->
     <!-- 顶部 App Header (iOS 27 原生极简 Liquid Glass 风格) -->
     <!-- ========================================== -->
-    <header id="app-header" class="mobile-sticky-header border-b border-[var(--border)] pb-2.5">
-      <!-- 第一行：主标题 + ↻ 同步按钮 -->
-      <div class="flex items-center justify-between gap-3">
-        <h1 class="text-2xl sm:text-3xl font-black text-[var(--accent)] tracking-tight antialiased whitespace-nowrap select-none" style="white-space: nowrap !important;">
-          英语词汇
+    <header id="app-header" class="mobile-sticky-header pb-2 sm:pb-3 space-y-2.5 sm:space-y-3">
+      <!-- 第一层：主标题 + 极简圆形同步按钮 -->
+      <div class="flex items-center justify-between gap-3 px-1">
+        <h1 id="app-main-title" class="text-2xl sm:text-3xl font-black text-[var(--accent)] tracking-tight antialiased whitespace-nowrap select-none">
+          今日复习
         </h1>
 
-        <!-- 二级操作：同步 (标准单一 SVG 图标 + 文字，紧凑协调，无 Emoji 及冗余符号) -->
+        <!-- 极简圆形同步按钮 (36px 悬浮毛玻璃圆钮，仅放置单一 RefreshCw 图标) -->
         <button onclick="forceSyncLatest()" 
-                class="glass-btn-capsule flex-shrink-0 min-h-[38px] px-3.5 py-1.5 rounded-full text-xs font-semibold flex items-center justify-center gap-1.5 cursor-pointer select-none text-[var(--accent)] active:scale-95" 
-                title="点击立即强制同步云端最新词库">
-          <svg class="w-3.5 h-3.5 flex-shrink-0 text-[var(--accent)]" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                class="sync-button" 
+                title="点击立即强制同步云端最新词库"
+                aria-label="同步词库">
+          <svg class="w-4 h-4 text-[var(--accent)]" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
           </svg>
-          <span class="whitespace-nowrap font-medium text-[var(--accent)]">同步</span>
         </button>
       </div>
 
-      <!-- 第二行：独立水平状态胶囊栏 (永不挤压标题，居左自适应) -->
-      <div class="flex items-center mt-2">
-        <div class="glass-status-pill inline-flex items-center gap-2 px-3.5 py-1.5 text-xs font-mono text-[var(--text-sub)] whitespace-nowrap">
-          <span>📅 09-23</span>
-          <span class="opacity-40">·</span>
-          <span>词库: <b class="text-[var(--text-main)] font-bold" id="header-total-badge">15</b></span>
-          <span class="opacity-40">·</span>
-          <span class="text-[var(--accent)] font-semibold" id="header-mastered-badge">已掌握: 0</span>
-        </div>
-      </div>
-
-      <!-- 第三行：Segmented Navigation Dock (移动端单行横向平滑滚动 + 右侧微渐变提示，桌面端 5 列自适应平铺) -->
-      <div class="relative w-full mt-2.5">
-        <nav id="main-nav-bar" class="glass-nav-container flex sm:grid sm:grid-cols-5 items-center gap-1.5 overflow-x-auto sm:overflow-x-visible no-scrollbar text-xs md:text-sm">
-          <button id="tab-ebbinghaus-btn" onclick="switchTab('ebbinghaus')" class="nav-capsule-item flex-none sm:flex-shrink whitespace-nowrap px-3.5 py-2 min-h-[38px] rounded-full nav-capsule-active text-center cursor-pointer flex items-center justify-center gap-1.5 select-none" data-tab="ebbinghaus">
-            <span class="text-sm">⏳</span><span class="text-xs sm:text-sm font-semibold tracking-tight">今日复习</span>
+      <!-- 第二层：居中悬浮毛玻璃 Dock 导航栏 (彻底消除中间堆叠胶囊与千层饼感) -->
+      <div class="w-full flex justify-center py-0.5">
+        <nav id="main-nav-bar" class="glass-dock" role="tablist" aria-label="应用主导航">
+          <button id="tab-ebbinghaus-btn" onclick="switchTab('ebbinghaus')" class="dock-item active" role="tab" aria-selected="true" data-tab="ebbinghaus">
+            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 6 12 12 15 15"/></svg>
+            <span>今日复习</span>
           </button>
-          <button id="tab-quiz-btn" onclick="switchTab('quiz')" class="nav-capsule-item flex-none sm:flex-shrink whitespace-nowrap px-3.5 py-2 min-h-[38px] rounded-full nav-capsule-inactive text-center cursor-pointer flex items-center justify-center gap-1.5 select-none" data-tab="quiz">
-            <span class="text-sm">🃏</span><span class="text-xs sm:text-sm font-semibold tracking-tight">翻转自测</span>
+          <button id="tab-quiz-btn" onclick="switchTab('quiz')" class="dock-item" role="tab" aria-selected="false" data-tab="quiz">
+            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+            <span>翻转自测</span>
           </button>
-          <button id="tab-list-btn" onclick="switchTab('list')" class="nav-capsule-item flex-none sm:flex-shrink whitespace-nowrap px-3.5 py-2 min-h-[38px] rounded-full nav-capsule-inactive text-center cursor-pointer flex items-center justify-center gap-1.5 select-none" data-tab="list">
-            <span class="text-sm">📋</span><span class="text-xs sm:text-sm font-semibold tracking-tight">词网全景</span>
+          <button id="tab-list-btn" onclick="switchTab('list')" class="dock-item" role="tab" aria-selected="false" data-tab="list">
+            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
+            <span>词网全景</span>
           </button>
-          <button id="tab-diff-btn" onclick="switchTab('diff')" class="nav-capsule-item flex-none sm:flex-shrink whitespace-nowrap px-3.5 py-2 min-h-[38px] rounded-full nav-capsule-inactive text-center cursor-pointer flex items-center justify-center gap-1.5 select-none" data-tab="diff">
-            <span class="text-sm">⚖️</span><span class="text-xs sm:text-sm font-semibold tracking-tight">考点地图</span>
+          <button id="tab-diff-btn" onclick="switchTab('diff')" class="dock-item" role="tab" aria-selected="false" data-tab="diff">
+            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18m-8-6l4-8 4 8H4zm12 0l4-8 4 8h-8z"/></svg>
+            <span>考点地图</span>
           </button>
-          <button id="tab-stats-btn" onclick="switchTab('stats')" class="nav-capsule-item flex-none sm:flex-shrink whitespace-nowrap px-3.5 py-2 min-h-[38px] rounded-full nav-capsule-inactive text-center cursor-pointer flex items-center justify-center gap-1.5 select-none" data-tab="stats">
-            <span class="text-sm">📊</span><span class="text-xs sm:text-sm font-semibold tracking-tight">学习看板</span>
+          <button id="tab-stats-btn" onclick="switchTab('stats')" class="dock-item" role="tab" aria-selected="false" data-tab="stats">
+            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"/></svg>
+            <span>学习看板</span>
           </button>
         </nav>
-        <!-- 最右侧轻微线性渐变遮罩 (暗示“还有内容可以横向滑动”，桌面端自动隐藏) -->
-        <div id="nav-fade-hint" class="pointer-events-none absolute right-0 top-0 bottom-0 w-8 sm:hidden rounded-r-full bg-gradient-to-l from-[rgba(230,241,235,0.95)] to-transparent transition-opacity duration-300"></div>
       </div>
     </header>
 
@@ -1530,7 +1551,7 @@
 
   <script>
     // 唯一版本构建指纹 (供 PWA 全自动嗅探更新)
-    const APP_BUILD_ID = 'english-build-v1790309950';
+    const APP_BUILD_ID = 'english-build-v1790310419';
 
     // ==========================================
     // 词汇数据库（8大知识结构体系，精选实用例句与直接对照）
@@ -3296,11 +3317,36 @@
     // 统一导航配置与动态渲染系统 (桌面端/移动端统一数据驱动，单源维护)
     // ==========================================
     const NAV_CONFIG = [
-      { id: "ebbinghaus", name: "今日复习", icon: "⏳" },
-      { id: "quiz", name: "翻转自测", icon: "🃏" },
-      { id: "list", name: "词网全景", icon: "📋" },
-      { id: "diff", name: "考点地图", icon: "⚖️" },
-      { id: "stats", name: "学习看板", icon: "📊" }
+      { 
+        id: "ebbinghaus", 
+        name: "今日复习", 
+        title: "今日复习",
+        icon: `<svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 6 12 12 15 15"/></svg>` 
+      },
+      { 
+        id: "quiz", 
+        name: "翻转自测", 
+        title: "翻转自测",
+        icon: `<svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>` 
+      },
+      { 
+        id: "list", 
+        name: "词网全景", 
+        title: "英语词网",
+        icon: `<svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>` 
+      },
+      { 
+        id: "diff", 
+        name: "考点地图", 
+        title: "考点地图",
+        icon: `<svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18m-8-6l4-8 4 8H4zm12 0l4-8 4 8h-8z"/></svg>` 
+      },
+      { 
+        id: "stats", 
+        name: "学习看板", 
+        title: "学习看板",
+        icon: `<svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"/></svg>` 
+      }
     ];
 
     let currentTab = "ebbinghaus";
@@ -3314,11 +3360,13 @@
           <button 
             id="tab-${item.id}-btn" 
             onclick="switchTab('${item.id}')" 
-            class="nav-capsule-item flex-none sm:flex-shrink whitespace-nowrap px-3.5 py-2 min-h-[38px] rounded-full ${isActive ? 'nav-capsule-active' : 'nav-capsule-inactive'} text-center cursor-pointer flex items-center justify-center gap-1.5 select-none"
+            class="dock-item ${isActive ? 'active' : ''}"
+            role="tab"
+            aria-selected="${isActive}"
             data-tab="${item.id}"
           >
-            <span class="text-sm">${item.icon}</span>
-            <span class="text-xs sm:text-sm font-semibold tracking-tight whitespace-nowrap">${item.name}</span>
+            ${item.icon}
+            <span>${item.name}</span>
           </button>
         `;
       }).join("");
@@ -3327,6 +3375,13 @@
     function switchTab(tab) {
       currentTab = tab;
       renderNavBar();
+
+      // 同步顶部标题与当前视图语义匹配 (如今日复习、英语词网、学习看板等)
+      const titleEl = document.getElementById("app-main-title");
+      const currentConfig = NAV_CONFIG.find(item => item.id === tab);
+      if (titleEl && currentConfig) {
+        titleEl.textContent = currentConfig.title || currentConfig.name;
+      }
 
       const viewMap = {
         ebbinghaus: document.getElementById("view-ebbinghaus"),
