@@ -1596,7 +1596,7 @@
 
   <script>
     // 唯一版本构建指纹 (供 PWA 全自动嗅探更新)
-    const APP_BUILD_ID = 'english-build-v1790356548';
+    const APP_BUILD_ID = 'english-build-v1790356770';
 
     // ==========================================
     // 词汇数据库（8大知识结构体系，精选实用例句与直接对照）
@@ -2531,11 +2531,12 @@
               记忆曲线已全部推进入下个复习周期。保持节奏，明天系统将自动为你排程最新复习队列！
             </p>
             <div class="pt-3 flex items-center justify-center gap-3.5">
-              <button onclick="resetDailyReview()" class="text-xs md:text-sm px-4 py-2.5 rounded-[16px] border border-[var(--border)] bg-[var(--card)] hover:bg-[var(--accent-soft)] text-[var(--text-main)] transition-all active:scale-[0.97] cursor-pointer font-medium">
+              <button onclick="resetDailyReview()" class="glass-btn-capsule text-xs md:text-sm px-5 py-2.5 rounded-[16px] text-[#2D4F3E] transition-all active:scale-[0.97] cursor-pointer font-medium min-h-[44px]">
                 重新自测今天
               </button>
-              <button onclick="switchTab('list')" class="text-xs md:text-sm px-5 py-2.5 rounded-[18px] text-white font-bold transition-all active:scale-[0.97] cursor-pointer shadow-xs" style="background-color: var(--accent);">
-                查看全景词网 →
+              <button onclick="switchTab('list')" class="text-xs md:text-sm h-[44px] px-6 rounded-[16px] text-white font-semibold transition-all active:scale-[0.98] cursor-pointer shadow-[0_4px_14px_rgba(45,118,90,0.22)] bg-[#2D765A] hover:bg-[#1B4332] flex items-center justify-center gap-1.5">
+                <span>查看全景词网</span>
+                <span class="font-mono text-sm">→</span>
               </button>
             </div>
           </div>
