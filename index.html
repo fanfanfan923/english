@@ -103,13 +103,15 @@
       -webkit-touch-callout: none;
     }
 
-    /* 页面基底环境：温润浅玉绿纸张感渐变 (用户不应明显感觉自己在看粗劣渐变，而是自然的护眼环境) */
+    /* 页面基底环境：温润护眼浅鼠尾草微光，确保毛玻璃控件能够折射并透射出真实的微光色泽 */
     body {
-      background: linear-gradient(
-        180deg,
-        #E8F3EE 0%,
-        #EDF6F1 100%
-      );
+      background:
+        radial-gradient(
+          circle at 50% 0%,
+          rgba(100, 180, 130, 0.12),
+          transparent 45%
+        ),
+        #f4f8f4;
       background-attachment: fixed;
       color: var(--text-body);
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "PingFang SC", "Hiragino Sans GB", "Segoe UI", system-ui, sans-serif;
@@ -142,132 +144,125 @@
     }
 
     /* ========================================== */
-    /* 顶部极简圆形同步按钮 (Liquid Glass Circular Button) */
+    /* 顶部极简毛玻璃圆形同步按钮 (RefreshCw Minimal Action) */
     /* ========================================== */
     .sync-button {
       width: 36px;
       height: 36px;
       min-width: 36px;
       min-height: 36px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.45);
-      border: 1px solid rgba(255, 255, 255, 0.65);
+      display: grid;
+      place-items: center;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.50);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-      box-shadow: 0 2px 8px rgba(27, 67, 50, 0.04);
       cursor: pointer;
       color: var(--accent);
-      transition: background-color 180ms ease, transform 120ms ease, box-shadow 180ms ease, color 180ms ease;
+      transition: transform 120ms ease, background-color 180ms ease, box-shadow 180ms ease;
       flex-shrink: 0;
       user-select: none;
       outline: none;
       -webkit-tap-highlight-color: transparent;
+      box-shadow: 0 2px 8px rgba(20, 60, 40, 0.04);
     }
     @media (hover: hover) {
       .sync-button:hover {
-        background: rgba(255, 255, 255, 0.75);
-        color: #1b4332;
-        box-shadow: 0 4px 12px rgba(27, 67, 50, 0.08);
+        background: rgba(255, 255, 255, 0.70);
+        color: #1a3826;
+        box-shadow: 0 4px 12px rgba(20, 60, 40, 0.08);
       }
     }
     .sync-button:active {
       transform: scale(0.92);
-      background: rgba(255, 255, 255, 0.90);
     }
 
     /* ========================================== */
-    /* 悬浮毛玻璃 Dock 导航底座 (Glassmorphism Floating Bar) */
+    /* iOS 原生悬浮毛玻璃 Segmented Control 底座 (物理光学材质) */
     /* ========================================== */
+    .glass-segmented-control,
     .glass-dock {
-      position: relative;
-      z-index: 10;
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-      gap: 4px;
-      background: rgba(255, 255, 255, 0.45);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.70);
-      border-radius: 9999px;
-      box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05), inset 0 1px 1px rgba(255, 255, 255, 0.85);
-      padding: 4px 6px;
+      width: 100%;
+      max-width: 520px;
       margin-inline: auto;
-      max-width: calc(100% - 24px);
-      width: fit-content;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      align-items: center;
+      padding: 3px;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.65);
+      backdrop-filter: blur(20px) saturate(190%);
+      -webkit-backdrop-filter: blur(20px) saturate(190%);
+      border: 1px solid rgba(255, 255, 255, 0.85);
+      box-shadow:
+        inset 0 1px 1.5px 0 rgba(255, 255, 255, 1),
+        0 8px 20px -4px rgba(20, 60, 40, 0.08);
       box-sizing: border-box;
-      overflow-x: auto;
-      scrollbar-width: none;
-      -webkit-overflow-scrolling: touch;
-      scroll-behavior: smooth;
-    }
-    .glass-dock::-webkit-scrollbar {
-      display: none !important;
-      width: 0 !important;
-      height: 0 !important;
-    }
-    /* 顶部弱物理高光内切边 */
-    .glass-dock::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      border-radius: inherit;
-      pointer-events: none;
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0) 100%);
+      position: relative;
+      user-select: none;
     }
 
-    /* Dock 子项（默认非选中态：透明融入底座，无边框、无阴影） */
+    /* Tab 严格四均分子项 (Ghost 状态，杜绝截断与横向溢出) */
+    .segment-item,
     .dock-item {
-      position: relative;
+      min-width: 0;
+      height: 34px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
-      padding: 6px 12px;
-      min-height: 34px;
-      border-radius: 9999px;
-      background: transparent;
-      border: 1px solid transparent;
-      color: rgba(55, 75, 65, 0.70);
-      font-size: 13px;
-      font-weight: 500;
       white-space: nowrap;
+      overflow: hidden;
+      text-overflow: clip;
+      text-align: center;
+      background: transparent;
+      color: rgba(26, 56, 38, 0.60);
+      border: none;
+      box-shadow: none;
+      font-size: 13.5px;
+      font-weight: 500;
+      border-radius: 9999px;
       cursor: pointer;
       user-select: none;
       outline: none;
       -webkit-tap-highlight-color: transparent;
-      flex: 0 0 auto;
-      transition: background-color 180ms ease, color 180ms ease, box-shadow 180ms ease, transform 120ms ease;
+      padding: 0 4px;
+      transition:
+        background-color 180ms ease,
+        color 180ms ease,
+        box-shadow 180ms ease,
+        transform 120ms ease;
     }
-    @media (min-width: 640px) {
-      .glass-dock {
-        justify-content: center;
-      }
+    @media (max-width: 375px) {
+      .segment-item,
       .dock-item {
-        flex: 1 1 0;
+        font-size: 12.5px;
+        padding: 0 2px;
       }
     }
     @media (hover: hover) {
-      .dock-item:hover {
-        background: rgba(255, 255, 255, 0.28);
-        color: #1b4332;
+      .segment-item:not(.active):hover,
+      .dock-item:not(.active):hover {
+        background: rgba(255, 255, 255, 0.18);
+        color: #1a3826;
       }
     }
+    .segment-item:active,
     .dock-item:active {
       transform: scale(0.97);
     }
 
-    /* Active Tab：纯白悬浮胶囊高亮态 */
+    /* 选中 Tab：模拟 iOS 纯白浮雕实体滑块 (双层接触与悬浮阴影，无普通描边) */
+    .segment-item.active,
     .dock-item.active {
       background: #ffffff !important;
       border-radius: 9999px !important;
-      color: #234c3b !important;
+      color: #1a3826 !important;
       font-weight: 600 !important;
-      border: 1px solid rgba(255, 255, 255, 0.85) !important;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+      border: none !important;
+      box-shadow:
+        0 2px 4px 0 rgba(0, 0, 0, 0.04),
+        0 4px 12px 0 rgba(0, 0, 0, 0.08) !important;
       transform: none !important;
     }
 
@@ -386,19 +381,16 @@
         padding-top: max(16px, calc(var(--sat) + 12px));
         padding-bottom: 12px;
         margin-top: 0 !important;
-        background: rgba(232, 243, 238, 0.88);
-        backdrop-filter: blur(20px) saturate(180%);
-        -webkit-backdrop-filter: blur(20px) saturate(180%);
-        border-bottom: 1px solid rgba(45, 106, 79, 0.08);
-        box-shadow: 0 2px 10px -2px rgba(27, 67, 50, 0.03);
+        background: rgba(244, 248, 244, 0.85);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: none !important;
+        box-shadow: none !important;
         transition: background 0.25s ease, backdrop-filter 0.25s ease, box-shadow 0.25s ease;
       }
       .mobile-sticky-header.scrolled {
-        background: rgba(232, 243, 238, 0.95);
-        backdrop-filter: blur(24px) saturate(190%);
-        -webkit-backdrop-filter: blur(24px) saturate(190%);
-        border-bottom: 1px solid rgba(45, 106, 79, 0.12);
-        box-shadow: 0 4px 14px -2px rgba(27, 67, 50, 0.05);
+        background: rgba(244, 248, 244, 0.95);
+        box-shadow: 0 4px 16px -4px rgba(20, 60, 40, 0.04);
       }
     }
 
@@ -413,7 +405,7 @@
         backdrop-filter: none !important;
         -webkit-backdrop-filter: none !important;
         box-shadow: none !important;
-        border-bottom: 1px solid rgba(45, 106, 79, 0.08) !important;
+        border-bottom: none !important;
         margin-left: 0 !important;
         margin-right: 0 !important;
         padding-left: 0 !important;
@@ -592,28 +584,20 @@
         </button>
       </div>
 
-      <!-- 第二层：居中悬浮毛玻璃 Dock 导航栏 (彻底消除中间堆叠胶囊与千层饼感) -->
-      <div class="w-full flex justify-center py-0.5">
-        <nav id="main-nav-bar" class="glass-dock" role="tablist" aria-label="应用主导航">
-          <button id="tab-ebbinghaus-btn" onclick="switchTab('ebbinghaus')" class="dock-item active" role="tab" aria-selected="true" data-tab="ebbinghaus">
-            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 6 12 12 15 15"/></svg>
-            <span>今日复习</span>
+      <!-- 第二层：严格四均分 iOS 悬浮毛玻璃 Segmented Control (杜绝截断与横向溢出) -->
+      <div class="w-full flex justify-center py-0.5 px-1 sm:px-0">
+        <nav id="main-nav-bar" class="glass-segmented-control" role="tablist" aria-label="应用主导航">
+          <button id="tab-ebbinghaus-btn" onclick="switchTab('ebbinghaus')" class="segment-item active" role="tab" aria-selected="true" data-tab="ebbinghaus">
+            <span>今日</span>
           </button>
-          <button id="tab-quiz-btn" onclick="switchTab('quiz')" class="dock-item" role="tab" aria-selected="false" data-tab="quiz">
-            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
-            <span>翻转自测</span>
+          <button id="tab-list-btn" onclick="switchTab('list')" class="segment-item" role="tab" aria-selected="false" data-tab="list">
+            <span>词库</span>
           </button>
-          <button id="tab-list-btn" onclick="switchTab('list')" class="dock-item" role="tab" aria-selected="false" data-tab="list">
-            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
-            <span>词网全景</span>
+          <button id="tab-stats-btn" onclick="switchTab('stats')" class="segment-item" role="tab" aria-selected="false" data-tab="stats">
+            <span>统计</span>
           </button>
-          <button id="tab-diff-btn" onclick="switchTab('diff')" class="dock-item" role="tab" aria-selected="false" data-tab="diff">
-            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18m-8-6l4-8 4 8H4zm12 0l4-8 4 8h-8z"/></svg>
+          <button id="tab-diff-btn" onclick="switchTab('diff')" class="segment-item" role="tab" aria-selected="false" data-tab="diff">
             <span>考点地图</span>
-          </button>
-          <button id="tab-stats-btn" onclick="switchTab('stats')" class="dock-item" role="tab" aria-selected="false" data-tab="stats">
-            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"/></svg>
-            <span>学习看板</span>
           </button>
         </nav>
       </div>
@@ -630,10 +614,15 @@
         <div class="flex items-center justify-between gap-3">
           <!-- 第一层：今天的学习任务 (仅保留“今日复习”，删除多余副标题) -->
           <h2 class="text-base sm:text-lg font-bold text-[var(--text-main)] tracking-tight">今日复习</h2>
-          <!-- 快捷操作：重置今天 -->
-          <button onclick="resetDailyReview()" class="glass-btn-capsule flex-shrink-0 h-[32px] px-3.5 py-1 text-xs text-[var(--text-sub)] hover:text-[var(--text-main)] rounded-full transition cursor-pointer select-none">
-            重置今天
-          </button>
+          <!-- 快捷操作区：翻转自测 + 重置今天 -->
+          <div class="flex items-center gap-2">
+            <button onclick="switchTab('quiz')" class="glass-btn-capsule flex-shrink-0 h-[32px] px-3 py-1 text-xs text-[var(--accent)] hover:text-[var(--text-main)] rounded-full transition cursor-pointer select-none flex items-center gap-1 font-medium" title="进入翻转自测卡片模式">
+              <span>🃏 翻转卡片</span>
+            </button>
+            <button onclick="resetDailyReview()" class="glass-btn-capsule flex-shrink-0 h-[32px] px-3.5 py-1 text-xs text-[var(--text-sub)] hover:text-[var(--text-main)] rounded-full transition cursor-pointer select-none">
+              重置今天
+            </button>
+          </div>
         </div>
 
         <!-- 第二层：三列统计卡片与进度状态条 (标准 3 列 Grid，上大数值、下单行浅灰标签：已完成 / 熟练度 / 待测词) -->
@@ -1551,7 +1540,7 @@
 
   <script>
     // 唯一版本构建指纹 (供 PWA 全自动嗅探更新)
-    const APP_BUILD_ID = 'english-build-v1790310419';
+    const APP_BUILD_ID = 'english-build-v1790310871';
 
     // ==========================================
     // 词汇数据库（8大知识结构体系，精选实用例句与直接对照）
@@ -3317,36 +3306,10 @@
     // 统一导航配置与动态渲染系统 (桌面端/移动端统一数据驱动，单源维护)
     // ==========================================
     const NAV_CONFIG = [
-      { 
-        id: "ebbinghaus", 
-        name: "今日复习", 
-        title: "今日复习",
-        icon: `<svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 6 12 12 15 15"/></svg>` 
-      },
-      { 
-        id: "quiz", 
-        name: "翻转自测", 
-        title: "翻转自测",
-        icon: `<svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>` 
-      },
-      { 
-        id: "list", 
-        name: "词网全景", 
-        title: "英语词网",
-        icon: `<svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>` 
-      },
-      { 
-        id: "diff", 
-        name: "考点地图", 
-        title: "考点地图",
-        icon: `<svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18m-8-6l4-8 4 8H4zm12 0l4-8 4 8h-8z"/></svg>` 
-      },
-      { 
-        id: "stats", 
-        name: "学习看板", 
-        title: "学习看板",
-        icon: `<svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"/></svg>` 
-      }
+      { id: "ebbinghaus", name: "今日", title: "今日复习" },
+      { id: "list", name: "词库", title: "英语词库" },
+      { id: "stats", name: "统计", title: "学习统计" },
+      { id: "diff", name: "考点地图", title: "考点地图" }
     ];
 
     let currentTab = "ebbinghaus";
@@ -3360,12 +3323,11 @@
           <button 
             id="tab-${item.id}-btn" 
             onclick="switchTab('${item.id}')" 
-            class="dock-item ${isActive ? 'active' : ''}"
+            class="segment-item ${isActive ? 'active' : ''}"
             role="tab"
             aria-selected="${isActive}"
             data-tab="${item.id}"
           >
-            ${item.icon}
             <span>${item.name}</span>
           </button>
         `;
@@ -3376,11 +3338,17 @@
       currentTab = tab;
       renderNavBar();
 
-      // 同步顶部标题与当前视图语义匹配 (如今日复习、英语词网、学习看板等)
+      // 同步顶部标题与当前视图语义匹配 (如今日复习、英语词库、学习统计、考点地图等)
       const titleEl = document.getElementById("app-main-title");
-      const currentConfig = NAV_CONFIG.find(item => item.id === tab);
-      if (titleEl && currentConfig) {
-        titleEl.textContent = currentConfig.title || currentConfig.name;
+      const titleMap = {
+        ebbinghaus: "今日复习",
+        list: "英语词库",
+        stats: "学习统计",
+        diff: "考点地图",
+        quiz: "翻转自测"
+      };
+      if (titleEl && titleMap[tab]) {
+        titleEl.textContent = titleMap[tab];
       }
 
       const viewMap = {
