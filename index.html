@@ -57,9 +57,9 @@
       /* 5. Typography System: 高对比度护眼文字规范 */
       --text-main: #17382B;     /* 主要文字 / 单词 / 重要标题 */
       --text-body: #1E293B;     /* 英文正文 / 例句正文 */
-      --text-sub: #40584D;      /* 次级文字 / 核心释义 / 译文 */
-      --text-muted: #688074;    /* 辅助文字 / 未选中文字 / 标签 */
-      --text-tertiary: #688074; /* 补充说明 */
+      --text-sub: #344C3F;      /* 次级文字 / 核心释义 / 译文 (深化对比度) */
+      --text-muted: #4B6356;    /* 辅助文字 / 未选中文字 / 标签 (深化对比度，完全满足 WCAG 4.5:1) */
+      --text-tertiary: #4B6356; /* 补充说明 */
 
       /* 6. Brand / Forest Green Accent */
       --accent: #2D6A4F;        /* Primary Forest Green */
@@ -150,29 +150,20 @@
       box-shadow: 0 2px 10px rgba(27, 67, 50, 0.03) !important;
       border-radius: 9999px !important;
       padding: 4px !important;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      touch-action: pan-x;
-      overscroll-behavior-x: contain;
-      white-space: nowrap;
+      overflow-x: auto !important;
+      -webkit-overflow-scrolling: touch !important;
+      white-space: nowrap !important;
       scrollbar-width: none !important;
       -ms-overflow-style: none !important;
       box-sizing: border-box !important;
       width: 100%;
+      scroll-behavior: smooth;
     }
     .glass-nav-container::-webkit-scrollbar {
       display: none !important;
       width: 0 !important;
       height: 0 !important;
       background: transparent !important;
-    }
-    .glass-nav-container::after {
-      content: '';
-      flex: 0 0 2px;
-      width: 2px;
-      height: 1px;
-      opacity: 0;
-      pointer-events: none;
     }
 
     .glass-status-pill {
@@ -194,6 +185,8 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      flex: 0 0 auto !important;
+      white-space: nowrap !important;
     }
 
     /* 顶部导航选中的奶玉白浮层胶囊 (温和高亮，文字深墨绿 #1B4332) */
@@ -559,14 +552,14 @@
           英语词汇
         </h1>
 
-        <!-- 二级操作：↻ 同步 (胶囊玻璃按钮，44px+触控面积) -->
+        <!-- 二级操作：同步 (标准单一 SVG 图标 + 文字，紧凑协调，无 Emoji 及冗余符号) -->
         <button onclick="forceSyncLatest()" 
-                class="glass-btn-capsule flex-shrink-0 min-h-[44px] px-4 py-2 rounded-full text-xs font-semibold flex items-center justify-center gap-1.5 cursor-pointer select-none text-[var(--accent)] active:scale-95" 
+                class="glass-btn-capsule flex-shrink-0 min-h-[38px] px-3.5 py-1.5 rounded-full text-xs font-semibold flex items-center justify-center gap-1.5 cursor-pointer select-none text-[var(--accent)] active:scale-95" 
                 title="点击立即强制同步云端最新词库">
-          <svg class="w-4 h-4 flex-shrink-0 text-[var(--accent)]" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+          <svg class="w-3.5 h-3.5 flex-shrink-0 text-[var(--accent)]" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
           </svg>
-          <span class="whitespace-nowrap font-medium text-[var(--accent)]">↻ 同步</span>
+          <span class="whitespace-nowrap font-medium text-[var(--accent)]">同步</span>
         </button>
       </div>
 
@@ -581,25 +574,27 @@
         </div>
       </div>
 
-      <!-- 第三行：Segmented Navigation Dock (移动端单行横向滚动/长按拖动，桌面端 5 列自适应平铺) -->
-      <div class="w-full mt-2.5">
-        <nav id="main-nav-bar" class="glass-nav-container flex sm:grid sm:grid-cols-5 items-center gap-1 sm:gap-1.5 overflow-x-auto sm:overflow-x-visible no-scrollbar text-xs md:text-sm">
-          <button id="tab-ebbinghaus-btn" onclick="switchTab('ebbinghaus')" class="nav-capsule-item flex-shrink-0 sm:flex-shrink whitespace-nowrap px-3.5 py-2 min-h-[38px] rounded-full nav-capsule-active text-center cursor-pointer flex items-center justify-center gap-1.5 select-none" data-tab="ebbinghaus">
+      <!-- 第三行：Segmented Navigation Dock (移动端单行横向平滑滚动 + 右侧微渐变提示，桌面端 5 列自适应平铺) -->
+      <div class="relative w-full mt-2.5">
+        <nav id="main-nav-bar" class="glass-nav-container flex sm:grid sm:grid-cols-5 items-center gap-1.5 overflow-x-auto sm:overflow-x-visible no-scrollbar text-xs md:text-sm">
+          <button id="tab-ebbinghaus-btn" onclick="switchTab('ebbinghaus')" class="nav-capsule-item flex-none sm:flex-shrink whitespace-nowrap px-3.5 py-2 min-h-[38px] rounded-full nav-capsule-active text-center cursor-pointer flex items-center justify-center gap-1.5 select-none" data-tab="ebbinghaus">
             <span class="text-sm">⏳</span><span class="text-xs sm:text-sm font-semibold tracking-tight">今日复习</span>
           </button>
-          <button id="tab-quiz-btn" onclick="switchTab('quiz')" class="nav-capsule-item flex-shrink-0 sm:flex-shrink whitespace-nowrap px-3.5 py-2 min-h-[38px] rounded-full nav-capsule-inactive text-center cursor-pointer flex items-center justify-center gap-1.5 select-none" data-tab="quiz">
+          <button id="tab-quiz-btn" onclick="switchTab('quiz')" class="nav-capsule-item flex-none sm:flex-shrink whitespace-nowrap px-3.5 py-2 min-h-[38px] rounded-full nav-capsule-inactive text-center cursor-pointer flex items-center justify-center gap-1.5 select-none" data-tab="quiz">
             <span class="text-sm">🃏</span><span class="text-xs sm:text-sm font-semibold tracking-tight">翻转自测</span>
           </button>
-          <button id="tab-list-btn" onclick="switchTab('list')" class="nav-capsule-item flex-shrink-0 sm:flex-shrink whitespace-nowrap px-3.5 py-2 min-h-[38px] rounded-full nav-capsule-inactive text-center cursor-pointer flex items-center justify-center gap-1.5 select-none" data-tab="list">
+          <button id="tab-list-btn" onclick="switchTab('list')" class="nav-capsule-item flex-none sm:flex-shrink whitespace-nowrap px-3.5 py-2 min-h-[38px] rounded-full nav-capsule-inactive text-center cursor-pointer flex items-center justify-center gap-1.5 select-none" data-tab="list">
             <span class="text-sm">📋</span><span class="text-xs sm:text-sm font-semibold tracking-tight">词网全景</span>
           </button>
-          <button id="tab-diff-btn" onclick="switchTab('diff')" class="nav-capsule-item flex-shrink-0 sm:flex-shrink whitespace-nowrap px-3.5 py-2 min-h-[38px] rounded-full nav-capsule-inactive text-center cursor-pointer flex items-center justify-center gap-1.5 select-none" data-tab="diff">
+          <button id="tab-diff-btn" onclick="switchTab('diff')" class="nav-capsule-item flex-none sm:flex-shrink whitespace-nowrap px-3.5 py-2 min-h-[38px] rounded-full nav-capsule-inactive text-center cursor-pointer flex items-center justify-center gap-1.5 select-none" data-tab="diff">
             <span class="text-sm">⚖️</span><span class="text-xs sm:text-sm font-semibold tracking-tight">考点地图</span>
           </button>
-          <button id="tab-stats-btn" onclick="switchTab('stats')" class="nav-capsule-item flex-shrink-0 sm:flex-shrink whitespace-nowrap px-3.5 py-2 min-h-[38px] rounded-full nav-capsule-inactive text-center cursor-pointer flex items-center justify-center gap-1.5 select-none" data-tab="stats">
+          <button id="tab-stats-btn" onclick="switchTab('stats')" class="nav-capsule-item flex-none sm:flex-shrink whitespace-nowrap px-3.5 py-2 min-h-[38px] rounded-full nav-capsule-inactive text-center cursor-pointer flex items-center justify-center gap-1.5 select-none" data-tab="stats">
             <span class="text-sm">📊</span><span class="text-xs sm:text-sm font-semibold tracking-tight">学习看板</span>
           </button>
         </nav>
+        <!-- 最右侧轻微线性渐变遮罩 (暗示“还有内容可以横向滑动”，桌面端自动隐藏) -->
+        <div id="nav-fade-hint" class="pointer-events-none absolute right-0 top-0 bottom-0 w-8 sm:hidden rounded-r-full bg-gradient-to-l from-[rgba(230,241,235,0.95)] to-transparent transition-opacity duration-300"></div>
       </div>
     </header>
 
@@ -623,31 +618,39 @@
           </button>
         </div>
 
-        <!-- 第二层：进度状态条与关键数据 -->
-        <div class="bg-[rgba(255,255,255,0.7)] backdrop-blur-md rounded-[16px] p-3 sm:p-3.5 border border-[rgba(45,106,79,0.08)] shadow-[0_4px_16px_rgba(27,67,50,0.03)] space-y-2">
-          <div class="flex items-center justify-between text-xs sm:text-sm">
-            <div class="flex items-center gap-2">
-              <span class="font-semibold text-[var(--text-main)]">已完成</span>
-              <span class="font-mono font-bold text-[var(--accent)] text-sm sm:text-base" id="stat-reviewed-count">0 / 10 词</span>
+        <!-- 第二层：三列统计卡片与进度状态条 (标准 3 列 Grid，大号数值+下方单行浅灰标签，彻底消除折行与错位) -->
+        <div class="bg-[rgba(255,255,255,0.78)] backdrop-blur-md rounded-[18px] p-3.5 sm:p-4 border border-[rgba(45,106,79,0.08)] shadow-[0_4px_16px_rgba(27,67,50,0.035)] space-y-2.5 sm:space-y-3">
+          
+          <!-- 标准三列网格布局：已完成 / 熟练度 / 待测词数 -->
+          <div class="grid grid-cols-3 divide-x divide-[rgba(45,106,79,0.08)] text-center py-0.5">
+            <!-- 第 1 列：已完成 -->
+            <div class="flex flex-col items-center justify-center px-1 min-w-0">
+              <span id="stat-reviewed-count" class="font-mono text-base sm:text-xl font-black text-[var(--accent)] tracking-tight leading-tight whitespace-nowrap">0 / 10</span>
+              <span class="text-[11px] sm:text-xs text-[var(--text-sub)] font-medium mt-1 whitespace-nowrap select-none">已完成</span>
             </div>
-            <div class="flex items-center gap-3">
-              <div class="flex items-center gap-1.5">
-                <span class="text-xs text-[var(--text-muted)]">熟练度</span>
-                <span class="font-mono font-bold text-[var(--score-green-text)]" id="stat-mastery-rate">0%</span>
-              </div>
-              <span class="text-[rgba(45,106,79,0.15)]">|</span>
-              <span class="font-mono text-xs font-semibold text-[var(--text-sub)]" id="stat-queue-status">待测: 10 词</span>
+            
+            <!-- 第 2 列：熟练度 -->
+            <div class="flex flex-col items-center justify-center px-1 min-w-0">
+              <span id="stat-mastery-rate" class="font-mono text-base sm:text-xl font-black text-[var(--score-green-text)] tracking-tight leading-tight whitespace-nowrap">0%</span>
+              <span class="text-[11px] sm:text-xs text-[var(--text-sub)] font-medium mt-1 whitespace-nowrap select-none">熟练度</span>
+            </div>
+            
+            <!-- 第 3 列：待测词数 -->
+            <div class="flex flex-col items-center justify-center px-1 min-w-0">
+              <span id="stat-queue-status" class="font-mono text-base sm:text-xl font-black text-[var(--text-main)] tracking-tight leading-tight whitespace-nowrap">10</span>
+              <span class="text-[11px] sm:text-xs text-[var(--text-sub)] font-medium mt-1 whitespace-nowrap select-none">待测词数</span>
             </div>
           </div>
-          
+
           <!-- 6px 护眼绿色平滑进度条 -->
           <div class="w-full bg-[#E2ECE5] h-2 rounded-full overflow-hidden">
             <div id="progress-bar" class="h-full w-0 transition-all duration-300 rounded-full" style="background-color: var(--accent);"></div>
           </div>
 
-          <div class="flex items-center justify-between text-[11px] text-[var(--text-muted)] pt-0.5">
-            <span>科学抗遗忘节律：Day 0 → 1 → 3 → 7 → 15 → 30</span>
-            <span>自测评分驱动周期</span>
+          <!-- 科学抗遗忘节律与周期驱动说明 (高对比度灰绿色，不浅不晃眼，小屏弹性排版) -->
+          <div class="flex items-center justify-between text-[11px] sm:text-xs text-[var(--text-sub)] pt-0.5 gap-2">
+            <span class="truncate">抗遗忘节律：Day 0 → 1 → 3 → 7 → 15 → 30</span>
+            <span class="whitespace-nowrap flex-shrink-0 text-[var(--accent)] font-medium">评分驱动</span>
           </div>
         </div>
       </section>
@@ -656,15 +659,13 @@
       <!-- 【层级 1】当前复习核心卡片 (放大约25%，宽度880px，成为整个屏幕绝对主角) -->
       <section class="max-w-[880px] mx-auto">
         
-        <!-- 卡片顶部状态行 (字号与间距舒展) -->
-        <div class="flex items-center justify-between text-xs md:text-sm text-[var(--text-sub)] px-1 mb-2">
+        <!-- 卡片顶部状态行：左侧为复习周期阶段标签，右侧为词性/类型胶囊 (已删除重复的“正在复习 1/10”) -->
+        <div class="flex items-center justify-between text-xs md:text-sm text-[var(--text-sub)] px-1 mb-2.5">
           <div class="flex items-center gap-2">
-            <span id="eb-current-card-idx" class="font-bold text-[var(--accent)] font-mono text-sm md:text-base">正在复习 1 / 10</span>
-            <span class="text-[var(--border)]">·</span>
-            <span id="eb-card-stage" class="text-[var(--text-sub)] font-medium">Day 0 初始阶段</span>
+            <span id="eb-card-stage" class="text-xs sm:text-sm font-semibold text-[var(--accent)] bg-[var(--accent-soft)] px-3 py-1 rounded-full border border-[var(--border-sub)]">Day 0 初始阶段</span>
           </div>
           <div>
-            <span id="eb-card-cat" class="px-3 py-1 rounded-full text-xs font-semibold bg-[var(--accent-soft)] text-[var(--accent)] border border-[var(--border-sub)]">核心语法</span>
+            <span id="eb-card-cat" class="px-3 py-1 rounded-full text-xs font-semibold bg-[#E6F1EB] text-[var(--text-main)] border border-[var(--border-sub)]">核心语法</span>
           </div>
         </div>
 
@@ -690,14 +691,20 @@
               💡 核心引导：在六级阅读中有 4 种典型考法，请在脑海中先回想它接不同宾语时的含义...
             </div>
 
-            <!-- 核心交互 CTA 按钮 (18px平滑大圆角，高度与视觉重量适度提升，形成第一行动力) -->
-            <div class="pt-1 flex flex-col items-center gap-2">
-              <button onclick="toggleEbAnswer()" class="w-full py-4 px-6 rounded-[18px] font-bold text-base md:text-lg transition-all duration-150 flex items-center justify-center gap-2 text-white bg-[var(--accent)] hover:bg-[var(--accent-hover)] shadow-sm active:scale-[0.97] cursor-pointer min-h-[50px]">
-                <span>🤔 我已主动回忆，查看解析</span>
+            <!-- 核心交互 CTA 按钮 (18px平滑大圆角，标准 SVG 眼睛图标，垂直居中对齐，无 Emoji) -->
+            <div class="pt-1 flex flex-col items-center gap-2.5">
+              <button onclick="toggleEbAnswer()" class="w-full py-3.5 sm:py-4 px-6 rounded-[18px] font-bold text-base md:text-lg transition-all duration-150 flex items-center justify-center gap-2 text-white bg-[var(--accent)] hover:bg-[var(--accent-hover)] shadow-sm active:scale-[0.97] cursor-pointer min-h-[50px]">
+                <svg class="w-5 h-5 flex-shrink-0 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                <span>查看记忆解析</span>
                 <span class="text-xs md:text-sm opacity-80 font-mono hidden sm:inline">(Space) ▾</span>
               </button>
-              <span class="text-xs text-[var(--text-muted)] text-center">先在大脑中回忆释义与用法，再展开验证，学习效率大幅提升</span>
-              <span class="text-[11px] text-[var(--text-muted)] opacity-75 text-center">🎧 原声发音已接入系统媒体通道，支持静音模式下直接收听</span>
+              <!-- 辅助文案：弹性自然换行，杜绝孤字换行问题 -->
+              <p class="text-xs text-[var(--text-sub)] text-center leading-relaxed max-w-[340px] sm:max-w-none mx-auto px-1 font-medium">
+                <span class="inline-block">先在大脑中回忆释义与用法，</span><span class="inline-block">再展开验证提升学习效率</span>
+              </p>
             </div>
 
           </div>
@@ -1532,7 +1539,7 @@
 
   <script>
     // 唯一版本构建指纹 (供 PWA 全自动嗅探更新)
-    const APP_BUILD_ID = 'english-build-v1790275258';
+    const APP_BUILD_ID = 'english-build-v1790309823';
 
     // ==========================================
     // 词汇数据库（8大知识结构体系，精选实用例句与直接对照）
@@ -2366,20 +2373,20 @@
       const progressPercent = Math.round((reviewedCount / totalInQueue) * 100);
       
       const countEl = document.getElementById("stat-reviewed-count");
-      if (countEl) countEl.innerText = `${reviewedCount} / ${totalInQueue} 已完成`;
+      if (countEl) countEl.innerText = `${reviewedCount} / ${totalInQueue}`;
 
       const barEl = document.getElementById("progress-bar");
       if (barEl) barEl.style.width = `${Math.min(100, progressPercent)}%`;
 
-      const remaining = totalInQueue - reviewedCount;
+      const remaining = Math.max(0, totalInQueue - reviewedCount);
       const statusEl = document.getElementById("stat-queue-status");
-      if (statusEl) statusEl.innerText = remaining > 0 ? `待测: ${remaining} 词` : `今日完成 🎉`;
+      if (statusEl) statusEl.innerText = `${remaining}`;
 
       const masteredCount = vocabulary.filter(v => userProgress[v.id] && userProgress[v.id].stage >= 3).length;
       const masteryRate = Math.round((masteredCount / vocabulary.length) * 100);
       
       const masteryEl = document.getElementById("stat-mastery-rate");
-      if (masteryEl) masteryEl.innerText = `熟练度 ${masteryRate}%`;
+      if (masteryEl) masteryEl.innerText = `${masteryRate}%`;
 
       const headerMastered = document.getElementById("header-mastered-badge");
       if (headerMastered) headerMastered.innerText = `已掌握: ${masteredCount}`;
@@ -2493,7 +2500,10 @@
         "Day 30 终身掌握"
       ];
 
-      document.getElementById("eb-current-card-idx").innerText = `正在复习 ${currentEbIndex + 1} / ${dailyReviewQueue.length}`;
+      const currentIdxEl = document.getElementById("eb-current-card-idx");
+      if (currentIdxEl) {
+        currentIdxEl.innerText = `正在复习 ${currentEbIndex + 1} / ${dailyReviewQueue.length}`;
+      }
       document.getElementById("eb-card-stage").innerText = stagesMap[state.stage] || "熟练掌握";
       document.getElementById("eb-card-cat").innerText = item.catName;
       document.getElementById("eb-card-term").innerText = item.term;
@@ -3313,11 +3323,11 @@
           <button 
             id="tab-${item.id}-btn" 
             onclick="switchTab('${item.id}')" 
-            class="nav-capsule-item flex-shrink-0 sm:flex-shrink whitespace-nowrap px-3.5 py-2 min-h-[38px] rounded-full ${isActive ? 'nav-capsule-active' : 'nav-capsule-inactive'} text-center cursor-pointer flex items-center justify-center gap-1.5 select-none"
+            class="nav-capsule-item flex-none sm:flex-shrink whitespace-nowrap px-3.5 py-2 min-h-[38px] rounded-full ${isActive ? 'nav-capsule-active' : 'nav-capsule-inactive'} text-center cursor-pointer flex items-center justify-center gap-1.5 select-none"
             data-tab="${item.id}"
           >
             <span class="text-sm">${item.icon}</span>
-            <span class="text-xs sm:text-sm font-semibold tracking-tight">${item.name}</span>
+            <span class="text-xs sm:text-sm font-semibold tracking-tight whitespace-nowrap">${item.name}</span>
           </button>
         `;
       }).join("");
@@ -3362,114 +3372,26 @@
       }, 40);
     }
 
-    // 顶部导航双重交互系统 (单点即切 + 长按悬浮拖拽探测切换 + iOS 触感反馈)
-    function initNavGesture() {
+    // 顶部导航横向平滑滚动提示系统 (暗示右侧有内容，小屏横滑时优雅淡出)
+    function initNavScrollIndicator() {
       const nav = document.getElementById("main-nav-bar");
+      const hint = document.getElementById("nav-fade-hint");
       if (!nav) return;
 
-      let isPressing = false;
-      let isDragging = false;
-      let pressTimer = null;
-      let startX = 0;
-      let startY = 0;
-      let draggedBtn = null;
-      let currentHoverBtn = null;
-
-      function clearDragState() {
-        if (pressTimer) {
-          clearTimeout(pressTimer);
-          pressTimer = null;
+      const updateHint = () => {
+        if (!hint) return;
+        if (window.innerWidth >= 640) {
+          hint.style.display = "none";
+          return;
         }
-        if (draggedBtn) {
-          draggedBtn.classList.remove("nav-capsule-dragging");
-          draggedBtn = null;
-        }
-        if (currentHoverBtn) {
-          currentHoverBtn.classList.remove("nav-capsule-hover-target");
-          currentHoverBtn = null;
-        }
-        isPressing = false;
-        isDragging = false;
-      }
+        hint.style.display = "block";
+        const isEnd = nav.scrollLeft + nav.clientWidth >= nav.scrollWidth - 10;
+        hint.style.opacity = isEnd ? "0" : "1";
+      };
 
-      nav.addEventListener("pointerdown", (e) => {
-        if (e.button !== 0 && e.pointerType === "mouse") return;
-        const btn = e.target.closest(".nav-capsule-item");
-        if (!btn) return;
-
-        isPressing = true;
-        isDragging = false;
-        startX = e.clientX;
-        startY = e.clientY;
-        draggedBtn = btn;
-
-        // 长按 160ms 激活悬浮升起拖拽模式
-        pressTimer = setTimeout(() => {
-          if (isPressing && draggedBtn) {
-            isDragging = true;
-            draggedBtn.classList.add("nav-capsule-dragging");
-            if (navigator.vibrate) {
-              try { navigator.vibrate(15); } catch (err) {}
-            }
-          }
-        }, 160);
-      });
-
-      window.addEventListener("pointermove", (e) => {
-        if (!isPressing || !draggedBtn) return;
-        const dx = e.clientX - startX;
-        const dy = e.clientY - startY;
-
-        // 如果用户手指移动超过 8px，提前进入拖拽判定
-        if (!isDragging && (Math.abs(dx) > 8 || Math.abs(dy) > 8)) {
-          isDragging = true;
-          if (pressTimer) {
-            clearTimeout(pressTimer);
-            pressTimer = null;
-          }
-          draggedBtn.classList.add("nav-capsule-dragging");
-        }
-
-        if (isDragging) {
-          // 实时嗅探手指或指针下方的导航选项卡
-          const hitElement = document.elementFromPoint(e.clientX, e.clientY);
-          const hoverBtn = hitElement ? hitElement.closest(".nav-capsule-item") : null;
-
-          if (hoverBtn !== currentHoverBtn) {
-            if (currentHoverBtn) {
-              currentHoverBtn.classList.remove("nav-capsule-hover-target");
-            }
-            currentHoverBtn = hoverBtn;
-            if (currentHoverBtn && currentHoverBtn !== draggedBtn) {
-              currentHoverBtn.classList.add("nav-capsule-hover-target");
-              if (navigator.vibrate) {
-                try { navigator.vibrate(10); } catch (err) {}
-              }
-            }
-          }
-        }
-      }, { passive: true });
-
-      window.addEventListener("pointerup", (e) => {
-        if (!isPressing) return;
-
-        if (isDragging) {
-          const targetTab = currentHoverBtn ? currentHoverBtn.getAttribute("data-tab") : null;
-          clearDragState();
-          if (targetTab && targetTab !== currentTab) {
-            switchTab(targetTab);
-            if (navigator.vibrate) {
-              try { navigator.vibrate(12); } catch (err) {}
-            }
-          }
-        } else {
-          clearDragState();
-        }
-      });
-
-      window.addEventListener("pointercancel", () => {
-        clearDragState();
-      });
+      nav.addEventListener("scroll", updateHint, { passive: true });
+      window.addEventListener("resize", updateHint);
+      updateHint();
     }
 
     // 全局快捷键监听
@@ -3497,20 +3419,28 @@
       }
     });
 
-    // 默认启动初始化：动态渲染主导航、动态计算分类胶囊、进入首页“今日复习”、初始化搜索与手势
+    // 默认启动初始化：动态渲染主导航、动态计算分类胶囊、进入首页“今日复习”、初始化搜索与滑动指示
     renderNavBar();
     renderCategoryPills();
     initDailyQueue();
     initSearchBoxEvents();
-    initNavGesture();
+    initNavScrollIndicator();
+
+    // 首次进入页面短暂提示音频状态，避免永久占据视区空间
+    if (!sessionStorage.getItem('has_shown_audio_tip')) {
+      setTimeout(() => {
+        showToast('原声发音已就绪，静音模式下支持直接收听', '🔊');
+        sessionStorage.setItem('has_shown_audio_tip', '1');
+      }, 1000);
+    }
 
     // ==========================================
     // 📱 PWA Service Worker 注册与全自动云端静默同步引擎
     // ==========================================
     let isAutoRefreshing = false;
 
-    // 优雅轻量顶部 Toast 提示条
-    function showAutoSyncToast(msg) {
+    // 优雅轻量顶部 Toast 提示条 (复用全局单例)
+    function showToast(msg, icon = '✨') {
       let toast = document.getElementById('auto-sync-toast');
       if (!toast) {
         toast = document.createElement('div');
@@ -3518,7 +3448,7 @@
         toast.className = 'fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-[#1e4d38] text-white text-xs md:text-sm font-semibold px-4 py-2 rounded-full shadow-lg transition-all duration-300 pointer-events-none flex items-center gap-2 opacity-0 -translate-y-4';
         document.body.appendChild(toast);
       }
-      toast.innerHTML = `<span>✨</span><span>${msg}</span>`;
+      toast.innerHTML = `<span>${icon}</span><span>${msg}</span>`;
       toast.classList.remove('opacity-0', '-translate-y-4');
       toast.classList.add('opacity-100', 'translate-y-0');
       setTimeout(() => {
@@ -3526,6 +3456,7 @@
         toast.classList.add('opacity-0', '-translate-y-4');
       }, 2500);
     }
+    const showAutoSyncToast = (msg) => showToast(msg, '🔄');
 
     // 全自动无感检测云端是否有新版本发布 (界面/样式/词库任意更新均能秒级感知)
     let isCheckingSync = false;
